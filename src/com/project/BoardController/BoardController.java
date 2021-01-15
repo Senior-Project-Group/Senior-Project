@@ -1,6 +1,7 @@
 package com.project.BoardController;
 
 import com.project.TeamController.Team;
+import com.project.TeamController.TeamType;
 
 public class BoardController {
 
@@ -8,8 +9,8 @@ public class BoardController {
 	private Team team2; // Assume team 2 is white
 	
 	public BoardController() {
-		team1 = new Team();
-		team2 = new Team();
+		team1 = new Team(TeamType.BLACK);
+		team2 = new Team(TeamType.WHITE);
 	}
 	
 	public Team getTeam1() {
