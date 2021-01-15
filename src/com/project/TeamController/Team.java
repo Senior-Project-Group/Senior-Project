@@ -10,6 +10,11 @@ public class Team {
 	
 	public Team() {
 		pieces = new ArrayList<IChessPiece>();
+		setPieces();
+	}
+	
+	private void setPieces() {
+		// TODO Create way to set pieces
 	}
 	
 	public ArrayList<IChessPiece> getChessPieces(){
