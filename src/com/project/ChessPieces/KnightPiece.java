@@ -6,6 +6,8 @@ public class KnightPiece implements IChessPiece{
 
 	private Location location;
 	
+	private PiecesTexture texture;
+	
 	private boolean isAlive;
 	
 	public KnightPiece(Location location) {
@@ -36,6 +38,11 @@ public class KnightPiece implements IChessPiece{
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+	
+	@Override
+	public PiecesTexture getTexture() {
+		return texture;
 	}
 	
 }

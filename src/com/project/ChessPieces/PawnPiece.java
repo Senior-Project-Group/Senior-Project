@@ -6,6 +6,8 @@ public class PawnPiece implements IChessPiece{
 
 	private Location location;
 	
+	private PiecesTexture texture;
+	
 	private boolean isAlive;
 	
 	public PawnPiece(Location location) {
@@ -36,6 +38,11 @@ public class PawnPiece implements IChessPiece{
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+	
+	@Override
+	public PiecesTexture getTexture() {
+		return texture;
 	}
 	
 }

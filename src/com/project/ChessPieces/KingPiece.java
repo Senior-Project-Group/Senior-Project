@@ -5,6 +5,7 @@ import com.project.BoardController.Location;
 public class KingPiece implements IChessPiece{
 
 	private Location location;
+	private PiecesTexture texture;
 	
 	private boolean isAlive;
 	
@@ -36,6 +37,11 @@ public class KingPiece implements IChessPiece{
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+	
+	@Override
+	public PiecesTexture getTexture() {
+		return texture;
 	}
 
 }

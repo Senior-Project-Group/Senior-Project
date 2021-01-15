@@ -6,7 +6,10 @@ public class BishopPiece implements IChessPiece{
 
 	private Location location;
 	
+	private PiecesTexture texture;
+	
 	private boolean isAlive;
+	
 	
 	public BishopPiece(Location location) {
 		isAlive = true;
@@ -36,6 +39,11 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	@Override
+	public PiecesTexture getTexture() {
+		return texture;
 	}
 	
 }

@@ -14,4 +14,6 @@ public interface IChessPiece {
 	
 	public void setLocation(Location location);
 	
+	public PiecesTexture getTexture();
+	
 }
