@@ -2,6 +2,8 @@ package com.project.BoardController;
 
 public class Location {
 
+	// Starting at the lowest corner (0,0)
+	// Up to the top corner which will be (7,7)
 	
 	private int x, z;
 	public Location() {}
