@@ -1,5 +1,7 @@
 package com.project.ChessPieces;
 
+import java.util.ArrayList;
+
 import com.project.BoardController.Location;
 
 public class QueenPiece implements IChessPiece{
@@ -10,14 +12,27 @@ public class QueenPiece implements IChessPiece{
 	
 	private boolean isAlive;
 	
+	private boolean hasMovedOnce;
+	
 	public QueenPiece(Location location) {
 		isAlive = true;
+		hasMovedOnce = false;
 		this.location = location;
 	}
 	
 	@Override
 	public boolean isAlive() {
 		return isAlive;
+	}
+	
+	@Override
+	public boolean hasMovedAlready() {
+		return hasMovedOnce;
+	}
+
+	@Override
+	public void setHasMovedOnce() {
+		this.hasMovedOnce = true;
 	}
 	
 	@Override
@@ -43,6 +58,12 @@ public class QueenPiece implements IChessPiece{
 	@Override
 	public PiecesTexture getTexture() {
 		return texture;
+	}
+	
+	@Override
+	public ArrayList<Location> getPossibleMoves() {
+		// TODO Make method to detemine where the piece can move 
+		return null;
 	}
 	
 }

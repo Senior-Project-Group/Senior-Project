@@ -22,7 +22,6 @@ public class BoardController {
 		return team2;
 	}
 	
-	
 	// Returns null if there is no piece at the location
 	public IChessPiece getPieceAtLocation(Location location) {
 		for(IChessPiece piece : getTeam1().getChessPieces()) {
@@ -53,7 +52,14 @@ public class BoardController {
 		}
 		
 		return null;
-		
-		
 	}
+	
+	public boolean isLocationOnBoard(Location location) {
+		if(location.getX() >= 0 && location.getZ() >= 0 && location.getX() <= 7 && location.getZ() <= 7) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 }
