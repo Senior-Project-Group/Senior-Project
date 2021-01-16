@@ -3,6 +3,7 @@ package com.project.ChessPieces;
 import java.util.ArrayList;
 
 import com.project.BoardController.Location;
+import com.project.Main.Main;
 import com.project.Render.PiecesTexture;
 
 public class KnightPiece implements IChessPiece{
@@ -65,8 +66,35 @@ public class KnightPiece implements IChessPiece{
 	
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
-		// TODO Make method to detemine where the piece can move 
-		return null;
+		ArrayList<Location> locationsToMove = new ArrayList<Location>();
+		
+		int[][] offsets = {
+		        {2, 1},
+		        {2, -1},
+		        {-2, 1},
+		        {-2, -1},
+		        {1, 2},
+		        {-1, 2},
+		        {1, -2},
+		        {-1, -2}
+		    };
+		
+		for(int x = 0; x != 8; x++) {
+			int xOffset = offsets[x][0];
+			int zOffset = offsets[x][1];
+			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(loc);
+					}
+				}
+			}
+		}
+		
+		
+		return locationsToMove;
 	}
 	
 }
