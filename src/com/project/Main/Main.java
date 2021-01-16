@@ -9,7 +9,6 @@ public class Main {
 	public static void main(String args[]) {
 		System.out.println("Creating And Setting Up Board...");
 		boardController = new BoardController();
-		
 	}
 	
 	public static BoardController getBoardController() {

@@ -49,6 +49,7 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
+		hasMovedAlready();
 	}
 
 	@Override

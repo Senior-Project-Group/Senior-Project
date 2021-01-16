@@ -48,11 +48,13 @@ public class RookPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
+		hasMovedAlready();
 	}
 
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+		hasMovedAlready();
 	}
 	
 	@Override
