@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.project.BoardController.Location;
 import com.project.Main.Main;
+import com.project.Render.PiecesTexture;
 
 public class PawnPiece implements IChessPiece{
 

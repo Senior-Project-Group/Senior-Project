@@ -3,6 +3,8 @@ package com.project.ChessPieces;
 import java.util.ArrayList;
 
 import com.project.BoardController.Location;
+import com.project.Main.Main;
+import com.project.Render.PiecesTexture;
 
 public class RookPiece implements IChessPiece{
 
@@ -64,8 +66,70 @@ public class RookPiece implements IChessPiece{
 	
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
-		// TODO Make method to detemine where the piece can move 
-		return null;
+		ArrayList<Location> locationsToMove = new ArrayList<Location>();
+		// Up
+		for(int x = 1; x != 8; x++) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					locationsToMove.add(loc);
+				}
+				break;
+			}else {
+				locationsToMove.add(loc);
+			}
+		}
+		
+		// Down
+		for(int x = 0; x != 8; x++) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() - x);
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					locationsToMove.add(loc);
+				}
+				break;
+			}else {
+				locationsToMove.add(loc);
+			}
+		}
+		
+		// To the right
+		for(int x = 0; x != 8; x++) {
+			Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					locationsToMove.add(loc);
+				}
+				break;
+			}else {
+				locationsToMove.add(loc);
+			}
+		}
+		
+		// To the left
+		for(int x = 0; x != 8; x++) {
+			Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					locationsToMove.add(loc);
+				}
+				break;
+			}else {
+				locationsToMove.add(loc);
+			}
+		}
+		
+		
+		return locationsToMove;
 	}
 	
 }

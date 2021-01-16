@@ -3,6 +3,7 @@ package com.project.ChessPieces;
 import java.util.ArrayList;
 
 import com.project.BoardController.Location;
+import com.project.Render.PiecesTexture;
 
 public class KnightPiece implements IChessPiece{
 

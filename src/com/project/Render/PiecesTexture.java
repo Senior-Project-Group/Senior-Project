@@ -1,4 +1,4 @@
-package com.project.ChessPieces;
+package com.project.Render;
 
 public class PiecesTexture {
 

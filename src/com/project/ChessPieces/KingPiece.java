@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.project.BoardController.Location;
 import com.project.Main.Main;
+import com.project.Render.PiecesTexture;
 
 
 public class KingPiece implements IChessPiece{
@@ -95,7 +96,7 @@ public class KingPiece implements IChessPiece{
 		
 		// Add castling here
 		if(!hasMovedAlready()) {
-			Location check1, check2, check3;
+			
 		}
 		
 		return locationsToMove;
