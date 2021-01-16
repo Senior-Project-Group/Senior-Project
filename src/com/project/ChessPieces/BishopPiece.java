@@ -128,10 +128,7 @@ public class BishopPiece implements IChessPiece{
 							locationsToMove.add(loc);
 						}
 								
-					}
-		
-		
-		
+				}
 		
 		return locationsToMove;
 	}
