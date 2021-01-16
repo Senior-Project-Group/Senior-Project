@@ -115,7 +115,7 @@ public class RookPiece implements IChessPiece{
 		
 		// To the left
 		for(int x = 0; x != 8; x++) {
-			Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
+			Location loc = new Location(getLocation().getX() - x, getLocation().getZ());
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
