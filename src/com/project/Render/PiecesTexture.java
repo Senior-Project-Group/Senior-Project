@@ -26,7 +26,10 @@ public class PiecesTexture {
 	// When the label is pressed, this will allow us to get the pressed piece easier
 	private IChessPiece manipulatedPiece;
 	
+	private TeamType team;
+	
 	public PiecesTexture(IChessPiece piece, int x, int z, TeamType teamType) {
+		team = teamType;
 		manipulatedPiece = piece;
 		pieceLabel = new JLabel("");
 		
@@ -69,7 +72,13 @@ public class PiecesTexture {
 		pieceLabel.setBounds(location.getX(), location.getZ(), point.getDimensionOfPiece(), point.getDimensionOfPiece());
 		
 		pieceLabel.addMouseListener(new MouseAdapter() {  
-		    public void mouseClicked(MouseEvent e) {  
+		    public void mouseClicked(MouseEvent e) {
+		    		    	
+		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+		    	
+		    	// Check if make sure it's the right team attempting to move
+		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
+		    	
 		    	System.out.println("Pressed: " + textureLocation);
 		    	
 		    	System.out.println("At Location: (" + manipulatedPiece.getLocation().getX() + ", " + manipulatedPiece.getLocation().getZ() + ")");
@@ -79,6 +88,7 @@ public class PiecesTexture {
 		    		System.out.println("(" + loc.getX() + ", " + loc.getZ() + ")");
 		    	}
 		    	
+		    	Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
 		    }  
 		}); 
 		
@@ -96,5 +106,11 @@ public class PiecesTexture {
 	
 	public void removeTextureFromBoard() {
 		Main.getBoardController().getBoardObject().getFrame().remove(getPieceLabel());
+	}
+	
+	public void moveTextureTo(Location location) {
+		CenterPointManager point = new CenterPointManager();
+		Location locale = point.centerPointAlgorithm(location.getX(), location.getZ());
+		pieceLabel.setLocation(locale.getX(), locale.getZ());
 	}
 }

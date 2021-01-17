@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import com.project.ChessPieces.IChessPiece;
 import com.project.Render.Board;
+import com.project.Render.NextMoveRenderer;
 import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
 
@@ -12,11 +13,18 @@ public class BoardController {
 	private Team team1; // Assume team 1 is black and on top
 	private Team team2; // Assume team 2 is white and on bottom
 	
+	private TeamType currentPlayer;
+	
 	private Board board;
 	
+	private NextMoveRenderer nextMoveRenderer;
+	
 	public BoardController() {
+		nextMoveRenderer = new NextMoveRenderer();
+		currentPlayer = TeamType.WHITE; // White always goes first. It's in the rules.
 		board = new Board();
 		
+		// Needed to prevent error of board not being created yet
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				team1 = new Team(TeamType.BLACK);
@@ -79,8 +87,30 @@ public class BoardController {
 		}
 	}
 	
+	public void movePieceOnBoard(IChessPiece piece, Location newLocation) {
+		piece.setLocation(newLocation);
+		piece.getTexture().moveTextureTo(newLocation);
+		getNextMoveRenderer().clearCurrentRender();
+	}
+	
 	public Board getBoardObject() {
 		return board;
+	}
+	
+	public NextMoveRenderer getNextMoveRenderer() {
+		return nextMoveRenderer;
+	}
+	
+	public TeamType getCurrentPlayerToMove() {
+		return currentPlayer;
+	}
+	
+	public void setNextPlayerToMove() {
+		if(currentPlayer.equals(TeamType.WHITE)) {
+			currentPlayer = TeamType.BLACK;
+		}else {
+			currentPlayer = TeamType.WHITE;
+		}
 	}
 	
 }
