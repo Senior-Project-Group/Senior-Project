@@ -10,6 +10,8 @@ import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
 
+
+// Object that is responsible for determining the next locations the currently selected piece can or can't move.
 public class NextMoveRenderer {
 	
 	private ArrayList<NextMoveObject> labels;
@@ -21,12 +23,15 @@ public class NextMoveRenderer {
 		return labels;
 	}
 
+	// Remove all current renders
 	public void clearCurrentRender() {
 		for(NextMoveObject obj : labels) {
 			Main.getBoardController().getBoardObject().getFrame().remove(obj.getLabel());
 		}
 	}
 	
+	// This will render all the possible locations of the piece
+	// In the end, I am hoping to make this work well and physically show the different moves the piece can do
 	public void renderForPiece(IChessPiece piece) {
 		clearCurrentRender();
 		CenterPointManager center = new CenterPointManager();
@@ -38,7 +43,6 @@ public class NextMoveRenderer {
 			
 			pieceLabel.addMouseListener(new MouseAdapter() {  
 			    public void mouseClicked(MouseEvent e) {  
-			    	System.out.println("Moving Piece");
 			    	// Move the object to here
 			    	for(NextMoveObject obj : labels) {
 			    		if(obj.getLabel().equals(e.getComponent())) {

@@ -1,5 +1,8 @@
 package com.project.BoardController;
 
+// Object that defines a simple location variable
+// Is related to the grid of the board
+// (0,0) -> (7,7) points
 public class Location {
 
 	// Starting at the lowest corner (0,0)

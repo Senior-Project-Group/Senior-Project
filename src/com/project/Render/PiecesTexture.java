@@ -17,6 +17,8 @@ import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
+// Object that holds all the textures of the piece
+//
 public class PiecesTexture {
 
 	private String textureLocation;
@@ -104,10 +106,12 @@ public class PiecesTexture {
 		return pieceLabel;
 	}
 	
+	// Removes the texture of the piece. DO NOT USE THIS. Only used for the destroy method in each pieces code.
 	public void removeTextureFromBoard() {
 		Main.getBoardController().getBoardObject().getFrame().remove(getPieceLabel());
 	}
 	
+	// Moves the piece to specified location.
 	public void moveTextureTo(Location location) {
 		CenterPointManager point = new CenterPointManager();
 		Location locale = point.centerPointAlgorithm(location.getX(), location.getZ());

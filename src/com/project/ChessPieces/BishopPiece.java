@@ -13,7 +13,7 @@ public class BishopPiece implements IChessPiece{
 	
 	private PiecesTexture texture;
 	
-	private boolean isAlive;
+	private boolean isAlive; // Is set when the piece dies
 	
 	private boolean hasMovedOnce;
 	
@@ -64,6 +64,7 @@ public class BishopPiece implements IChessPiece{
 		this.location = location;
 	}
 
+	// Gets the texture and other features of the piece for board rendering
 	@Override
 	public PiecesTexture getTexture() {
 		return texture;

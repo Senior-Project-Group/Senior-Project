@@ -3,13 +3,18 @@ package com.project.BoardController;
 import java.awt.EventQueue;
 
 import com.project.ChessPieces.IChessPiece;
+import com.project.Main.GameType;
 import com.project.Render.Board;
 import com.project.Render.NextMoveRenderer;
 import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
 
+// Object that controllers the board and keeps the information like current player, current game type, the board object, and team information.
+// Also has information related getting the location of a piece back on the grid and other game related functions.
 public class BoardController {
 
+	private GameType currentGameType;
+	
 	private Team team1; // Assume team 1 is black and on top
 	private Team team2; // Assume team 2 is white and on bottom
 	
@@ -19,7 +24,8 @@ public class BoardController {
 	
 	private NextMoveRenderer nextMoveRenderer;
 	
-	public BoardController() {
+	public BoardController(GameType gameType) {
+		this.currentGameType = gameType;
 		nextMoveRenderer = new NextMoveRenderer();
 		currentPlayer = TeamType.WHITE; // White always goes first. It's in the rules.
 		board = new Board();
@@ -103,6 +109,10 @@ public class BoardController {
 	
 	public TeamType getCurrentPlayerToMove() {
 		return currentPlayer;
+	}
+	
+	public GameType getCurrentGameType() {
+		return currentGameType;
 	}
 	
 	public void setNextPlayerToMove() {

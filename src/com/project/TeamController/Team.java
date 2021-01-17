@@ -11,6 +11,7 @@ import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
 
+// Object that manages the pieces for the specified team
 public class Team {
 
 	private ArrayList<IChessPiece> pieces;
@@ -43,8 +44,7 @@ public class Team {
 			for(int x = 0; x != 8; x++) {
 				pieces.add(new PawnPiece(new Location(x, 6), TeamType.BLACK));
 			}
-			
-			
+
 		}else {
 			// Set the location pieces for white
 			
@@ -67,10 +67,12 @@ public class Team {
 		
 	}
 	
+	// Get the chess pieces for the team
 	public ArrayList<IChessPiece> getChessPieces(){
 		return pieces;
 	}
 	
+	// Removes the chess piece from the team (done when the piece is killed/destroyed)
 	public void removePiece(IChessPiece piece) {
 		if(pieces.contains(piece)) {
 			pieces.remove(piece);
