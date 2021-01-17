@@ -93,6 +93,8 @@ public class KingPiece implements IChessPiece{
 					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
 						locationsToMove.add(loc);
 					}
+				}else {
+					locationsToMove.add(loc);
 				}
 			}
 		}
