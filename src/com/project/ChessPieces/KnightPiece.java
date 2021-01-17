@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.project.BoardController.Location;
 import com.project.Main.Main;
 import com.project.Render.PiecesTexture;
+import com.project.TeamController.TeamType;
 
 public class KnightPiece implements IChessPiece{
 
@@ -16,10 +17,11 @@ public class KnightPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
-	public KnightPiece(Location location) {
+	public KnightPiece(Location location, TeamType team) {
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
+		texture = new PiecesTexture(this, getLocation().getX(), getLocation().getZ(), team);
 	}
 	
 	@Override
@@ -40,6 +42,7 @@ public class KnightPiece implements IChessPiece{
 	@Override
 	public void destroyPiece() {
 		this.isAlive = false;
+		Main.getBoardController().getTeamPieceBelongsTo(this).removePiece(this);
 	}
 
 	@Override
