@@ -17,7 +17,10 @@ public class BishopPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private TeamType team;
+	
 	public BishopPiece(Location location, TeamType team) {
+		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
@@ -70,39 +73,11 @@ public class BishopPiece implements IChessPiece{
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
 		
-		// Right up diagonal
-		for(int x = 0; x != 8; x++) {
-			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
-					locationsToMove.add(loc);
-				}
-				break;
-			}else {
-				locationsToMove.add(loc);
-			}
-		}
-		
-		// Right down diagonal
-		for(int x = 0; x != 8; x++) {
-			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
-					locationsToMove.add(loc);
-				}
-				break;
-			}else {
-				locationsToMove.add(loc);
-			}
+		if(team.equals(TeamType.WHITE)) {
 			
-		}
-		// Left up diagonal
+			// Right up diagonal
 			for(int x = 0; x != 8; x++) {
-				Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
+				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
 				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 				if(piece != null) {
@@ -113,24 +88,60 @@ public class BishopPiece implements IChessPiece{
 				}else {
 					locationsToMove.add(loc);
 				}
-					
 			}
 			
-			// Left down diagonal
+			// Right down diagonal
+			for(int x = 0; x != 8; x++) {
+				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
+				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(loc);
+					}
+					break;
+				}else {
+					locationsToMove.add(loc);
+				}
+				
+			}
+			// Left up diagonal
 				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
+					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-						if(piece != null) {
-							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
-								locationsToMove.add(loc);
-							}
-							break;
-						}else {
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+					if(piece != null) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
 							locationsToMove.add(loc);
 						}
-								
+						break;
+					}else {
+						locationsToMove.add(loc);
+					}
+						
 				}
+				
+				// Left down diagonal
+					for(int x = 0; x != 8; x++) {
+						Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
+						if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+							IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+							if(piece != null) {
+								if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+									locationsToMove.add(loc);
+								}
+								break;
+							}else {
+								locationsToMove.add(loc);
+							}
+									
+					}
+			
+		}else {
+			
+			
+			
+		}
 		
 		return locationsToMove;
 	}

@@ -1,5 +1,9 @@
 package com.project.Render;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -20,7 +24,11 @@ public class PiecesTexture {
 	
 	private JLabel pieceLabel;
 	
+	// When the label is pressed, this will allow us to get the pressed piece easier
+	private IChessPiece manipulatedPiece;
+	
 	public PiecesTexture(IChessPiece piece, int x, int z, TeamType teamType) {
+		manipulatedPiece = piece;
 		pieceLabel = new JLabel("");
 		
 		CenterPointManager point = new CenterPointManager();
@@ -57,9 +65,24 @@ public class PiecesTexture {
 				link = "black_rook.png";
 			}
 		}
-		
+		textureLocation = link;
 		pieceLabel.setIcon(new ImageIcon(getClass().getResource(link)));
 		pieceLabel.setBounds(location.getX(), location.getZ(), point.getDimensionOfPiece(), point.getDimensionOfPiece());
+		
+		pieceLabel.addMouseListener(new MouseAdapter() {  
+		    public void mouseClicked(MouseEvent e) {  
+		    	System.out.println("Pressed: " + textureLocation);
+		    	
+		    	System.out.println("At Location: (" + manipulatedPiece.getLocation().getX() + ", " + manipulatedPiece.getLocation().getZ() + ")");
+		    	
+		    	System.out.println("Possible Moves: ");
+		    	for(Location loc : manipulatedPiece.getPossibleMoves()) {
+		    		System.out.println("(" + loc.getX() + ", " + loc.getZ() + ")");
+		    	}
+		    	
+		    }  
+		}); 
+		
 		
 		Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 	}

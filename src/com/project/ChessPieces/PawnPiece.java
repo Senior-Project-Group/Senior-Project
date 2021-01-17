@@ -17,7 +17,10 @@ public class PawnPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private TeamType team;
+	
 	public PawnPiece(Location location, TeamType team) {
+		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
@@ -70,35 +73,70 @@ public class PawnPiece implements IChessPiece{
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-		Location loc = new Location(getLocation().getX() + 1, getLocation().getZ());
-		if(Main.getBoardController().getPieceAtLocation(loc) == null) {
-			locationsToMove.add(loc);
-		}
-		// Special move
-		if(hasMovedAlready()) {
-			Location loc1 = new Location(getLocation().getX() + 2, getLocation().getZ());
-			if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
-				locationsToMove.add(loc1);
+		if(team.equals(TeamType.WHITE)) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() + 1);
+			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
+				locationsToMove.add(loc);
 			}
-		}
-		
-		// Diagnonals
-		Location diag1 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
-		if(Main.getBoardController().isLocationOnBoard(diag1)) {
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
-					locationsToMove.add(diag1);
+			// Special move
+			if(!hasMovedAlready()) {
+				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() + 2);
+				if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
+					locationsToMove.add(loc1);
 				}
 			}
-		}
-		
-		Location diag2 = new Location(getLocation().getX() + 1, getLocation().getZ() - 1);
-		if(Main.getBoardController().isLocationOnBoard(diag2)) {
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
-					locationsToMove.add(diag2);
+			
+			// Diagnonals
+			Location diag1 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
+			if(Main.getBoardController().isLocationOnBoard(diag1)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(diag1);
+					}
+				}
+			}
+			
+			Location diag2 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
+			if(Main.getBoardController().isLocationOnBoard(diag2)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(diag2);
+					}
+				}
+			}
+		}else {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() - 1);
+			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
+				locationsToMove.add(loc);
+			}
+			// Special move
+			if(!hasMovedAlready()) {
+				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() - 2);
+				if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
+					locationsToMove.add(loc1);
+				}
+			}
+			
+			// Diagnonals
+			Location diag1 = new Location(getLocation().getX() - 1, getLocation().getZ() - 1);
+			if(Main.getBoardController().isLocationOnBoard(diag1)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(diag1);
+					}
+				}
+			}
+			
+			Location diag2 = new Location(getLocation().getX() + 1, getLocation().getZ() - 1);
+			if(Main.getBoardController().isLocationOnBoard(diag2)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						locationsToMove.add(diag2);
+					}
 				}
 			}
 		}

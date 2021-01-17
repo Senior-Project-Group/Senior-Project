@@ -17,7 +17,10 @@ public class KnightPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private TeamType team;
+	
 	public KnightPiece(Location location, TeamType team) {
+		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
@@ -71,32 +74,34 @@ public class KnightPiece implements IChessPiece{
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
 		
-		int[][] offsets = {
-		        {2, 1},
-		        {2, -1},
-		        {-2, 1},
-		        {-2, -1},
-		        {1, 2},
-		        {-1, 2},
-		        {1, -2},
-		        {-1, -2}
-		    };
-		
-		for(int x = 0; x != 8; x++) {
-			int xOffset = offsets[x][0];
-			int zOffset = offsets[x][1];
-			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
-			if(Main.getBoardController().isLocationOnBoard(loc)) {
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+			int[][] offsets = {
+			        {2, 1},
+			        {2, -1},
+			        {-2, 1},
+			        {-2, -1},
+			        
+			        {1, 2},
+			        {-1, 2},
+			        {1, -2},
+			        {-1, -2}
+			    };
+			
+			for(int x = 0; x != 8; x++) {
+				int xOffset = offsets[x][0];
+				int zOffset = offsets[x][1];
+				Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+					if(piece != null) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+							locationsToMove.add(loc);
+						}
+					}else {
 						locationsToMove.add(loc);
 					}
 				}
 			}
-		}
-		
-		
+			
 		return locationsToMove;
 	}
 	
