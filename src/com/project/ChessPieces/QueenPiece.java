@@ -74,9 +74,78 @@ public class QueenPiece implements IChessPiece{
 		
 		/* Check for bishop piece moves */
 		
-		// Right up diagonal
-		for(int x = 0; x != 8; x++) {
+		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						locationsToMove.add(loc);
+					}
+					break;
+				}else {
+					locationsToMove.add(loc);
+				}
+			}
+		}
+		
+		// Right down diagonal
+		for(int x = 1; x != 9; x++) {
+			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						locationsToMove.add(loc);
+					}
+					break;
+				}else {
+					locationsToMove.add(loc);
+				}
+			}
+			
+		}
+		
+		// Left up diagonal
+			for(int x = 1; x != 9; x++) {
+				Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+					if(piece != null) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+							locationsToMove.add(loc);
+						}
+						break;
+					}else {
+						locationsToMove.add(loc);
+					}
+				}
+			}
+			
+			// Left down diagonal
+				for(int x = 1; x != 9; x++) {
+					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
+					if(Main.getBoardController().isLocationOnBoard(loc)) {
+						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+						if(piece != null) {
+							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+								locationsToMove.add(loc);
+							}
+							break;
+						}else {
+							locationsToMove.add(loc);
+						}
+								
+					}
+								
+				}
+		
+				
+		/* Check for rook piece moves */
+
+		// Up
+		for(int x = 1; x != 9; x++) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
@@ -89,9 +158,25 @@ public class QueenPiece implements IChessPiece{
 			}
 		}
 		
-		// Right down diagonal
-		for(int x = 0; x != 8; x++) {
-			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
+		// Down
+		for(int x = 1; x != 9; x++) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() - x);
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+					locationsToMove.add(loc);
+				}
+				break;
+			}else {
+				locationsToMove.add(loc);
+			}
+		}
+		
+		// To the right
+		for(int x = 1; x != 9; x++) {
+			Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
@@ -102,103 +187,24 @@ public class QueenPiece implements IChessPiece{
 			}else {
 				locationsToMove.add(loc);
 			}
-			
 		}
-		// Left up diagonal
-			for(int x = 0; x != 8; x++) {
-				Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
-				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(loc);
-					}
-					break;
-				}else {
+		
+		// To the left
+		for(int x = 1; x != 9; x++) {
+			Location loc = new Location(getLocation().getX() - x, getLocation().getZ());
+			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			if(piece != null) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
-					
+				break;
+			}else {
+				locationsToMove.add(loc);
 			}
-			
-			// Left down diagonal
-				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-						if(piece != null) {
-							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-								locationsToMove.add(loc);
-							}
-							break;
-						}else {
-							locationsToMove.add(loc);
-						}
-								
-				}
+		}
+		
 				
-				/* Check for rook piece moves */
-				
-				
-				// Up
-				for(int x = 1; x != 8; x++) {
-					Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
-						}
-						break;
-					}else {
-						locationsToMove.add(loc);
-					}
-				}
-				
-				// Down
-				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX(), getLocation().getZ() - x);
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-					
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
-						}
-						break;
-					}else {
-						locationsToMove.add(loc);
-					}
-				}
-				
-				// To the right
-				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
-						}
-						break;
-					}else {
-						locationsToMove.add(loc);
-					}
-				}
-				
-				// To the left
-				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX() - x, getLocation().getZ());
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
-						}
-						break;
-					}else {
-						locationsToMove.add(loc);
-					}
-				}
 		
 		return locationsToMove;
 	}

@@ -17,6 +17,7 @@ public class KnightPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	@SuppressWarnings("unused")
 	private TeamType team;
 	
 	public KnightPiece(Location location, TeamType team) {

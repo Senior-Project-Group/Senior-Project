@@ -17,6 +17,7 @@ public class BishopPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	@SuppressWarnings("unused")
 	private TeamType team;
 	
 	public BishopPiece(Location location, TeamType team) {
@@ -77,7 +78,7 @@ public class BishopPiece implements IChessPiece{
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
 			
 			// Right up diagonal
-			for(int x = 0; x != 8; x++) {
+			for(int x = 1; x != 9; x++) {
 				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -93,7 +94,7 @@ public class BishopPiece implements IChessPiece{
 			}
 			
 			// Right down diagonal
-			for(int x = 0; x != 8; x++) {
+			for(int x = 1; x != 9; x++) {
 				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -108,8 +109,9 @@ public class BishopPiece implements IChessPiece{
 				}
 				
 			}
+			
 			// Left up diagonal
-				for(int x = 0; x != 8; x++) {
+				for(int x = 1; x != 9; x++) {
 					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
 					if(Main.getBoardController().isLocationOnBoard(loc)) {
 						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -125,7 +127,7 @@ public class BishopPiece implements IChessPiece{
 				}
 				
 				// Left down diagonal
-					for(int x = 0; x != 8; x++) {
+					for(int x = 1; x != 9; x++) {
 						Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
 						if(Main.getBoardController().isLocationOnBoard(loc)) {
 							IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
