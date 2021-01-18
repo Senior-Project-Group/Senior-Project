@@ -17,6 +17,9 @@ public class AIControllerHandler {
 	}
 	
 	public void clear() {
+		for(AIController controller : getAIControllers()) {
+			controller.cancelAI();
+		}
 		AIControllers.clear();
 	}
 	

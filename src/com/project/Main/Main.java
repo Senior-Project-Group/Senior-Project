@@ -31,8 +31,11 @@ public class Main {
 		case PLAYER_VS_PLAYER:
 			break;
 		case PLAYER_VS_AI:
+			getAIController().addController(new com.project.AiController.AIController(Main.getBoardController().getTeam1(), getBoardController().getBoardObject().getFrame()));
 			break;
 		case AI_VS_AI:
+			getAIController().addController(new com.project.AiController.AIController(Main.getBoardController().getTeam1(), getBoardController().getBoardObject().getFrame()));
+			getAIController().addController(new com.project.AiController.AIController(Main.getBoardController().getTeam2(), getBoardController().getBoardObject().getFrame()));
 			break;
 		}
 	}
