@@ -1,7 +1,11 @@
 package com.project.AiController;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
+import com.project.BoardController.Location;
+import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
 import com.project.TeamController.Team;
 
@@ -48,7 +52,9 @@ public class AIController {
 		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
 		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
 		            	
+		            	// Run the AI
 		            	preformAIMove();
+		            	// Rerun the timer
 		            	runAIHandler();
 		            }
 		            	

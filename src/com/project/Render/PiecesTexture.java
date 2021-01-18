@@ -103,10 +103,13 @@ public class PiecesTexture {
 		    		}
 		    	}
 		    	
+		    	/*
 		    	System.out.println("Possible Moves: ");
 		    	for(Location loc : manipulatedPiece.getPossibleMoves()) {
 		    		System.out.println("(" + loc.getX() + ", " + loc.getZ() + ")");
 		    	}
+		    	*/
+		    	
 		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 		    	Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
 		    }  

@@ -30,10 +30,12 @@ public class NextMoveRenderer {
 	public void clearCurrentRender() {
 		for(NextMoveObject obj : labels) {
 			if(!obj.isPieceRendered()) {
+				obj.getLabel().setBorder(null);
 				Main.getBoardController().getBoardObject().getFrame().remove(obj.getLabel());
 			}else {
 				// It's a rendered piece, remove the border
 				obj.getLabel().setBorder(null);
+				obj.getLabel().removeMouseListener(obj.getMouseAdapter());
 			}
 		}
 	}
@@ -64,7 +66,8 @@ public class NextMoveRenderer {
 				pieceLabel.setBorder(border);
 			}
 			
-			pieceLabel.addMouseListener(new MouseAdapter() {
+			
+			MouseAdapter mouseListener = new MouseAdapter() {
 			    public void mouseClicked(MouseEvent e) {
 			    	if(Main.getBoardController().hasGameEnded()) {
 			    		Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
@@ -74,10 +77,10 @@ public class NextMoveRenderer {
 			    	for(NextMoveObject obj : labels) {
 			    		if(obj.getLabel().equals(e.getComponent())) {
 			    			// Check if there is a piece there
+			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
 			    			if(piece1 != null) {
-			    				System.out.println(piece1.getLocation().getX() + "," + piece1.getLocation().getZ());
-			    				System.out.println("Destroying piece");
+			    				System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
 			    				piece1.destroyPiece();
 			    				Main.getBoardController().checkForGameFinished();
 			    			}
@@ -88,13 +91,16 @@ public class NextMoveRenderer {
 			    			break;
 			    		}
 			    	}
-			    }  
-			}); 
-			labels.add(new NextMoveObject(piece, pieceLabel, location, isPieceRendered));
+			    }
+			}; 
+			
+			pieceLabel.addMouseListener(mouseListener);
+			
+			labels.add(new NextMoveObject(piece, pieceLabel, location, isPieceRendered, mouseListener));
 			if(!isPieceRendered) {
 				Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 			}
-			Main.getBoardController().getBoardObject().getFrame().repaint();
+			    Main.getBoardController().getBoardObject().getFrame().repaint();
 		}
 		
 	}

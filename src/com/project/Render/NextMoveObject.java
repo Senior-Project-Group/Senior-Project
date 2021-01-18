@@ -1,5 +1,7 @@
 package com.project.Render;
 
+import java.awt.event.MouseAdapter;
+
 import javax.swing.JLabel;
 
 import com.project.BoardController.Location;
@@ -17,11 +19,14 @@ public class NextMoveObject {
 	
 	private boolean isPieceRendered;
 	
-	public NextMoveObject(IChessPiece piece, JLabel label, Location location, boolean isPieceRendered) {
+	private MouseAdapter adapter;
+	
+	public NextMoveObject(IChessPiece piece, JLabel label, Location location, boolean isPieceRendered, MouseAdapter adapter) {
 		this.isPieceRendered = isPieceRendered;
 		this.piece = piece;
 		this.label = label;
 		this.coords = location;
+		this.adapter = adapter;
 	}
 	
 	public JLabel getLabel() {
@@ -38,5 +43,9 @@ public class NextMoveObject {
 	
 	public boolean isPieceRendered() {
 		return isPieceRendered;
+	}
+	
+	public MouseAdapter getMouseAdapter() {
+		return adapter;
 	}
 }
