@@ -18,7 +18,8 @@ import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
 // Object that holds all the textures of the piece
-//
+
+
 public class PiecesTexture {
 
 	private String textureLocation;
@@ -91,7 +92,6 @@ public class PiecesTexture {
 		    }  
 		}); 
 		
-		
 		Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 	}
 	
@@ -105,7 +105,6 @@ public class PiecesTexture {
 	
 	// Removes the texture of the piece. DO NOT USE THIS. Only used for the destroy method in each pieces code.
 	public void removeTextureFromBoard() {
-		System.out.println("Removing texture...");
 		Main.getBoardController().getBoardObject().getFrame().remove(pieceLabel);
 		Main.getBoardController().getBoardObject().getFrame().repaint();
 	}
@@ -116,5 +115,10 @@ public class PiecesTexture {
 		Location locale = point.centerPointAlgorithm(location.getX(), location.getZ());
 		pieceLabel.setLocation(locale.getX(), locale.getZ());
 		//Main.getBoardController().getBoardObject().getFrame().repaint();
+	}
+	
+	public void reRender() {
+		System.out.println("Re-render check");
+
 	}
 }

@@ -15,7 +15,10 @@ public class NextMoveObject {
 	
 	private IChessPiece piece;
 	
-	public NextMoveObject(IChessPiece piece, JLabel label, Location location) {
+	private boolean isPieceRendered;
+	
+	public NextMoveObject(IChessPiece piece, JLabel label, Location location, boolean isPieceRendered) {
+		this.isPieceRendered = isPieceRendered;
 		this.piece = piece;
 		this.label = label;
 		this.coords = location;
@@ -31,5 +34,9 @@ public class NextMoveObject {
 	
 	public IChessPiece getPiece() {
 		return piece;
+	}
+	
+	public boolean isPieceRendered() {
+		return isPieceRendered;
 	}
 }

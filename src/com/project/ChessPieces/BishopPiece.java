@@ -75,43 +75,11 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-		
-		if(team.equals(TeamType.WHITE)) {
 			
 			// Right up diagonal
 			for(int x = 0; x != 8; x++) {
 				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
-				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(loc);
-					}
-					break;
-				}else {
-					locationsToMove.add(loc);
-				}
-			}
-			
-			// Right down diagonal
-			for(int x = 0; x != 8; x++) {
-				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
-				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(loc);
-					}
-					break;
-				}else {
-					locationsToMove.add(loc);
-				}
-				
-			}
-			// Left up diagonal
-				for(int x = 0; x != 8; x++) {
-					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
-					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
 						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
@@ -121,13 +89,45 @@ public class BishopPiece implements IChessPiece{
 					}else {
 						locationsToMove.add(loc);
 					}
-						
+				}
+			}
+			
+			// Right down diagonal
+			for(int x = 0; x != 8; x++) {
+				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+					if(piece != null) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+							locationsToMove.add(loc);
+						}
+						break;
+					}else {
+						locationsToMove.add(loc);
+					}
+				}
+				
+			}
+			// Left up diagonal
+				for(int x = 0; x != 8; x++) {
+					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
+					if(Main.getBoardController().isLocationOnBoard(loc)) {
+						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+						if(piece != null) {
+							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+								locationsToMove.add(loc);
+							}
+							break;
+						}else {
+							locationsToMove.add(loc);
+						}
+					}
 				}
 				
 				// Left down diagonal
 					for(int x = 0; x != 8; x++) {
 						Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
-						if(!Main.getBoardController().isLocationOnBoard(loc)) break;
+						if(Main.getBoardController().isLocationOnBoard(loc)) {
 							IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 							if(piece != null) {
 								if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
@@ -138,13 +138,9 @@ public class BishopPiece implements IChessPiece{
 								locationsToMove.add(loc);
 							}
 									
+						}
+									
 					}
-			
-		}else {
-			
-			
-			
-		}
 		
 		return locationsToMove;
 	}

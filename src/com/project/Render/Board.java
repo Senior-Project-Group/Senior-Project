@@ -32,9 +32,7 @@ public class Board {
 	// 
 	
 	// Auto render piece sizes to bounds: x, y, 60, 60
-	private void initialize() {
-		CenterPointManager point = new CenterPointManager();
-		
+	private void initialize() {		
 		JLabel lblNewLabel = new JLabel("");
 		
 		lblNewLabel.setIcon(new ImageIcon(getClass().getResource("standard-walnut-chess-board-21184254145_1024x1024.jpg")));

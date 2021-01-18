@@ -26,7 +26,9 @@ public class NextMoveRenderer {
 	// Remove all current renders
 	public void clearCurrentRender() {
 		for(NextMoveObject obj : labels) {
-			Main.getBoardController().getBoardObject().getFrame().remove(obj.getLabel());
+			if(!obj.isPieceRendered()) {
+				Main.getBoardController().getBoardObject().getFrame().remove(obj.getLabel());
+			}
 		}
 	}
 	
@@ -37,11 +39,13 @@ public class NextMoveRenderer {
 		CenterPointManager center = new CenterPointManager();
 		
 		for(Location location : piece.getPossibleMoves()) {
+			boolean isPieceRendered = false;
 			Location point = center.centerPointAlgorithm(location.getX(), location.getZ());
 			JLabel pieceLabel = null;
 			// Check if location has a piece at it currently
 			IChessPiece pieceAt = Main.getBoardController().getPieceAtLocation(location);
 			if(pieceAt != null) {
+				isPieceRendered = true;
 				pieceLabel = pieceAt.getTexture().getPieceLabel();
 			}else {
 				pieceLabel = new JLabel("");
@@ -69,7 +73,7 @@ public class NextMoveRenderer {
 			    	}
 			    }  
 			}); 
-			labels.add(new NextMoveObject(piece, pieceLabel, location));
+			labels.add(new NextMoveObject(piece, pieceLabel, location, isPieceRendered));
 			Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 		}
 		

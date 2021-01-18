@@ -89,11 +89,10 @@ public class BoardController {
 	public void removePieceFromBoard(IChessPiece piece) {
 		Team team = getTeamPieceBelongsTo(piece);
 		if(team != null) {
-			System.out.println("Removed piece");
 			piece.getTexture().removeTextureFromBoard();
 			team.removePiece(piece);
 		}else {
-			System.out.println("Unable to remove piece");
+			System.out.println("Error: Unable to remove piece");
 		}
 	}
 	

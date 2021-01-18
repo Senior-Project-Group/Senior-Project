@@ -22,7 +22,6 @@ public class CenterPointManager {
 	// Input is Location object
 	// Output is a location object that has the center point for that square as x, z
 	public Location centerPointAlgorithm(Location loc) {
-	
 		return new Location(50 + (79 * loc.getX()), 600 - (79 * loc.getZ()));
 	}
 	

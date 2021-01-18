@@ -2,6 +2,7 @@ package com.project.Main;
 
 import com.project.AiController.AIControllerHandler;
 import com.project.BoardController.BoardController;
+import com.project.ChessPieces.IChessPiece;
 
 public class Main {
 
@@ -13,6 +14,7 @@ public class Main {
 		AIController = new AIControllerHandler();
 		System.out.println("Creating And Setting Up Board...");
 		boardController = new BoardController(GameType.PLAYER_VS_PLAYER);
+		
 	}
 	
 	public static void createNewGame(GameType newGameType) {
