@@ -2,7 +2,6 @@ package com.project.Main;
 
 import com.project.AiController.AIControllerHandler;
 import com.project.BoardController.BoardController;
-import com.project.ChessPieces.IChessPiece;
 
 public class Main {
 

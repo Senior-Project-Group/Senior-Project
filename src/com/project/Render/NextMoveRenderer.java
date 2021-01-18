@@ -1,10 +1,14 @@
 package com.project.Render;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
@@ -28,6 +32,9 @@ public class NextMoveRenderer {
 		for(NextMoveObject obj : labels) {
 			if(!obj.isPieceRendered()) {
 				Main.getBoardController().getBoardObject().getFrame().remove(obj.getLabel());
+			}else {
+				// It's a rendered piece, remove the border
+				obj.getLabel().setBorder(null);
 			}
 		}
 	}
@@ -47,9 +54,15 @@ public class NextMoveRenderer {
 			if(pieceAt != null) {
 				isPieceRendered = true;
 				pieceLabel = pieceAt.getTexture().getPieceLabel();
+				
+				Border border = BorderFactory.createLineBorder(Color.GREEN, 3);
+				pieceLabel.setBorder(border);
 			}else {
 				pieceLabel = new JLabel("");
 				pieceLabel.setBounds(point.getX(), point.getZ(), center.getDimensionOfPiece(), center.getDimensionOfPiece());
+				
+				Border border = BorderFactory.createLineBorder(Color.BLUE, 3);
+				pieceLabel.setBorder(border);
 			}
 			
 			pieceLabel.addMouseListener(new MouseAdapter() {
@@ -74,7 +87,10 @@ public class NextMoveRenderer {
 			    }  
 			}); 
 			labels.add(new NextMoveObject(piece, pieceLabel, location, isPieceRendered));
-			Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
+			if(!isPieceRendered) {
+				Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
+			}
+			Main.getBoardController().getBoardObject().getFrame().repaint();
 		}
 		
 	}

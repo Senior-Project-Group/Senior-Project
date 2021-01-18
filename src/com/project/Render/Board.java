@@ -7,7 +7,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.project.BoardController.Location;
 import com.project.Main.GameType;
 import com.project.Main.Main;
 
