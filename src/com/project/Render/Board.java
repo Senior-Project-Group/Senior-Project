@@ -50,7 +50,16 @@ public class Board {
 		JMenuBar menuBar = new JMenuBar();
 		frmChess.setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("Game Manager");
+		JMenu mnNewMenu_1 = new JMenu("Settings");
+		menuBar.add(mnNewMenu_1);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Setting 1 Here");
+		mnNewMenu_1.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Setting 2 Here");
+		mnNewMenu_1.add(mntmNewMenuItem_1);
+		
+		JMenu mnNewMenu = new JMenu("New Game");
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem playerVPlayerGame = new JMenuItem("Play Player vs Player Game");
