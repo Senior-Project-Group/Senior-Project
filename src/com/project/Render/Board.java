@@ -8,6 +8,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.project.BoardController.Location;
+import com.project.Main.GameType;
+import com.project.Main.Main;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 // Board object, has all the information about the frame 
@@ -65,12 +70,27 @@ public class Board {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem playerVPlayerGame = new JMenuItem("Play Player vs Player Game");
+		playerVPlayerGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+			}
+		});
 		mnNewMenu.add(playerVPlayerGame);
 		
 		JMenuItem playerVAIGame = new JMenuItem("Play Player vs AI Game");
+		playerVAIGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.createNewGame(GameType.PLAYER_VS_AI);
+			}
+		});
 		mnNewMenu.add(playerVAIGame);
 		
 		JMenuItem AI_V_AI_Game = new JMenuItem("Play AI vs AI Game");
+		AI_V_AI_Game.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.createNewGame(GameType.PLAYER_VS_AI);
+			}
+		});
 		mnNewMenu.add(AI_V_AI_Game);
 	}
 	

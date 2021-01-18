@@ -79,7 +79,7 @@ public class QueenPiece implements IChessPiece{
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
@@ -94,7 +94,7 @@ public class QueenPiece implements IChessPiece{
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
@@ -109,7 +109,7 @@ public class QueenPiece implements IChessPiece{
 				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 						locationsToMove.add(loc);
 					}
 					break;
@@ -125,7 +125,7 @@ public class QueenPiece implements IChessPiece{
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 						if(piece != null) {
-							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 								locationsToMove.add(loc);
 							}
 							break;
@@ -144,7 +144,7 @@ public class QueenPiece implements IChessPiece{
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 							locationsToMove.add(loc);
 						}
 						break;
@@ -160,7 +160,7 @@ public class QueenPiece implements IChessPiece{
 					
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 							locationsToMove.add(loc);
 						}
 						break;
@@ -175,7 +175,7 @@ public class QueenPiece implements IChessPiece{
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 							locationsToMove.add(loc);
 						}
 						break;
@@ -190,7 +190,7 @@ public class QueenPiece implements IChessPiece{
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 							locationsToMove.add(loc);
 						}
 						break;

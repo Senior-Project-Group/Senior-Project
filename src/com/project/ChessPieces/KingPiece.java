@@ -53,13 +53,13 @@ public class KingPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class KingPiece implements IChessPiece{
 			if(Main.getBoardController().isLocationOnBoard(loc)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 						locationsToMove.add(loc);
 					}
 				}else {

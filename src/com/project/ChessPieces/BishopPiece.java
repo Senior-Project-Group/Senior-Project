@@ -56,12 +56,13 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
+		setHasMovedOnce();
 	}
 
 	// Gets the texture and other features of the piece for board rendering
@@ -82,7 +83,7 @@ public class BishopPiece implements IChessPiece{
 				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 						locationsToMove.add(loc);
 					}
 					break;
@@ -97,7 +98,7 @@ public class BishopPiece implements IChessPiece{
 				if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 						locationsToMove.add(loc);
 					}
 					break;
@@ -112,7 +113,7 @@ public class BishopPiece implements IChessPiece{
 					if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 					if(piece != null) {
-						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 							locationsToMove.add(loc);
 						}
 						break;
@@ -128,7 +129,7 @@ public class BishopPiece implements IChessPiece{
 						if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 							IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 							if(piece != null) {
-								if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+								if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 									locationsToMove.add(loc);
 								}
 								break;

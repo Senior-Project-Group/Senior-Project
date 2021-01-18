@@ -53,13 +53,13 @@ public class RookPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 	
 	@Override
@@ -71,12 +71,12 @@ public class RookPiece implements IChessPiece{
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
 		// Up
-		for(int x = 1; x != 8; x++) {
+		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
@@ -86,13 +86,13 @@ public class RookPiece implements IChessPiece{
 		}
 		
 		// Down
-		for(int x = 0; x != 8; x++) {
+		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() - x);
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
@@ -102,12 +102,12 @@ public class RookPiece implements IChessPiece{
 		}
 		
 		// To the right
-		for(int x = 0; x != 8; x++) {
+		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
@@ -117,12 +117,12 @@ public class RookPiece implements IChessPiece{
 		}
 		
 		// To the left
-		for(int x = 0; x != 8; x++) {
+		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX() - x, getLocation().getZ());
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
 			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(this)) {
+				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
 					locationsToMove.add(loc);
 				}
 				break;
