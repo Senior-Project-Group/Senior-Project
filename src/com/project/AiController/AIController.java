@@ -33,7 +33,7 @@ public class AIController {
 	
 	
 	// TODO write code here to manage AI movements
-	private void runAI() {
+	private void preformAIMove() {
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
 			// Run the code here
 		}
@@ -47,7 +47,8 @@ public class AIController {
 		            	if(cancel) return; // If the AI was canceled, don't run AI code
 		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
 		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
-		            	runAI();
+		            	
+		            	preformAIMove();
 		            	runAIHandler();
 		            }
 		            	
