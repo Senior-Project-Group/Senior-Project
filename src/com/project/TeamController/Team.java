@@ -76,6 +76,7 @@ public class Team {
 	public void removePiece(IChessPiece piece) {
 		if(pieces.contains(piece)) {
 			pieces.remove(piece);
+			piece.getTexture().removeTextureFromBoard();
 		}
 	}
 	

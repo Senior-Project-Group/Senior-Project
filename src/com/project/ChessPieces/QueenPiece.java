@@ -42,7 +42,8 @@ public class QueenPiece implements IChessPiece{
 	@Override
 	public void destroyPiece() {
 		this.isAlive = false;
-		Main.getBoardController().getTeamPieceBelongsTo(this).removePiece(this);
+		getTexture().removeTextureFromBoard();
+		Main.getBoardController().removePieceFromBoard(this);
 	}
 
 	@Override
@@ -53,13 +54,13 @@ public class QueenPiece implements IChessPiece{
 	@Override
 	public void setLocation(int x, int z) {
 		location = new Location(x, z);
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 
 	@Override
 	public void setLocation(Location location) {
 		this.location = location;
-		hasMovedAlready();
+		setHasMovedOnce();
 	}
 	
 	@Override

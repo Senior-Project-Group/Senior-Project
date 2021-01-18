@@ -45,7 +45,8 @@ public class PawnPiece implements IChessPiece{
 	@Override
 	public void destroyPiece() {
 		this.isAlive = false;
-		Main.getBoardController().getTeamPieceBelongsTo(this).removePiece(this);
+		getTexture().removeTextureFromBoard();
+		Main.getBoardController().removePieceFromBoard(this);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class PawnPiece implements IChessPiece{
 				}
 			}
 			
-			Location diag2 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
+			Location diag2 = new Location(getLocation().getX() - 1, getLocation().getZ() + 1);
 			if(Main.getBoardController().isLocationOnBoard(diag2)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
 				if(piece != null) {

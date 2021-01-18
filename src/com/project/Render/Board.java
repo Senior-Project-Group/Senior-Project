@@ -42,7 +42,6 @@ public class Board {
 		
 		frmChess = new JFrame();
 		
-		// Remove this for check
 		frmChess.setContentPane(lblNewLabel);
 		
 		frmChess.setResizable(false);
@@ -51,18 +50,6 @@ public class Board {
 		frmChess.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmChess.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\djcli\\ngplusworkspace\\Senior-Project\\pieces\\black_bishop.png"));
-		
-		Location loc = point.centerPointAlgorithm(1, 1);
-		
-		lblNewLabel_1.setBounds(loc.getX(), loc.getZ(), 60, 60);
-		frmChess.getContentPane().add(lblNewLabel_1);
-		
-		
-		// Add this for check
-		//frmChess.getContentPane().add(lblNewLabel);
-				
 		JMenuBar menuBar = new JMenuBar();
 		frmChess.setJMenuBar(menuBar);
 		

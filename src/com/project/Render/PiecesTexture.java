@@ -75,9 +75,6 @@ public class PiecesTexture {
 		
 		pieceLabel.addMouseListener(new MouseAdapter() {  
 		    public void mouseClicked(MouseEvent e) {
-		    		    	
-		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-		    	
 		    	// Check if make sure it's the right team attempting to move
 		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
 		    	
@@ -89,7 +86,7 @@ public class PiecesTexture {
 		    	for(Location loc : manipulatedPiece.getPossibleMoves()) {
 		    		System.out.println("(" + loc.getX() + ", " + loc.getZ() + ")");
 		    	}
-		    	
+		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 		    	Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
 		    }  
 		}); 
@@ -108,7 +105,9 @@ public class PiecesTexture {
 	
 	// Removes the texture of the piece. DO NOT USE THIS. Only used for the destroy method in each pieces code.
 	public void removeTextureFromBoard() {
-		Main.getBoardController().getBoardObject().getFrame().remove(getPieceLabel());
+		System.out.println("Removing texture...");
+		Main.getBoardController().getBoardObject().getFrame().remove(pieceLabel);
+		Main.getBoardController().getBoardObject().getFrame().repaint();
 	}
 	
 	// Moves the piece to specified location.
@@ -116,5 +115,6 @@ public class PiecesTexture {
 		CenterPointManager point = new CenterPointManager();
 		Location locale = point.centerPointAlgorithm(location.getX(), location.getZ());
 		pieceLabel.setLocation(locale.getX(), locale.getZ());
+		//Main.getBoardController().getBoardObject().getFrame().repaint();
 	}
 }

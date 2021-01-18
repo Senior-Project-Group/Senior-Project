@@ -42,7 +42,8 @@ public class KingPiece implements IChessPiece{
 	@Override
 	public void destroyPiece() {
 		this.isAlive = false;
-		Main.getBoardController().getTeamPieceBelongsTo(this).removePiece(this);
+		getTexture().removeTextureFromBoard();
+		Main.getBoardController().removePieceFromBoard(this);
 	}
 
 	@Override

@@ -35,25 +35,41 @@ public class NextMoveRenderer {
 	public void renderForPiece(IChessPiece piece) {
 		clearCurrentRender();
 		CenterPointManager center = new CenterPointManager();
+		
 		for(Location location : piece.getPossibleMoves()) {
 			Location point = center.centerPointAlgorithm(location.getX(), location.getZ());
-			JLabel pieceLabel = new JLabel("");
-			//pieceLabel.setIcon(new ImageIcon(getClass().getResource("green.png")));
-			pieceLabel.setBounds(point.getX(), point.getZ(), center.getDimensionOfPiece(), center.getDimensionOfPiece());
+			JLabel pieceLabel = null;
+			// Check if location has a piece at it currently
+			IChessPiece pieceAt = Main.getBoardController().getPieceAtLocation(location);
+			if(pieceAt != null) {
+				pieceLabel = pieceAt.getTexture().getPieceLabel();
+			}else {
+				pieceLabel = new JLabel("");
+				pieceLabel.setBounds(point.getX(), point.getZ(), center.getDimensionOfPiece(), center.getDimensionOfPiece());
+			}
 			
-			pieceLabel.addMouseListener(new MouseAdapter() {  
+			pieceLabel.addMouseListener(new MouseAdapter() {
 			    public void mouseClicked(MouseEvent e) {  
 			    	// Move the object to here
 			    	for(NextMoveObject obj : labels) {
 			    		if(obj.getLabel().equals(e.getComponent())) {
+			    			// Check if there is a piece there
+			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
+			    			if(piece1 != null) {
+			    				System.out.println(piece1.getLocation().getX() + "," + piece1.getLocation().getZ());
+			    				System.out.println("Destroying piece");
+			    				piece1.destroyPiece();
+			    			}
+			    			
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			Main.getBoardController().setNextPlayerToMove();
+			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			break;
 			    		}
 			    	}
 			    }  
 			}); 
-			labels.add(new NextMoveObject(pieceLabel, location));
+			labels.add(new NextMoveObject(piece, pieceLabel, location));
 			Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 		}
 		
