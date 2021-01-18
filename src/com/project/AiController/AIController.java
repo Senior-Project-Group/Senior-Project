@@ -22,6 +22,12 @@ public class AIController {
 		return team;
 	}
 	
+	// Get the frame the AI is responsible for
+	public JFrame getAIFrame() {
+		return frame;
+	}
+	
+	
 	// TODO write code here to manage AI movements
 	private void startAI() {
 		
