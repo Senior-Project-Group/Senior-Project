@@ -1,11 +1,7 @@
 package com.project.AiController;
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
-import com.project.BoardController.Location;
-import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
 import com.project.TeamController.Team;
 
@@ -18,16 +14,23 @@ public class AIController {
 	
 	private boolean cancel;
 	
+	private Team enemyTeam;
+	
 	// Create a new AI controller for the specified team
-	public AIController(Team team, JFrame frame) {
+	public AIController(Team team, Team enemyTeam, JFrame frame) {
 		this.team = team;
 		this.frame = frame;
+		this.enemyTeam = enemyTeam;
 		cancel = false;
 		runAIHandler();
 	}
 	
 	public Team getTeam() {
 		return team;
+	}
+	
+	public Team getEnemyTeam() {
+		return enemyTeam;
 	}
 	
 	// Get the frame the AI is responsible for
@@ -52,13 +55,14 @@ public class AIController {
 		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
 		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
 		            	
+		            	
 		            	// Run the AI
 		            	preformAIMove();
 		            	// Rerun the timer
 		            	runAIHandler();
 		            }
 		            	
-		        }, 2500 // Run this every 2.5 seconds
+		        }, Main.getAIController().getSpeed() // Run this every 2.5 seconds
 		);
 	}
 	

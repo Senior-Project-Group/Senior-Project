@@ -189,7 +189,6 @@ public class BoardController {
 	
 	public void endGame(EndGameStatus status) {
 		gameEnded = true;
-		System.out.println("Game Over Check");
 		if(status.equals(EndGameStatus.TIE)) {
 			Main.getNotificationHandler().sendNotificationMessage("Game Over","It was a tie! No one won the game!");
 		}else {
