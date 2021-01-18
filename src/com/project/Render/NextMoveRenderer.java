@@ -65,7 +65,11 @@ public class NextMoveRenderer {
 			}
 			
 			pieceLabel.addMouseListener(new MouseAdapter() {
-			    public void mouseClicked(MouseEvent e) {  
+			    public void mouseClicked(MouseEvent e) {
+			    	if(Main.getBoardController().hasGameEnded()) {
+			    		Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    		return;
+			    	}
 			    	// Move the object to here
 			    	for(NextMoveObject obj : labels) {
 			    		if(obj.getLabel().equals(e.getComponent())) {
@@ -75,6 +79,7 @@ public class NextMoveRenderer {
 			    				System.out.println(piece1.getLocation().getX() + "," + piece1.getLocation().getZ());
 			    				System.out.println("Destroying piece");
 			    				piece1.destroyPiece();
+			    				Main.getBoardController().checkForGameFinished();
 			    			}
 			    			
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());

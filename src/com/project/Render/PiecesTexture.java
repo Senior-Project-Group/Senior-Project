@@ -77,6 +77,10 @@ public class PiecesTexture {
 		pieceLabel.addMouseListener(new MouseAdapter() {  
 		    public void mouseClicked(MouseEvent e) {
 		    	// Check if make sure it's the right team attempting to move
+		    	if(Main.getBoardController().hasGameEnded()) {
+		    		Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+		    		return;
+		    	}
 		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
 		    	
 		    	System.out.println("Pressed: " + textureLocation);

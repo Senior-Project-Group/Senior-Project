@@ -3,7 +3,9 @@ package com.project.BoardController;
 import java.awt.EventQueue;
 
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KingPiece;
 import com.project.Main.GameType;
+import com.project.Main.Main;
 import com.project.Render.Board;
 import com.project.Render.NextMoveRenderer;
 import com.project.TeamController.Team;
@@ -24,7 +26,10 @@ public class BoardController {
 	
 	private NextMoveRenderer nextMoveRenderer;
 	
+	private boolean gameEnded;
+	
 	public BoardController(GameType gameType) {
+		this.gameEnded = false;
 		this.currentGameType = gameType;
 		nextMoveRenderer = new NextMoveRenderer();
 		currentPlayer = TeamType.WHITE; // White always goes first. It's in the rules.
@@ -126,5 +131,79 @@ public class BoardController {
 			currentPlayer = TeamType.WHITE;
 		}
 	}
+	
+	public void checkForGameFinished() {
+		// Locate the king piece for each team
+		
+		boolean team1HasKing = false;
+		boolean team2HasKing = false;
+		
+		for (IChessPiece piece : getTeam1().getChessPieces()) {
+			if(piece instanceof KingPiece) {
+				// We found a king piece for this team, so this team is still alive
+				team1HasKing = true;
+			}
+		}
+		
+		
+		for (IChessPiece piece : getTeam2().getChessPieces()) {
+			if(piece instanceof KingPiece) {
+				// We found a king piece for this team, so this team is still alive
+				team2HasKing = true;
+			}
+		}
+		
+		if(team2HasKing && team1HasKing) {
+			// Both teams have just the king left somehow
+			if(getTeam1().getChessPieces().size() == 1 && getTeam2().getChessPieces().size() == 1) {
+				endGame(EndGameStatus.TIE);
+				return;
+			}
+		}
+		
+		if(team1HasKing && !team2HasKing) {
+			// Team 1 won
+			endGame(EndGameStatus.TEAM1_WON);
+			return;
+		}
+		
+		if(team2HasKing && !team1HasKing) {
+			// Team 2 won
+			endGame(EndGameStatus.TEAM2_WON);
+			return;
+		}
+		
+		// Check if a certain team only has the king left
+		
+		if(team1HasKing && getTeam1().getChessPieces().size() == 1 && getTeam2().getChessPieces().size() >= 2) {
+			endGame(EndGameStatus.TEAM2_WON);
+			return;
+		}
+		
+		if(team2HasKing && getTeam2().getChessPieces().size() == 1 && getTeam1().getChessPieces().size() >= 2) {
+			endGame(EndGameStatus.TEAM1_WON);
+			return;
+		}
+		
+	}
+	
+	public void endGame(EndGameStatus status) {
+		gameEnded = true;
+		System.out.println("Game Over Check");
+		if(status.equals(EndGameStatus.TIE)) {
+			Main.getNotificationHandler().sendNotificationMessage("Game Over","It was a tie! No one won the game!");
+		}else {
+			if(status.equals(EndGameStatus.TEAM1_WON)) {
+				Main.getNotificationHandler().sendNotificationMessage("Game Over", "Black Team won the game!");
+			}else {
+				Main.getNotificationHandler().sendNotificationMessage("Game Over", "White Team won the game!");
+			}
+		}
+	}
+	
+	public boolean hasGameEnded() {
+		return gameEnded;
+	}
+	
 	
 }

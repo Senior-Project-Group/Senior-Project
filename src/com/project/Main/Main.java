@@ -2,6 +2,7 @@ package com.project.Main;
 
 import com.project.AiController.AIControllerHandler;
 import com.project.BoardController.BoardController;
+import com.project.Notifications.NotificationHandler;
 
 public class Main {
 
@@ -9,7 +10,10 @@ public class Main {
 	
 	private static AIControllerHandler AIController;
 	
+	private static NotificationHandler notificationHandler;
+	
 	public static void main(String args[]) {
+		notificationHandler = new NotificationHandler();
 		AIController = new AIControllerHandler();
 		System.out.println("Creating And Setting Up Board...");
 		boardController = new BoardController(GameType.PLAYER_VS_PLAYER);
@@ -39,6 +43,10 @@ public class Main {
 	
 	public static AIControllerHandler getAIController() {
 		return AIController;
+	}
+	
+	public static NotificationHandler getNotificationHandler() {
+		return notificationHandler;
 	}
 	
 }
