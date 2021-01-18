@@ -14,10 +14,13 @@ import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
+import com.project.Main.GameType;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
 // Object that holds all the textures of the piece
+
+// Also adds movement handler for the pieces
 
 
 public class PiecesTexture {
@@ -81,11 +84,26 @@ public class PiecesTexture {
 		    		Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 		    		return;
 		    	}
+		    	
 		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
 		    	
-		    	System.out.println("Pressed: " + textureLocation);
+		    	// TODO Check if AI is supposed to be controlling the team
 		    	
-		    	System.out.println("At Location: (" + manipulatedPiece.getLocation().getX() + ", " + manipulatedPiece.getLocation().getZ() + ")");
+		    	// Both players are AI, so don't let anyone touch anything
+		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI)) {
+		    		System.out.println("Error: AI Is supposed to move, player input denied.");
+		    		return;
+		    	}
+		    	
+		    	// Black is AI don't let anyone move black unless it's the AI
+		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.PLAYER_VS_AI)) {
+		    		if(Main.getBoardController().getCurrentPlayerToMove().equals(TeamType.BLACK)) {
+		    			System.out.println("Error: AI Is supposed to move, player input denied.");
+		    			return;
+		    		}
+		    	}
+		    	
+		    	
 		    	
 		    	System.out.println("Possible Moves: ");
 		    	for(Location loc : manipulatedPiece.getPossibleMoves()) {

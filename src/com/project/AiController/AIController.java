@@ -11,7 +11,6 @@ public class AIController {
 	public AIController(Team team) {
 		this.team = team;
 	}
-
 	
 	public Team getTeam() {
 		return team;
