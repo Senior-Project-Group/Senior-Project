@@ -77,7 +77,9 @@ public class PawnPiece implements IChessPiece{
 		if(team.equals(TeamType.WHITE)) {
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() + 1);
 			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
-				locationsToMove.add(loc);
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					locationsToMove.add(loc);
+				}
 			}
 			// Special move
 			if(!hasMovedAlready()) {
