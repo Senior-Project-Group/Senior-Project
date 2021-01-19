@@ -82,8 +82,10 @@ public class PawnPiece implements IChessPiece{
 			// Special move
 			if(!hasMovedAlready()) {
 				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() + 2);
-				if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
-					locationsToMove.add(loc1);
+				if(Main.getBoardController().isLocationOnBoard(loc1)) {
+					if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
+						locationsToMove.add(loc1);
+					}
 				}
 			}
 			
@@ -92,8 +94,10 @@ public class PawnPiece implements IChessPiece{
 			if(Main.getBoardController().isLocationOnBoard(diag1)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
 				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(diag1);
+					if(Main.getBoardController().isLocationOnBoard(diag1)) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+							locationsToMove.add(diag1);
+						}
 					}
 				}
 			}
@@ -101,22 +105,28 @@ public class PawnPiece implements IChessPiece{
 			Location diag2 = new Location(getLocation().getX() - 1, getLocation().getZ() + 1);
 			if(Main.getBoardController().isLocationOnBoard(diag2)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(diag2);
+				if(Main.getBoardController().isLocationOnBoard(diag2)) {
+					if(piece != null) {
+						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+							locationsToMove.add(diag2);
+						}
 					}
 				}
 			}
 		}else {
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() - 1);
 			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
-				locationsToMove.add(loc);
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					locationsToMove.add(loc);
+				}
 			}
 			// Special move
 			if(!hasMovedAlready()) {
 				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() - 2);
 				if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
-					locationsToMove.add(loc1);
+					if(Main.getBoardController().isLocationOnBoard(loc1)) {
+						locationsToMove.add(loc1);
+					}
 				}
 			}
 			
@@ -136,7 +146,9 @@ public class PawnPiece implements IChessPiece{
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
 				if(piece != null) {
 					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(diag2);
+						if(Main.getBoardController().isLocationOnBoard(diag2)) {
+							locationsToMove.add(diag2);
+						}
 					}
 				}
 			}

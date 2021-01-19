@@ -90,11 +90,11 @@ public class Board {
 		});
 		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Medium");
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Normal");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Changed difficulty AI difficulty to medium.");
-				Main.getAIController().setDifficulty(AIDifficulty.MEDIUM);
+				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Changed difficulty AI difficulty to normal.");
+				Main.getAIController().setDifficulty(AIDifficulty.NORMAL);
 			}
 		});
 		mnNewMenu_2.add(mntmNewMenuItem_3);
