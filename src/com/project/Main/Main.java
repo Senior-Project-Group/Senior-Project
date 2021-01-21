@@ -1,8 +1,8 @@
 package com.project.Main;
-
 import com.project.AiController.AIControllerHandler;
 import com.project.AiController.AIDifficulty;
 import com.project.BoardController.BoardController;
+import com.project.BoardController.GameType;
 import com.project.Notifications.NotificationHandler;
 
 public class Main {

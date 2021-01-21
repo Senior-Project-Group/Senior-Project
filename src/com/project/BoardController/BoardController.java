@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
-import com.project.Main.GameType;
 import com.project.Main.Main;
 import com.project.Render.Board;
 import com.project.Render.NextMoveRenderer;

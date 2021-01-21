@@ -8,7 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.project.AiController.AIDifficulty;
-import com.project.Main.GameType;
+import com.project.BoardController.GameType;
 import com.project.Main.Main;
 
 import java.awt.event.ActionListener;
@@ -35,7 +35,7 @@ public class Board {
 	private void initialize() {		
 		JLabel lblNewLabel = new JLabel("");
 		
-		lblNewLabel.setIcon(new ImageIcon(getClass().getResource("standard-walnut-chess-board-21184254145_1024x1024.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(getClass().getResource("resources/standard-walnut-chess-board-21184254145_1024x1024.jpg")));
 		lblNewLabel.setBounds(0, 0, 716, 723);
 		
 		frmChess = new JFrame();

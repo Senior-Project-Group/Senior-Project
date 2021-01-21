@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
@@ -14,7 +15,6 @@ import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
-import com.project.Main.GameType;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
@@ -74,7 +74,7 @@ public class PiecesTexture {
 			}
 		}
 		textureLocation = link;
-		pieceLabel.setIcon(new ImageIcon(getClass().getResource(link)));
+		pieceLabel.setIcon(new ImageIcon(getClass().getResource("resources/" + link)));
 		pieceLabel.setBounds(location.getX(), location.getZ(), point.getDimensionOfPiece(), point.getDimensionOfPiece());
 		
 		pieceLabel.addMouseListener(new MouseAdapter() {  
