@@ -1,4 +1,5 @@
 # Senior-Project
+## About
 Senior Project Assignment
 
 Develop a chess playing application, with a GUI that displays the board and allows the human player to move according to the rules of the game.   You do not need to be a chess player to work on this project, chess familiarity is not required.
@@ -11,6 +12,7 @@ You may write your application in Java or any other language/platform that produ
 
 Clearly there are multiple aspects to this project:  understanding the variant; developing a GUI to play the game;  developing an AI system to play against a human opponent.
 
+## AI Requirements
 For the AI, you will use a distributed AI model!   The "armies" of chess pieces for the AI is divided into three "corp":
 
 The "left" side bishop commands the three left pawns and the left knight.
