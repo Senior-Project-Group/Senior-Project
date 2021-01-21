@@ -8,13 +8,13 @@ import com.project.TeamController.Team;
 // Object that handles the AI for the specified team
 public class AIController {
 
-	private Team team;
+	private Team team; // Gets the team the AI is controlling
 	
-	private JFrame frame;
+	private JFrame frame; // Gets the frame the AI is interacting with
 	
-	private boolean cancel;
+	private boolean cancel; // Is this ai controller active or not. true if canceled/inactive
 	
-	private Team enemyTeam;
+	private Team enemyTeam; // Enemy team
 	
 	// Create a new AI controller for the specified team
 	public AIController(Team team, Team enemyTeam, JFrame frame) {
