@@ -9,10 +9,11 @@ import java.awt.TrayIcon.MessageType;
 
 public class NotificationHandler {
 
-	private SystemTray tray;
-	private Image image;
-	private TrayIcon trayIcon;
+	private SystemTray tray; // Tray information
+	private Image image; // Tray icon image
+	private TrayIcon trayIcon; // Tray icon
 	
+	// Create a notification handler
 	public NotificationHandler() {
 		tray = SystemTray.getSystemTray();
 		// Create an icon to use
@@ -29,6 +30,7 @@ public class NotificationHandler {
 		}
 	}
 	
+	// Send a notification to the client
 	public void sendNotificationMessage(String title, String message) {
         trayIcon.displayMessage(title, message, MessageType.INFO);
 	}

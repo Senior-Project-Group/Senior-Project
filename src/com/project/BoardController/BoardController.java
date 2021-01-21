@@ -14,44 +14,60 @@ import com.project.TeamController.TeamType;
 // Also has information related getting the location of a piece back on the grid and other game related functions.
 public class BoardController {
 
-	private GameType currentGameType;
+	private GameType currentGameType; // The current game type, either: PLAYER_VS_PLAYER, PLAYER_VS_AI, or AI_VS_AI
 	
 	private Team team1; // Assume team 1 is black and on top
 	private Team team2; // Assume team 2 is white and on bottom
 	
-	private TeamType currentPlayer;
+	private TeamType currentPlayer; // The current team that is allowed to move BLACK or WHITE
 	
-	private Board board;
+	private Board board; // The board object
 	
-	private NextMoveRenderer nextMoveRenderer;
+	private NextMoveRenderer nextMoveRenderer; // Renderer that renders the next squares and determines different movesets the pieces can or can't do
 	
-	private boolean gameEnded;
+	private boolean gameEnded; // true is game is over, as in someone one or is a tie
 	
+	
+	/**
+	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, or AI_VS_AI 
+	 * @param GameType gameType
+	 */
 	public BoardController(GameType gameType) {
 		this.gameEnded = false;
 		this.currentGameType = gameType;
-		nextMoveRenderer = new NextMoveRenderer();
+		nextMoveRenderer = new NextMoveRenderer(); // Enable the nextMoveRenderer
 		currentPlayer = TeamType.WHITE; // White always goes first. It's in the rules.
-		board = new Board();
+		board = new Board(); // Create the new board
 		
 		// Needed to prevent error of board not being created yet
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				team1 = new Team(TeamType.BLACK);
-				team2 = new Team(TeamType.WHITE);
+				team1 = new Team(TeamType.BLACK); // Create the black team
+				team2 = new Team(TeamType.WHITE); // Create the white team
 			}
 		});
 	}
 	
+	/**
+	 * @return Team 1 object
+	 * Contains information about team color, pieces, etc.
+	 */
 	public Team getTeam1() {
 		return team1;
 	}
 	
+	/**
+	 * @return Team 2 object.
+	 * Contains information about team color, pieces, etc.
+	 */
 	public Team getTeam2() {
 		return team2;
 	}
 	
-	// Returns null if there is no piece at the location
+	/**
+	 * @param location
+	 * @return piece at specified location, null if no piece exists
+	 */
 	public IChessPiece getPieceAtLocation(Location location) {
 		for(IChessPiece piece : getTeam1().getChessPieces()) {
 			if(piece.getLocation().getX() == location.getX() && piece.getLocation().getZ() == location.getZ()) {
@@ -69,7 +85,6 @@ public class BoardController {
 	
 	// Returns the team the piece belongs to
 	// Will return null if the piece somehow doesn't belong to a specific team
-	
 	public Team getTeamPieceBelongsTo(IChessPiece piece) {
 		
 		if(team1.getChessPieces().contains(piece)) {
@@ -83,6 +98,7 @@ public class BoardController {
 		return null;
 	}
 	
+	// Checks if a certain location is on the board or not
 	public boolean isLocationOnBoard(Location location) {
 		if(location.getX() >= 0 && location.getZ() >= 0 && location.getX() <= 7 && location.getZ() <= 7) {
 			return true;
@@ -90,6 +106,7 @@ public class BoardController {
 		return false;
 	}
 	
+	// Remove a piece from the board, will also remove it from the team it belongs too
 	public void removePieceFromBoard(IChessPiece piece) {
 		Team team = getTeamPieceBelongsTo(piece);
 		if(team != null) {
@@ -100,6 +117,8 @@ public class BoardController {
 		}
 	}
 	
+	// Moves the piece on the board to the specified location
+	// Clears the next move renderer once complete
 	public void movePieceOnBoard(IChessPiece piece, Location newLocation) {
 		piece.getTexture().moveTextureTo(newLocation);
 		piece.setLocation(newLocation);
@@ -107,22 +126,27 @@ public class BoardController {
 		getBoardObject().getFrame().repaint();
 	}
 	
+	// Returns the board object
 	public Board getBoardObject() {
 		return board;
 	}
 	
+	// Returns the nextMoveRenderer object
 	public NextMoveRenderer getNextMoveRenderer() {
 		return nextMoveRenderer;
 	}
-	
+
+	// Returns the current player who is allowed to move
 	public TeamType getCurrentPlayerToMove() {
 		return currentPlayer;
 	}
 	
+	// Returns current game type
 	public GameType getCurrentGameType() {
 		return currentGameType;
 	}
 	
+	// Set the next player to move
 	public void setNextPlayerToMove() {
 		if(currentPlayer.equals(TeamType.WHITE)) {
 			currentPlayer = TeamType.BLACK;
@@ -131,6 +155,7 @@ public class BoardController {
 		}
 	}
 	
+	// Check if the game is finished
 	public void checkForGameFinished() {
 		// Locate the king piece for each team
 		
@@ -186,8 +211,10 @@ public class BoardController {
 		
 	}
 	
+	// End the game with specified end game status
 	public void endGame(EndGameStatus status) {
 		gameEnded = true;
+		
 		if(status.equals(EndGameStatus.TIE)) {
 			Main.getNotificationHandler().sendNotificationMessage("Game Over","It was a tie! No one won the game!");
 		}else {

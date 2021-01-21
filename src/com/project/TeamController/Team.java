@@ -14,18 +14,19 @@ import com.project.ChessPieces.RookPiece;
 // Object that manages the pieces for the specified team
 public class Team {
 
-	private ArrayList<IChessPiece> pieces;
+	private ArrayList<IChessPiece> pieces; // The pieces for the team
 	
-	private TeamType teamType;
+	private TeamType teamType; // The team type, either WHITE or BLACK
 	
+	// Default contructor that creates a new team, either WHITE or BLACK
 	public Team(TeamType type) {
 		teamType = type;
 		pieces = new ArrayList<IChessPiece>();
 		setPieces();
 	}
 	
+	// Sets the piece locations on the board
 	private void setPieces() {
-		// TODO Create way to set pieces
 		
 		if(getTeamType().equals(TeamType.BLACK)) {
 			// Set the location pieces for black
@@ -80,6 +81,7 @@ public class Team {
 		}
 	}
 	
+	// Get the team type, either WHITE or BLACK
 	public TeamType getTeamType() {
 		return teamType;
 	}

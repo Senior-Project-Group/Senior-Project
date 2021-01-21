@@ -25,15 +25,16 @@ import com.project.TeamController.TeamType;
 
 public class PiecesTexture {
 
-	private String textureLocation;
+	private String textureLocation; // The texture name
 	
-	private JLabel pieceLabel;
+	private JLabel pieceLabel; // Gets the piece label (the piece icon you see on the board)
 	
 	// When the label is pressed, this will allow us to get the pressed piece easier
 	private IChessPiece manipulatedPiece;
 	
-	private TeamType team;
+	private TeamType team; // The team the piece belongs too
 	
+	// Default constructor to create a texture of the piece
 	public PiecesTexture(IChessPiece piece, int x, int z, TeamType teamType) {
 		team = teamType;
 		manipulatedPiece = piece;
@@ -73,6 +74,7 @@ public class PiecesTexture {
 				link = "black_rook.png";
 			}
 		}
+		
 		textureLocation = link;
 		pieceLabel.setIcon(new ImageIcon(getClass().getResource("resources/" + link)));
 		pieceLabel.setBounds(location.getX(), location.getZ(), point.getDimensionOfPiece(), point.getDimensionOfPiece());
@@ -118,10 +120,12 @@ public class PiecesTexture {
 		Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
 	}
 	
+	// Returns the texture name
 	public String getTextureLocation() {
 		return textureLocation;
 	}
 	
+	// Returns the piece texture label itself (the icon you see on the board)
 	public JLabel getPieceLabel() {
 		return pieceLabel;
 	}
@@ -140,8 +144,4 @@ public class PiecesTexture {
 		//Main.getBoardController().getBoardObject().getFrame().repaint();
 	}
 	
-	public void reRender() {
-		System.out.println("Re-render check");
-
-	}
 }

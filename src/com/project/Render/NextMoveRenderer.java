@@ -17,11 +17,15 @@ import com.project.Main.Main;
 // Object that is responsible for determining the next locations the currently selected piece can or can't move.
 public class NextMoveRenderer {
 	
-	private ArrayList<NextMoveObject> labels;
+	private ArrayList<NextMoveObject> labels; // Stores all the next moves objects into the manager
+	
+	
+	// Default contructor to create the next move handler
 	public NextMoveRenderer() {
 		labels = new ArrayList<NextMoveObject>();
 	}
 	
+	// Get all the currently rendered next moves
 	public ArrayList<NextMoveObject> getRenders(){
 		return labels;
 	}

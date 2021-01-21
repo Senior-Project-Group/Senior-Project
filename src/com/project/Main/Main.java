@@ -13,6 +13,7 @@ public class Main {
 	
 	private static NotificationHandler notificationHandler;
 	
+	// Starts the program
 	public static void main(String args[]) {
 		notificationHandler = new NotificationHandler();
 		// Default AI difficulty is EASY and the default process time is 2 seconds
@@ -21,6 +22,7 @@ public class Main {
 		boardController = new BoardController(GameType.PLAYER_VS_PLAYER);
 	}
 	
+	// Method to create a new game with specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, AI_VS_AI
 	public static void createNewGame(GameType newGameType) {
 		System.out.println("Creating And Setting Up Board for gamne type: " + newGameType.toString());
 		// Delete the old game and reset the AI controller
@@ -53,14 +55,17 @@ public class Main {
 		}
 	}
 	
+	// Returns the board controller object
 	public static BoardController getBoardController() {
 		return boardController;
 	}
 	
+	// Returns the AI controller object
 	public static AIControllerHandler getAIController() {
 		return AIController;
 	}
 	
+	// Returns the notification handler object
 	public static NotificationHandler getNotificationHandler() {
 		return notificationHandler;
 	}

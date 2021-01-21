@@ -25,10 +25,12 @@ public class AIController {
 		runAIHandler();
 	}
 	
+	// Gets the team the AI Controller is controlling
 	public Team getTeam() {
 		return team;
 	}
 	
+	// Gets the enemey team, the team the AI is versing
 	public Team getEnemyTeam() {
 		return enemyTeam;
 	}
@@ -40,12 +42,15 @@ public class AIController {
 	
 	
 	// TODO write code here to manage AI movements
+	
+	// Preforms AI movement based on all requirements, this is called from runAIHandler() ONLY
 	private void preformAIMove() {
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
 			// Run the code here
 		}
 	}
 	
+	// Starts a runtime handler counts down and then checks if a move is needed by the AI
 	private void runAIHandler() {
 		new java.util.Timer().schedule( 
 		        new java.util.TimerTask() {

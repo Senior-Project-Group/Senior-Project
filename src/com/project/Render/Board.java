@@ -21,16 +21,16 @@ import java.awt.event.ActionEvent;
 
 public class Board {
 
-	private JFrame frmChess;
+	private JFrame frmChess; // Chess board frame
 
+	// Start chess board frame
 	public Board() {
 		initialize();
 		frmChess.setVisible(true);
 	}
 
-	// Information:
-	// 
 	
+	// Creates the board, don't edit this
 	// Auto render piece sizes to bounds: x, y, 60, 60
 	private void initialize() {		
 		JLabel lblNewLabel = new JLabel("");
