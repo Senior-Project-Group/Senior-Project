@@ -6,11 +6,11 @@ import java.util.ArrayList;
 // Object that handles the controllers for the different AI's
 public class AIControllerHandler {
 
-	private ArrayList<AIController> AIControllers;
+	private ArrayList<AIController> AIControllers; // All AI controllers
 	
-	private int speed;
+	private int speed; // The speed at which the AI will move or work
 	
-	private AIDifficulty difficulty;
+	private AIDifficulty difficulty; // The difficulty the AI is currently at
 	
 	// Default contructor that sets the default information on system start
 	public AIControllerHandler(int speed, AIDifficulty difficuly) {
