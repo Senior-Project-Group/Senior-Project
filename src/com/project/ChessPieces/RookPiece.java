@@ -17,7 +17,10 @@ public class RookPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private TeamType team;
+	
 	public RookPiece(Location location, TeamType team) {
+		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
@@ -66,6 +69,10 @@ public class RookPiece implements IChessPiece{
 	@Override
 	public PiecesTexture getTexture() {
 		return texture;
+	}
+	
+	public TeamType getTeamType() {
+		return team;
 	}
 	
 	@Override

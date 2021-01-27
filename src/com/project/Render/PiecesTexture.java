@@ -89,7 +89,17 @@ public class PiecesTexture {
 		    	
 		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
 		    	
-		    	// TODO Check if AI is supposed to be controlling the team
+		    	// It's an SQL connection game
+		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+		    		// SQL Multiplayer checks here
+		    		
+		    		// Check if the player trying to move is allowed to move
+		    			if(!Main.getSQLHandler().getTeamType().equals(team)) {
+		    				System.out.println("Error: Not your turn to move");
+		    				return;
+		    			}
+		    	}
+		    	
 		    	
 		    	// Both players are AI, so don't let anyone touch anything
 		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI)) {

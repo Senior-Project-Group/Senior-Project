@@ -54,9 +54,9 @@ public class NextMoveParser {
 	}
 	
 	// Send the data to the database
-	public void sendToDatabase(SQLHandler sqlHandler, String UUID) {
+	public void sendToDatabase(SQLHandler sqlHandler) {
 		String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = '" + input + 
-				"' WHERE SESSION_ID = '" + UUID + "'";
+				"' WHERE SESSION_ID = '" + sqlHandler.getSessionUUID() + "'";
 		Statement stmt;
 		try {
 			stmt = sqlHandler.getSQLConnection().createStatement();

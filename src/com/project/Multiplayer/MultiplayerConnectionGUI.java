@@ -21,6 +21,7 @@ public class MultiplayerConnectionGUI {
 	public MultiplayerConnectionGUI() {
 		initialize();
 		frmMultiplayerSetup.setVisible(true);
+		Main.multiplayerGUI = this;
 	}
 	
 	private void initialize() {
@@ -63,6 +64,7 @@ public class MultiplayerConnectionGUI {
 					}
 				}
 				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Attempting to join game");
+				frmMultiplayerSetup.dispose();
 				Main.setSQLHandler(new SQLHandler(otherPlayerSessionID.getText()));
 			}
 		});
@@ -82,6 +84,7 @@ public class MultiplayerConnectionGUI {
 					SQLHandler handler = new SQLHandler();
 					Main.setSQLHandler(handler);
 					setCurrentStatusLabel(MutliplayerStatus.HOSTING);
+					
 					uuidField.setText(handler.getSessionUUID());
 			}
 		});
@@ -94,6 +97,10 @@ public class MultiplayerConnectionGUI {
 	}
 	
 	public void setCurrentStatusLabel(MutliplayerStatus status) {
-			//currentStatusLabel = new JLabel(status.toString());
+			currentStatusLabel = new JLabel(status.toString());
+	}
+	
+	public JFrame getFrame() {
+		return frmMultiplayerSetup;
 	}
 }

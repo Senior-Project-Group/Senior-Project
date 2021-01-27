@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.project.BoardController.Location;
 import com.project.Render.PiecesTexture;
+import com.project.TeamController.TeamType;
 
 // Interface that defines the chess pieces
 public interface IChessPiece {
@@ -26,4 +27,5 @@ public interface IChessPiece {
 	
 	public ArrayList<Location> getPossibleMoves(); // Algorithms that determine where the piece can move next
 	
+	public TeamType getTeamType();
 }

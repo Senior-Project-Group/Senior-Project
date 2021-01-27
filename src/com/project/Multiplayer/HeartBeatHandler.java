@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
@@ -84,6 +85,21 @@ public class HeartBeatHandler {
 			    	  if(firstConnected == false) {
 			    		  firstConnected = true;
 			    		  Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Second Player Connected. Starting game");
+			    		  if(Main.multiplayerGUI != null) {
+			    			  Main.multiplayerGUI.getFrame().dispose();
+			    		  }
+			    		  
+			    		  // Start the game here
+			    		  
+			    		  System.out.println("Creating And Setting Up Board for gamne type: " + GameType.SQL_MULTIPLAYER.toString());
+			    			// Delete the old game and reset the AI controller
+			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    			Main.getBoardController().getBoardObject().getFrame().dispose();
+			    			Main.getAIController().clear();
+			    			
+			    			// Create a new board
+			    			Main.setNewBoardController(new BoardController(GameType.SQL_MULTIPLAYER));
+			    			  
 			    	  }else {
 			    		  // Player has joined
 			    		  if(testBeat > secondPlayersBeat) {

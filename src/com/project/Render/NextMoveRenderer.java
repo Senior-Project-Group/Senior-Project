@@ -9,9 +9,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
+import com.project.Multiplayer.NextMoveParser;
 
 
 // Object that is responsible for determining the next locations the currently selected piece can or can't move.
@@ -89,9 +91,14 @@ public class NextMoveRenderer {
 			    				Main.getBoardController().checkForGameFinished();
 			    			}
 			    			
+			    			Location pieceLocation = piece.getLocation();
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    			if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+			    				// Send the move to the SQL database
+			    				new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
+			    			}
 			    			break;
 			    		}
 			    	}

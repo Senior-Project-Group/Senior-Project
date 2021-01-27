@@ -72,6 +72,10 @@ public class KnightPiece implements IChessPiece{
 		return texture;
 	}
 	
+	public TeamType getTeamType() {
+		return team;
+	}
+	
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();

@@ -27,9 +27,8 @@ public class BoardController {
 	
 	private boolean gameEnded; // true is game is over, as in someone one or is a tie
 	
-	
 	/**
-	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, or AI_VS_AI 
+	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, AI_VS_AI or SQL_MULTIPLAYER
 	 * @param GameType gameType
 	 */
 	public BoardController(GameType gameType) {

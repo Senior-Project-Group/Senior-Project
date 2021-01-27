@@ -17,7 +17,6 @@ public class BishopPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
-	@SuppressWarnings("unused")
 	private TeamType team;
 	
 	public BishopPiece(Location location, TeamType team) {
@@ -71,6 +70,10 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public PiecesTexture getTexture() {
 		return texture;
+	}
+	
+	public TeamType getTeamType() {
+		return team;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.project.BoardController.GameType;
+import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
@@ -44,10 +45,12 @@ public class SQLHandler {
 			stmt = connection.createStatement();
 			stmt.executeUpdate(run);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Error: Can't connect to servers.");
+			destroy();
+			Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+			return;
 		}
-		
+		checkForPlayerMove();
 	}
 	
 	// Used if player joining another person's game
@@ -63,11 +66,7 @@ public class SQLHandler {
 		}
 		playersTeam = TeamType.BLACK;
 		heartBeat = new HeartBeatHandler(this);
-	}
-	
-	
-	public String getSessionUUID() {
-		return SESSION_UUID;
+		checkForPlayerMove();
 	}
 	
 	// Check if the session exists in the database
@@ -106,9 +105,6 @@ public class SQLHandler {
 		}
 	}
 	
-	public TeamType getTeamType() {
-		return playersTeam;
-	}
 	
 	public void destroy() {
 		isActive = false;
@@ -119,13 +115,98 @@ public class SQLHandler {
 			stmt1 = getSQLConnection().createStatement();
 			stmt1.executeUpdate(run1);
 		} catch (SQLException e) {
+			// Don't send a notification of failure
 			Main.createNewGame(GameType.PLAYER_VS_PLAYER);
 			return;
 		}
 	}
 	
+	// Check database for attempted moves from the other player
+	public void checkForPlayerMove() {
+		if(isActive()) {
+			// Run check
+			
+			String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID = '" + getSessionUUID() + "'";
+		    Statement stmt;
+				try {
+					stmt = getSQLConnection().createStatement();
+					ResultSet rs = stmt.executeQuery(selectDatabase);
+					String nextMove = "SETUP";
+				      while(rs.next()) {
+				    	  nextMove = rs.getString("NEXT_MOVE");
+				    	  
+				      }
+				      // Check if still in setup process
+				      if(!nextMove.equals("SETUP")) {
+				    	  NextMoveParser nextMoveData = new NextMoveParser(nextMove);
+				    	  
+				    	  // Check if the next move is the other player
+				    	  System.out.println(Main.getBoardController().getCurrentPlayerToMove().toString() + " -- " + nextMoveData.getTeamAttemptingMove());
+				    	  
+				    	  if(Main.getBoardController().getCurrentPlayerToMove().toString().equals(nextMoveData.getTeamAttemptingMove())) {
+				    		  IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
+				    		  // Check if the piece will destroy a piece before the move
+				    		 IChessPiece movedTo = Main.getBoardController().getPieceAtLocation(nextMoveData.getNextMoveLocation());
+				    		 if(movedTo != null) {
+				    			 movedTo.destroyPiece();
+				    		 }
+				    		  
+				    		  Main.getBoardController().movePieceOnBoard(piece, nextMoveData.getNextMoveLocation());
+				    		  Main.getBoardController().setNextPlayerToMove();
+				    		  Main.getBoardController().checkForGameFinished();
+				    		  
+				    		  // Reset SQL Next mover
+				    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+				  			Statement stmt2;
+				  			try {
+				  				stmt2 = getSQLConnection().createStatement();
+				  				stmt2.executeUpdate(run);
+				  			} catch (SQLException e) {
+				  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+				  				destroy();
+				  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+				  				return;
+				  			}
+				    	  }
+				    	
+				    	    
+				      }
+				      
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Error: Can't connect to servers.");
+					destroy();
+					Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+					return;
+				}
+			
+			// Check for next move in 1.5 seconds
+			new java.util.Timer().schedule( 
+			        new java.util.TimerTask() {
+			            @Override
+			            public void run() {
+			            	try {
+			            		checkForPlayerMove();
+			            	}catch(Exception ex) {}
+			            }
+			        }, 1500
+			);
+		}
+	}
+	
+	
+	
+	
 	public boolean isActive() {
 		return isActive;
+	}
+	
+	public String getSessionUUID() {
+		return SESSION_UUID;
+	}
+	
+	public TeamType getTeamType() {
+		return playersTeam;
 	}
 	
 	public HeartBeatHandler getHeartBeatHandler() {

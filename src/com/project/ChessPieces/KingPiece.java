@@ -17,7 +17,10 @@ public class KingPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private TeamType team;
+	
 	public KingPiece(Location location, TeamType team) {
+		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
@@ -66,6 +69,10 @@ public class KingPiece implements IChessPiece{
 	@Override
 	public PiecesTexture getTexture() {
 		return texture;
+	}
+	
+	public TeamType getTeamType() {
+		return team;
 	}
 	
 	// TODO Make it so the king can't move itself into checkmate

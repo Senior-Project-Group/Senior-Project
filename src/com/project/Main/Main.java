@@ -3,6 +3,7 @@ import com.project.AiController.AIControllerHandler;
 import com.project.AiController.AIDifficulty;
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
+import com.project.Multiplayer.MultiplayerConnectionGUI;
 import com.project.Multiplayer.SQLHandler;
 import com.project.Notifications.NotificationHandler;
 
@@ -16,8 +17,11 @@ public class Main {
 	
 	private static SQLHandler sqlHandler;
 	
+	public static MultiplayerConnectionGUI multiplayerGUI;
+	
 	// Starts the program
 	public static void main(String args[]) {
+		multiplayerGUI = null;
 		sqlHandler = null;
 		notificationHandler = new NotificationHandler();
 		// Default AI difficulty is EASY and the default process time is 2 seconds
@@ -81,12 +85,19 @@ public class Main {
 		return notificationHandler;
 	}
 	
+	// Gets the games SQL Handler, only active when multiplayer is used
 	public static SQLHandler getSQLHandler() {
 		return sqlHandler;
 	}
 	
+	// Set the new handler when a new game starts
 	public static void setSQLHandler(SQLHandler sql) {
 		sqlHandler = sql;
+	}
+	
+	// Set the game controller, only use for multiplayer
+	public static void setNewBoardController(BoardController newController) {
+		boardController = newController;
 	}
 	
 }
