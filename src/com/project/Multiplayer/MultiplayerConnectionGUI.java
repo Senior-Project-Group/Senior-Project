@@ -31,22 +31,22 @@ public class MultiplayerConnectionGUI {
 		frmMultiplayerSetup.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Your Session ID:");
-		lblNewLabel.setBounds(10, 47, 89, 14);
+		lblNewLabel.setBounds(10, 47, 106, 14);
 		frmMultiplayerSetup.getContentPane().add(lblNewLabel);
 		
 		uuidField = new JTextField();
 		uuidField.setEditable(false);
-		uuidField.setBounds(116, 44, 309, 20);
+		uuidField.setBounds(128, 44, 309, 20);
 		frmMultiplayerSetup.getContentPane().add(uuidField);
 		uuidField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Join Other Session:");
-		lblNewLabel_1.setBounds(10, 85, 106, 14);
+		lblNewLabel_1.setBounds(10, 85, 126, 14);
 		frmMultiplayerSetup.getContentPane().add(lblNewLabel_1);
 		
 		otherPlayerSessionID = new JTextField();
 		otherPlayerSessionID.setColumns(10);
-		otherPlayerSessionID.setBounds(116, 82, 309, 20);
+		otherPlayerSessionID.setBounds(128, 82, 309, 20);
 		frmMultiplayerSetup.getContentPane().add(otherPlayerSessionID);
 		
 		JLabel lblNewLabel_2 = new JLabel("Status:");
@@ -57,6 +57,11 @@ public class MultiplayerConnectionGUI {
 		joinCurrentSessionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Join other person's session
+				if(Main.getSQLHandler() != null) {
+					if(Main.getSQLHandler().isActive()) {
+						Main.getSQLHandler().destroy();
+					}
+				}
 				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Attempting to join game");
 				Main.setSQLHandler(new SQLHandler(otherPlayerSessionID.getText()));
 			}
@@ -68,11 +73,16 @@ public class MultiplayerConnectionGUI {
 		hostOwnSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Start hosting your own session
-				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Attempting to host game");
-				SQLHandler handler = new SQLHandler();
-				Main.setSQLHandler(handler);
-				setCurrentStatusLabel(MutliplayerStatus.HOSTING);
-				uuidField.setText(handler.getSessionUUID());
+				if(Main.getSQLHandler() != null) {
+					if(Main.getSQLHandler().isActive()) {
+						Main.getSQLHandler().destroy();
+					}
+				}
+					Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Attempting to host game");
+					SQLHandler handler = new SQLHandler();
+					Main.setSQLHandler(handler);
+					setCurrentStatusLabel(MutliplayerStatus.HOSTING);
+					uuidField.setText(handler.getSessionUUID());
 			}
 		});
 		hostOwnSession.setBounds(10, 170, 193, 23);
@@ -84,6 +94,6 @@ public class MultiplayerConnectionGUI {
 	}
 	
 	public void setCurrentStatusLabel(MutliplayerStatus status) {
-			currentStatusLabel = new JLabel(status.toString());
+			//currentStatusLabel = new JLabel(status.toString());
 	}
 }

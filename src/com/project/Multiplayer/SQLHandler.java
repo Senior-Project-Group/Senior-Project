@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.project.BoardController.GameType;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
@@ -111,6 +112,16 @@ public class SQLHandler {
 	
 	public void destroy() {
 		isActive = false;
+		// Remove from database too if possible
+		String run1 = "DELETE FROM david.CHESS_DATABASE WHERE SESSION_ID = '" + getSessionUUID() + "'";
+		Statement stmt1;
+		try {
+			stmt1 = getSQLConnection().createStatement();
+			stmt1.executeUpdate(run1);
+		} catch (SQLException e) {
+			Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+			return;
+		}
 	}
 	
 	public boolean isActive() {
