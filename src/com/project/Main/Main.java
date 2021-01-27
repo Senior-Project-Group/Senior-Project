@@ -3,6 +3,7 @@ import com.project.AiController.AIControllerHandler;
 import com.project.AiController.AIDifficulty;
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
+import com.project.Multiplayer.SQLHandler;
 import com.project.Notifications.NotificationHandler;
 
 public class Main {
@@ -13,8 +14,11 @@ public class Main {
 	
 	private static NotificationHandler notificationHandler;
 	
+	private static SQLHandler sqlHandler;
+	
 	// Starts the program
 	public static void main(String args[]) {
+		sqlHandler = null;
 		notificationHandler = new NotificationHandler();
 		// Default AI difficulty is EASY and the default process time is 2 seconds
 		AIController = new AIControllerHandler(2, AIDifficulty.EASY);
@@ -29,6 +33,10 @@ public class Main {
 		getBoardController().getNextMoveRenderer().clearCurrentRender();
 		getBoardController().getBoardObject().getFrame().dispose();
 		getAIController().clear();
+		
+		if(sqlHandler != null) {
+			sqlHandler.destroy();
+		}
 		
 		// Create a new board
 		boardController = new BoardController(newGameType);
@@ -52,6 +60,9 @@ public class Main {
 					getBoardController().getTeam1(), // Enemy team
 					getBoardController().getBoardObject().getFrame())); // Current board frame
 			break;
+		case SQL_MULTIPLAYER:
+			// Create SQL Controller
+			break;
 		}
 	}
 	
@@ -68,6 +79,14 @@ public class Main {
 	// Returns the notification handler object
 	public static NotificationHandler getNotificationHandler() {
 		return notificationHandler;
+	}
+	
+	public static SQLHandler getSQLHandler() {
+		return sqlHandler;
+	}
+	
+	public static void setSQLHandler(SQLHandler sql) {
+		sqlHandler = sql;
 	}
 	
 }

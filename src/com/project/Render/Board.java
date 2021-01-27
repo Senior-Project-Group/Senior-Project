@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import com.project.AiController.AIDifficulty;
 import com.project.BoardController.GameType;
 import com.project.Main.Main;
+import com.project.Multiplayer.MultiplayerConnectionGUI;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -77,6 +78,15 @@ public class Board {
 			}
 		});
 		mnNewMenu.add(AI_V_AI_Game);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Multiplayer Game");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Open the multiplayer GUI
+				new MultiplayerConnectionGUI();
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenu mnNewMenu_2 = new JMenu("Select AI Difficulty");
 		menuBar.add(mnNewMenu_2);
