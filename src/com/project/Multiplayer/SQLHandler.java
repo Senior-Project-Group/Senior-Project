@@ -141,7 +141,6 @@ public class SQLHandler {
 				    	  NextMoveParser nextMoveData = new NextMoveParser(nextMove);
 				    	  
 				    	  // Check if the next move is the other player
-				    	  System.out.println(Main.getBoardController().getCurrentPlayerToMove().toString() + " -- " + nextMoveData.getTeamAttemptingMove());
 				    	  
 				    	  if(Main.getBoardController().getCurrentPlayerToMove().toString().equals(nextMoveData.getTeamAttemptingMove())) {
 				    		  IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
