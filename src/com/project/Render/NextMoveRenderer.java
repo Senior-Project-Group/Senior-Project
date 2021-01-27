@@ -44,6 +44,7 @@ public class NextMoveRenderer {
 				obj.getLabel().removeMouseListener(obj.getMouseAdapter());
 			}
 		}
+		labels.clear();
 	}
 	
 	// This will render all the possible locations of the piece
@@ -85,11 +86,6 @@ public class NextMoveRenderer {
 			    			// Check if there is a piece there
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
-			    			if(piece1 != null) {
-			    				System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
-			    				piece1.destroyPiece();
-			    				Main.getBoardController().checkForGameFinished();
-			    			}
 			    			
 			    			Location pieceLocation = piece.getLocation();
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
@@ -99,6 +95,13 @@ public class NextMoveRenderer {
 			    				// Send the move to the SQL database
 			    				new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
 			    			}
+			    			
+			    			if(piece1 != null) {
+			    				System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
+			    				piece1.destroyPiece();
+			    				Main.getBoardController().checkForGameFinished();
+			    			}
+			    			
 			    			break;
 			    		}
 			    	}

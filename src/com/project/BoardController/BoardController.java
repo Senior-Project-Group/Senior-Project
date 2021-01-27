@@ -119,9 +119,9 @@ public class BoardController {
 	// Moves the piece on the board to the specified location
 	// Clears the next move renderer once complete
 	public void movePieceOnBoard(IChessPiece piece, Location newLocation) {
+		getNextMoveRenderer().clearCurrentRender();
 		piece.getTexture().moveTextureTo(newLocation);
 		piece.setLocation(newLocation);
-		getNextMoveRenderer().clearCurrentRender();
 		getBoardObject().getFrame().repaint();
 	}
 	
