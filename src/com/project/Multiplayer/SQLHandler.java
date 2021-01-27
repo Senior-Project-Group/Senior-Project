@@ -2,9 +2,11 @@ package com.project.Multiplayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
 public class SQLHandler {
@@ -52,6 +54,12 @@ public class SQLHandler {
 		isActive = true;
 		SESSION_UUID = token;
 		connect(password);
+		
+		if(!checkIfAllowedToJoin(token)) {
+			destroy();
+			Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Error: You aren't allowed to join that game.");
+			return;
+		}
 		playersTeam = TeamType.BLACK;
 		heartBeat = new HeartBeatHandler(this);
 	}
@@ -59,6 +67,32 @@ public class SQLHandler {
 	
 	public String getSessionUUID() {
 		return SESSION_UUID;
+	}
+	
+	// Check if the session exists in the database
+	public boolean checkIfAllowedToJoin(String id) {
+		String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID='" + getSessionUUID() + "'";
+	    Statement stmt;
+			try {
+				stmt = connection.createStatement();
+				ResultSet rs = stmt.executeQuery(selectDatabase);
+				int testBeat = -1;
+			      while(rs.next()) {
+			    	  testBeat = rs.getInt("BLACK_STATUS");
+			    	  if(testBeat <= 0) {
+			    		  return true;
+			    	  }
+					  break;
+			      }
+				
+				
+			} catch (SQLException e) {
+				// Error with connection
+				e.printStackTrace();
+				return false;
+			}
+		
+		return false;
 	}
 	
 	private void connect(String password) {

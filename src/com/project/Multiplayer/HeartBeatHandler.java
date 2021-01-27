@@ -30,7 +30,6 @@ public class HeartBeatHandler {
 	public void sendHeartBeat() {
 		if(sqlHandler.isActive()) {
 			// Send beat
-			
 			currentPlayersBeat++;
 			String run = "UPDATE david.CHESS_DATABASE SET " + sqlHandler.getTeamType().toString() + 
 					"_STATUS = '" + (currentPlayersBeat) + 
@@ -40,8 +39,10 @@ public class HeartBeatHandler {
 				stmt = sqlHandler.getSQLConnection().createStatement();
 				stmt.executeUpdate(run);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+				getSQLHandler().destroy();
+				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+				return;
 			}
 			
 			
@@ -92,13 +93,29 @@ public class HeartBeatHandler {
 					    	  // CONNECTION WITH OTHER PLAYER ISSUE!
 					    	  Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Second Player Connection Lost. Aborting Game.");
 					    	  Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+					    	  sqlHandler.destroy();
+					    	  // Delete the game from SQL
+					    	  String run1 = "DELETE FROM david.CHESS_DATABASE WHERE SESSION_ID = '" + sqlHandler.getSessionUUID() + "'";
+								Statement stmt1;
+								try {
+									stmt1 = sqlHandler.getSQLConnection().createStatement();
+									stmt1.executeUpdate(run1);
+								} catch (SQLException e) {
+									Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+									getSQLHandler().destroy();
+									Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+									return;
+								}
+					    	  
 					      }  
 			    	  }
 			      }
 			      
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+				getSQLHandler().destroy();
+				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+				return;
 			}
 			
 			// After 3 seconds, check heart beat of other player
