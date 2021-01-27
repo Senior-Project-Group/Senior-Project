@@ -57,6 +57,7 @@ public class MultiplayerConnectionGUI {
 		joinCurrentSessionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Join other person's session
+				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Attempting to join game");
 				Main.setSQLHandler(new SQLHandler(otherPlayerSessionID.getText()));
 			}
 		});
