@@ -174,6 +174,18 @@ public class Board {
 			}
 		});
 		mnNewMenu_3.add(mntmNewMenuItem_10);
+		
+		JMenu reloadBoard = new JMenu("Reload Board");
+		menuBar.add(reloadBoard);
+		
+		JMenuItem reloadBoardRequester = new JMenuItem("Reload");
+		reloadBoardRequester.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.getBoardController().getBoardObject().getFrame().repaint();
+				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Reloaded Board");
+			}
+		});
+		reloadBoard.add(reloadBoardRequester);
 	}
 	
 	public JFrame getFrame() {

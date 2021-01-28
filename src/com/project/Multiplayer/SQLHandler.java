@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
 import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
@@ -125,7 +126,6 @@ public class SQLHandler {
 	public void checkForPlayerMove() {
 		if(isActive()) {
 			// Run check
-			
 			String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID = '" + getSessionUUID() + "'";
 		    Statement stmt;
 				try {
@@ -136,8 +136,9 @@ public class SQLHandler {
 				    	  nextMove = rs.getString("NEXT_MOVE");
 				    	  
 				      }
+				      
 				      // Check if still in setup process
-				      if(!nextMove.equals("SETUP")) {
+				      if(!nextMove.equals("SETUP") && !Main.getBoardController().hasGameEnded()) {
 				    	  NextMoveParser nextMoveData = new NextMoveParser(nextMove);
 				    	  
 				    	  // Check if the next move is the other player
@@ -193,7 +194,147 @@ public class SQLHandler {
 		}
 	}
 	
+	public void sendRestartRequest() {
+		// Make sure the session is still open
+		if(isActive()) {			
+			// Check to see if other player has already submitted a request to restart
+			String currentSelection = getCurrentNextMoveRequest();
+			
+			// There was an error processing
+			if(currentSelection.equals("ERROR")) {
+				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+  				destroy();
+  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+				return;
+			}
+			
+			// We have a full restart request
+			if(currentSelection.contains("WHITE_BLACK")) {
+				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Restarting game...");
+			    if(Main.multiplayerGUI != null) {
+			    	 Main.multiplayerGUI.getFrame().dispose();
+			    	}
+			    		  
+			    	// Start the game here
+			    		  
+			    	System.out.println("Creating And Setting Up Board for game type: " + GameType.SQL_MULTIPLAYER.toString());
+			    	// Delete the old game and reset the AI controller
+			    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    	Main.getBoardController().getBoardObject().getFrame().dispose();
+			    	Main.getAIController().clear();
+			    			
+			    	// Create a new board
+			    	Main.setNewBoardController(new BoardController(GameType.SQL_MULTIPLAYER));
+			    			
+					}else {
+						System.out.println("Yes?");
+						restartRequestTimer();
+					}
+			
+			
+			// There is already a restart request initialized
+			if(currentSelection.contains("RESTART_REQUEST")) {
+				// Send complete update request
+				String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'RESTART_REQUEST_WHITE_BLACK' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+	  			Statement stmt2;
+	  			try {
+	  				stmt2 = getSQLConnection().createStatement();
+	  				stmt2.executeUpdate(run);
+	  			} catch (SQLException e) {
+	  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+	  				destroy();
+	  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+	  				return;
+	  			}
+				
+			}else { // There isn't a request there currently
+				// Send request for current team
+				String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'RESTART_REQUEST_" + getTeamType().toString() + "' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+	  			Statement stmt2;
+	  			try {
+	  				stmt2 = getSQLConnection().createStatement();
+	  				stmt2.executeUpdate(run);
+	  			} catch (SQLException e) {
+	  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+	  				destroy();
+	  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+	  				return;
+	  			}
+			}
+				
+			}
+			
+		}
 	
+	// Check to see if the other player has requested a restart every 2 seconds
+	private void restartRequestTimer() {
+		
+		// Found request
+		if(getCurrentNextMoveRequest().contains("WHITE_BLACK")) {
+			Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Restarting game...");
+  		  if(Main.multiplayerGUI != null) {
+  			  Main.multiplayerGUI.getFrame().dispose();
+  		  }
+  		  
+  		    // Start the game here
+  		    System.out.println("Creating And Setting Up Board for game type: " + GameType.SQL_MULTIPLAYER.toString());
+  		    
+  			// Delete the old game and reset the AI controller
+  			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+  			Main.getBoardController().getBoardObject().getFrame().dispose();
+  			Main.getAIController().clear();
+  			
+  			// Create a new board
+  			Main.setNewBoardController(new BoardController(GameType.SQL_MULTIPLAYER));
+  			
+  			// Restart database
+			String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+  			Statement stmt2;
+  			try {
+  				stmt2 = getSQLConnection().createStatement();
+  				stmt2.executeUpdate(run);
+  			} catch (SQLException e) {
+  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+  				destroy();
+  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+  				
+  			}
+			return;
+		}
+		
+		
+		
+		new java.util.Timer().schedule( 
+		        new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		            	try {
+		            		restartRequestTimer();
+		            	}catch(Exception ex) {}
+		            }
+		        }, 2000
+		);
+		
+	}
+	
+	// Returns what's currently in the next move area of the database
+	private String getCurrentNextMoveRequest() {
+		String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID='" + getSessionUUID() + "'";
+	    Statement stmt;
+			try {
+				stmt = connection.createStatement();
+				ResultSet rs = stmt.executeQuery(selectDatabase);
+			      while(rs.next()) {
+			    	  return rs.getString("NEXT_MOVE");
+			      }
+				
+			} catch (SQLException e) {
+				// Error with connection
+				e.printStackTrace();
+			}
+			
+			return "ERROR";
+	}
 	
 	
 	public boolean isActive() {

@@ -6,6 +6,7 @@ import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
 import com.project.Main.Main;
 import com.project.Render.Board;
+import com.project.Render.NewGameWindow;
 import com.project.Render.NextMoveRenderer;
 import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
@@ -212,6 +213,7 @@ public class BoardController {
 	
 	// End the game with specified end game status
 	public void endGame(EndGameStatus status) {
+		new NewGameWindow();
 		gameEnded = true;
 		
 		if(status.equals(EndGameStatus.TIE)) {
