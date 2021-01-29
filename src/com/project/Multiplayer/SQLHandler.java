@@ -208,30 +208,6 @@ public class SQLHandler {
 				return;
 			}
 			
-			// We have a full restart request
-			if(currentSelection.contains("WHITE_BLACK")) {
-				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Restarting game...");
-			    if(Main.multiplayerGUI != null) {
-			    	 Main.multiplayerGUI.getFrame().dispose();
-			    	}
-			    		  
-			    	// Start the game here
-			    		  
-			    	System.out.println("Creating And Setting Up Board for game type: " + GameType.SQL_MULTIPLAYER.toString());
-			    	// Delete the old game and reset the AI controller
-			    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    	Main.getBoardController().getBoardObject().getFrame().dispose();
-			    	Main.getAIController().clear();
-			    			
-			    	// Create a new board
-			    	Main.setNewBoardController(new BoardController(GameType.SQL_MULTIPLAYER));
-			    			
-					}else {
-						System.out.println("Yes?");
-						restartRequestTimer();
-					}
-			
-			
 			// There is already a restart request initialized
 			if(currentSelection.contains("RESTART_REQUEST")) {
 				// Send complete update request
@@ -246,6 +222,16 @@ public class SQLHandler {
 	  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
 	  				return;
 	  			}
+	  			
+	  			System.out.println("Creating And Setting Up Board for game type: " + GameType.SQL_MULTIPLAYER.toString());
+		    	// Delete the old game and reset the AI controller
+		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+		    	Main.getBoardController().getBoardObject().getFrame().dispose();
+		    	Main.getAIController().clear();
+		    			
+		    	// Create a new board
+		    	Main.setNewBoardController(new BoardController(GameType.SQL_MULTIPLAYER));
+	  			
 				
 			}else { // There isn't a request there currently
 				// Send request for current team
@@ -254,6 +240,7 @@ public class SQLHandler {
 	  			try {
 	  				stmt2 = getSQLConnection().createStatement();
 	  				stmt2.executeUpdate(run);
+	  				restartRequestTimer();
 	  			} catch (SQLException e) {
 	  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
 	  				destroy();
