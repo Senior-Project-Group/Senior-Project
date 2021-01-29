@@ -5,7 +5,12 @@ import com.project.BoardController.Location;
 // Manager that lets you locate the center point of each grid point 
 public class CenterPointManager {
 
-	private static int defaultDimension = 62; // Default height and width for the pieces
+	private static int defaultDimension = 72; // Default height and width for the pieces; default: 62
+	
+	private static int x = 41; // Default: 50
+	private static int z = 594; // Default: 600
+	
+	private static int index = 79; // Default 79
 	
 	// This class is responsible for finding the center point for each chess square
 	public CenterPointManager() {}
@@ -16,13 +21,13 @@ public class CenterPointManager {
 	public Location centerPointAlgorithm(int x, int z) {
 		// Start center point at (0,0) is (50, 600);
 	
-		return new Location(50 + (79 * x), 600 - (79 * z));
+		return new Location(this.x + (index * x), this.z - (index * z));
 	}
 	
 	// Input is Location object
 	// Output is a location object that has the center point for that square as x, z
 	public Location centerPointAlgorithm(Location loc) {
-		return new Location(50 + (79 * loc.getX()), 600 - (79 * loc.getZ()));
+		return new Location(this.x + (index * loc.getX()), this.z - (index * loc.getZ()));
 	}
 	
 	// Returns default height and width of pieces
