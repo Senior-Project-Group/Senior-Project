@@ -38,7 +38,15 @@ public class HeartBeatHandler {
 			Statement stmt;
 			try {
 				stmt = sqlHandler.getSQLConnection().createStatement();
-				stmt.executeUpdate(run);
+				new Thread(() -> {
+					try {
+						stmt.executeUpdate(run);
+					} catch (SQLException e) {
+						Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+						getSQLHandler().destroy();
+						Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+					}
+				}).start();
 			} catch (SQLException e) {
 				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
 				getSQLHandler().destroy();
@@ -115,7 +123,16 @@ public class HeartBeatHandler {
 								Statement stmt1;
 								try {
 									stmt1 = sqlHandler.getSQLConnection().createStatement();
-									stmt1.executeUpdate(run1);
+									new Thread(() -> {
+										try {
+											stmt1.executeUpdate(run1);
+										} catch (SQLException e) {
+											Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+											getSQLHandler().destroy();
+											Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+											return;
+										}
+									}).start();
 								} catch (SQLException e) {
 									Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
 									getSQLHandler().destroy();

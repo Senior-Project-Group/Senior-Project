@@ -125,62 +125,72 @@ public class SQLHandler {
 	// Check database for attempted moves from the other player
 	public void checkForPlayerMove() {
 		if(isActive()) {
-			// Run check
-			String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID = '" + getSessionUUID() + "'";
-		    Statement stmt;
-				try {
-					stmt = getSQLConnection().createStatement();
-					ResultSet rs = stmt.executeQuery(selectDatabase);
-					String nextMove = "SETUP";
-				      while(rs.next()) {
-				    	  nextMove = rs.getString("NEXT_MOVE");
-				    	  
-				      }
-				      
-				      // Check if still in setup process
-				      if(!nextMove.equals("SETUP") && !Main.getBoardController().hasGameEnded()) {
-				    	  NextMoveParser nextMoveData = new NextMoveParser(nextMove);
-				    	  
-				    	  // Check if the next move is the other player
-				    	  
-				    	  if(Main.getBoardController().getCurrentPlayerToMove().toString().equals(nextMoveData.getTeamAttemptingMove())) {
-				    		  IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
-				    		  // Check if the piece will destroy a piece before the move
-				    		 IChessPiece movedTo = Main.getBoardController().getPieceAtLocation(nextMoveData.getNextMoveLocation());
-				    		 if(movedTo != null) {
-				    			 movedTo.destroyPiece();
-				    		 }
-				    		  
-				    		  Main.getBoardController().movePieceOnBoard(piece, nextMoveData.getNextMoveLocation());
-				    		  Main.getBoardController().setNextPlayerToMove();
-				    		  Main.getBoardController().checkForGameFinished();
-				    		  
-				    		  // Reset SQL Next mover
-				    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
-				  			Statement stmt2;
-				  			try {
-				  				stmt2 = getSQLConnection().createStatement();
-				  				stmt2.executeUpdate(run);
-				  			} catch (SQLException e) {
-				  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
-				  				destroy();
-				  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
-				  				return;
-				  			}
-				    	  }
-				    	
-				    	    
-				      }
-				      
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Error: Can't connect to servers.");
-					destroy();
-					Main.createNewGame(GameType.PLAYER_VS_PLAYER);
-					return;
+			// Check if the current player to move it the one before trying data check
+			try {
+				
+				if(!Main.getBoardController().getCurrentPlayerToMove().equals(getTeamType())) {
+					// Run check
+					String selectDatabase = "SELECT * FROM david.CHESS_DATABASE where SESSION_ID = '" + getSessionUUID() + "'";
+				    Statement stmt;
+						try {
+							stmt = getSQLConnection().createStatement();
+							ResultSet rs = stmt.executeQuery(selectDatabase);
+							String nextMove = "SETUP";
+						      while(rs.next()) {
+						    	  nextMove = rs.getString("NEXT_MOVE");
+						    	  
+						      }
+						      
+						      // Check if still in setup process
+						      if(!nextMove.equals("SETUP") && !Main.getBoardController().hasGameEnded()) {
+						    	  NextMoveParser nextMoveData = new NextMoveParser(nextMove);
+						    	  
+						    	  // Check if the next move is the other player
+						    	  
+						    	  if(Main.getBoardController().getCurrentPlayerToMove().toString().equals(nextMoveData.getTeamAttemptingMove())) {
+						    		  IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
+						    		  // Check if the piece will destroy a piece before the move
+						    		 IChessPiece movedTo = Main.getBoardController().getPieceAtLocation(nextMoveData.getNextMoveLocation());
+						    		 if(movedTo != null) {
+						    			 movedTo.destroyPiece();
+						    		 }
+						    		  
+						    		  Main.getBoardController().movePieceOnBoard(piece, nextMoveData.getNextMoveLocation());
+						    		  Main.getBoardController().setNextPlayerToMove();
+						    		  Main.getBoardController().checkForGameFinished();
+						    		  
+						    		  // Reset SQL Next mover
+						    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+						  			Statement stmt2;
+						  			try {
+						  				stmt2 = getSQLConnection().createStatement();
+						  				stmt2.executeUpdate(run);
+						  			} catch (SQLException e) {
+						  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+						  				destroy();
+						  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+						  				return;
+						  			}
+						    	  }
+						    	
+						    	    
+						      }
+						      
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Error: Can't connect to servers.");
+							destroy();
+							Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+							return;
+						}
+					
 				}
+				
+				
+			}catch(NullPointerException e) {}
 			
-			// Check for next move in 1.5 seconds
+			
+			// Check for next move in 0.5 seconds
 			new java.util.Timer().schedule( 
 			        new java.util.TimerTask() {
 			            @Override
@@ -189,7 +199,7 @@ public class SQLHandler {
 			            		checkForPlayerMove();
 			            	}catch(Exception ex) {}
 			            }
-			        }, 1500
+			        }, 500
 			);
 		}
 	}
