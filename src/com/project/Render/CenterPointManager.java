@@ -7,10 +7,10 @@ public class CenterPointManager {
 
 	private static int defaultDimension = 72; // Default height and width for the pieces; default: 62
 	
-	private static int x = 41; // Default: 50
-	private static int z = 594; // Default: 600
+	private int x = 41; // Default: 50
+	private int z = 594; // Default: 600
 	
-	private static int index = 79; // Default 79
+	private int index = 79; // Default 79
 	
 	// This class is responsible for finding the center point for each chess square
 	public CenterPointManager() {}

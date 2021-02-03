@@ -47,6 +47,18 @@ public class AIController {
 	private void preformAIMove() {
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
 			// Run the code here
+			switch(Main.getAIController().getDifficulty()) {
+				case EASY:
+					new EasyAI(this);
+					break;
+				case NORMAL:
+					new NormalAI(this);
+					break;
+				case HARD:
+					new HardAI(this);
+					break;
+			}
+			
 		}
 	}
 	
