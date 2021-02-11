@@ -29,4 +29,16 @@ public class Location {
 		this.z = location.getZ();
 	}
 	
+	@Override
+	public boolean equals(Object loc1) {
+		if(loc1 instanceof Location) {
+			Location loc = (Location)loc1;
+			if(x == loc.getX() && z == loc.getZ()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }
