@@ -2,6 +2,7 @@ package com.project.AiController;
 
 import javax.swing.JFrame;
 
+import com.project.BoardController.BoardController;
 import com.project.Main.Main;
 import com.project.TeamController.Team;
 
@@ -60,6 +61,10 @@ public class AIController {
 			}
 			
 		}
+	}
+	
+	public BoardController getBoardController() {
+		return Main.getBoardController();
 	}
 	
 	// Starts a runtime handler counts down and then checks if a move is needed by the AI
