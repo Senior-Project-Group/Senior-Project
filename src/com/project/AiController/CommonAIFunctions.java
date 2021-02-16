@@ -45,7 +45,7 @@ public class CommonAIFunctions {
 		for(IChessPiece piece : controller.getTeam().getChessPieces()) {
 				for(Location loc : piece.getPossibleMoves()) {
 					IChessPiece pieceAtLocation = controller.getBoardController().getPieceAtLocation(loc);
-					if(pieceAtLocation != null) {
+					if(pieceAtLocation != null && !pieceAtLocation.getTeamType().equals(piece.getTeamType())) {
 						pieceInformation.add(new PieceInformation(piece, loc, true, pieceAtLocation));
 					}else {
 						pieceInformation.add(new PieceInformation(piece, loc, false, pieceAtLocation));
