@@ -46,9 +46,9 @@ public class CommonAIFunctions {
 				for(Location loc : piece.getPossibleMoves()) {
 					IChessPiece pieceAtLocation = controller.getBoardController().getPieceAtLocation(loc);
 					if(pieceAtLocation != null) {
-						pieceInformation.add(new PieceInformation(piece, loc, true));
+						pieceInformation.add(new PieceInformation(piece, loc, true, pieceAtLocation));
 					}else {
-						pieceInformation.add(new PieceInformation(piece, loc, false));
+						pieceInformation.add(new PieceInformation(piece, loc, false, pieceAtLocation));
 					}
 			}
 			
