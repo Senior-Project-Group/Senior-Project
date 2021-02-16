@@ -28,4 +28,5 @@ public interface IChessPiece {
 	public ArrayList<Location> getPossibleMoves(); // Algorithms that determine where the piece can move next
 	
 	public TeamType getTeamType();
+	
 }

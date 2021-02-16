@@ -74,7 +74,7 @@ public class Board {
 		JMenuItem AI_V_AI_Game = new JMenuItem("Play AI vs AI Game");
 		AI_V_AI_Game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.createNewGame(GameType.PLAYER_VS_AI);
+				Main.createNewGame(GameType.AI_VS_AI);
 			}
 		});
 		mnNewMenu.add(AI_V_AI_Game);

@@ -1,4 +1,7 @@
 package com.project.Main;
+import java.awt.EventQueue;
+
+import com.project.AiController.AIController;
 import com.project.AiController.AIControllerHandler;
 import com.project.AiController.AIDifficulty;
 import com.project.BoardController.BoardController;
@@ -44,30 +47,50 @@ public class Main {
 		
 		// Create a new board
 		boardController = new BoardController(newGameType);
-		switch(newGameType) {
-		case PLAYER_VS_PLAYER:
-			break;
-		case PLAYER_VS_AI:
-			getAIController().addController(new com.project.AiController.AIController(
-					getBoardController().getTeam1(), // Team it manages
-					getBoardController().getTeam2(), // Enemy team
-					getBoardController().getBoardObject().getFrame())); // Current board frame
-			break;
-		case AI_VS_AI:
-			getAIController().addController(new com.project.AiController.AIController(
-					getBoardController().getTeam1(), // Team it manages
-					getBoardController().getTeam2(), // Enemy team
-					getBoardController().getBoardObject().getFrame())); // Current board frame
-			
-			getAIController().addController(new com.project.AiController.AIController(
-					getBoardController().getTeam2(), // Team it manages
-					getBoardController().getTeam1(), // Enemy team
-					getBoardController().getBoardObject().getFrame())); // Current board frame
-			break;
-		case SQL_MULTIPLAYER:
-			// Create SQL Controller
-			break;
-		}
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				switch(newGameType) {
+				case PLAYER_VS_PLAYER:
+					break;
+				case PLAYER_VS_AI:
+					getAIController().addController(new com.project.AiController.AIController(
+							getBoardController().getTeam1(), // Team it manages
+							getBoardController().getTeam2(), // Enemy team
+							getBoardController().getBoardObject().getFrame())); // Current board frame
+					break;
+				case AI_VS_AI:
+					getAIController().addController(new com.project.AiController.AIController(
+							getBoardController().getTeam1(), // Team it manages
+							getBoardController().getTeam2(), // Enemy team
+							getBoardController().getBoardObject().getFrame())); // Current board frame
+					
+					getAIController().addController(new com.project.AiController.AIController(
+							getBoardController().getTeam2(), // Team it manages
+							getBoardController().getTeam1(), // Enemy team
+							getBoardController().getBoardObject().getFrame())); // Current board frame
+					
+					new java.util.Timer().schedule( 
+					        new java.util.TimerTask() {
+					            @Override
+					            public void run() {
+					            	AIController controller = Main.getAIController().getAIControllerForTeam(getBoardController().getCurrentPlayerToMove());
+					            	if(controller != null) {
+					            		controller.runMove();
+					            	}
+					            }
+					            	
+					        }, 2000 
+					);
+					
+					
+					break;
+				case SQL_MULTIPLAYER:
+					// Create SQL Controller
+					break;
+				}
+			}
+		});
 	}
 	
 	// Returns the board controller object

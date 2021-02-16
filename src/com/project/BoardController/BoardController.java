@@ -2,6 +2,7 @@ package com.project.BoardController;
 
 import java.awt.EventQueue;
 
+import com.project.AiController.AIController;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
 import com.project.Main.Main;
@@ -152,6 +153,16 @@ public class BoardController {
 			currentPlayer = TeamType.BLACK;
 		}else {
 			currentPlayer = TeamType.WHITE;
+		}
+		
+		// This game needs an AI in it
+		if(Main.getBoardController().getCurrentGameType().equals(GameType.PLAYER_VS_AI) || Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI)) {
+			// Run the AI move
+			AIController controller = Main.getAIController().getAIControllerForTeam(currentPlayer);
+			if(controller != null) {
+				System.out.println("Running move AI Move");
+				Main.getAIController().getAIControllerForTeam(currentPlayer).runMove();
+			}
 		}
 	}
 	

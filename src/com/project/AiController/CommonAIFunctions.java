@@ -1,5 +1,8 @@
 package com.project.AiController;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
@@ -11,7 +14,7 @@ public class CommonAIFunctions {
 		this.controller = controller;
 	}
 	
-	// Return location the piece can move too inorder to take the king
+	// Return location the piece can move too in order to take the king
 	// Returns null if the piece cannot take the king
 	public Location canPieceTakeKing(IChessPiece piece) {
 		// King piece can't take out another king
@@ -28,7 +31,6 @@ public class CommonAIFunctions {
 		// Error check
 		if(enemyKing == null) return null;
 		
-		
 		for(Location possibleMoves : piece.getPossibleMoves()) {
 			if(enemyKing.getLocation().equals(possibleMoves)) {
 				return possibleMoves;
@@ -36,5 +38,26 @@ public class CommonAIFunctions {
 		}
 		
 		return null;
+	}
+	
+	public ArrayList<PieceInformation> getAllPossibleMoves() {
+		ArrayList<PieceInformation> pieceInformation = new ArrayList<PieceInformation>();
+		for(IChessPiece piece : controller.getTeam().getChessPieces()) {
+				for(Location loc : piece.getPossibleMoves()) {
+					IChessPiece pieceAtLocation = controller.getBoardController().getPieceAtLocation(loc);
+					if(pieceAtLocation != null) {
+						pieceInformation.add(new PieceInformation(piece, loc, true));
+					}else {
+						pieceInformation.add(new PieceInformation(piece, loc, false));
+					}
+			}
+			
+		}
+		return pieceInformation;
+		
+	}
+	
+	public IChessPiece getRandomChessPiece() {
+	    return controller.getTeam().getChessPieces().get(new Random().nextInt(controller.getTeam().getChessPieces().size()));
 	}
 }

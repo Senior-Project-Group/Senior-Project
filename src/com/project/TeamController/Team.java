@@ -86,4 +86,17 @@ public class Team {
 		return teamType;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Team) {
+			Team temp = (Team)o;
+			if(temp.getTeamType().equals(((Team) o).getTeamType())) {
+				return true;
+				
+			}
+		}
+		
+		return false;
+	}
+	
 }

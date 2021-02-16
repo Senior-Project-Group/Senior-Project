@@ -2,6 +2,8 @@ package com.project.AiController;
 
 import java.util.ArrayList;
 
+import com.project.TeamController.TeamType;
+
 
 // Object that handles the controllers for the different AI's
 public class AIControllerHandler {
@@ -41,7 +43,11 @@ public class AIControllerHandler {
 	
 	// Sets new speed the AI will move/process information
 	public void setNewSpeed(int speed) {
-		this.speed = speed;
+		if(speed >= 1) {
+			this.speed = speed * 1000;
+		}else {
+			this.speed = 300; // 0.3 seconds to run
+		}
 	}
 	
 	// Get all currently active AI controllers
@@ -60,5 +66,18 @@ public class AIControllerHandler {
 	// Added a new AI controller to the system
 	public void addController(AIController controller) {
 		AIControllers.add(controller);
+	}
+	
+	public AIController getAIControllerForTeam(TeamType teamType) {
+		if(AIControllers.isEmpty()) return null;
+		
+		for(AIController con : AIControllers) {
+			if(con.getTeam().getTeamType().equals(teamType)) {
+				return con;
+			}
+			
+		}
+		return null;
+		
 	}
 }

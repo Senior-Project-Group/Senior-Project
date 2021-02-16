@@ -23,7 +23,6 @@ public class AIController {
 		this.frame = frame;
 		this.enemyTeam = enemyTeam;
 		cancel = false;
-		runAIHandler();
 	}
 	
 	// Gets the team the AI Controller is controlling
@@ -39,6 +38,24 @@ public class AIController {
 	// Get the frame the AI is responsible for
 	public JFrame getAIFrame() {
 		return frame;
+	}
+	
+	public void runMove() {
+		Main.getBoardController().checkForGameFinished();
+		new java.util.Timer().schedule( 
+		        new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		            	if(cancel) return; // If the AI was canceled, don't run AI code
+		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
+		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
+		            	
+		            	// Run the AI
+		            	preformAIMove();
+		            }
+		            	
+		        }, Main.getAIController().getSpeed() // How fast it should run
+		);
 	}
 	
 	
@@ -65,27 +82,6 @@ public class AIController {
 	
 	public BoardController getBoardController() {
 		return Main.getBoardController();
-	}
-	
-	// Starts a runtime handler counts down and then checks if a move is needed by the AI
-	private void runAIHandler() {
-		new java.util.Timer().schedule( 
-		        new java.util.TimerTask() {
-		            @Override
-		            public void run() {
-		            	if(cancel) return; // If the AI was canceled, don't run AI code
-		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
-		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
-		            	
-		            	
-		            	// Run the AI
-		            	preformAIMove();
-		            	// Rerun the timer
-		            	runAIHandler();
-		            }
-		            	
-		        }, Main.getAIController().getSpeed() // Run this every 2.5 seconds
-		);
 	}
 	
 	
