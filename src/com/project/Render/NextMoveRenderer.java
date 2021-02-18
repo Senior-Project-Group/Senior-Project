@@ -97,9 +97,17 @@ public class NextMoveRenderer {
 			    			}
 			    			
 			    			if(piece1 != null) {
-			    				System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
-			    				piece1.destroyPiece();
-			    				Main.getBoardController().checkForGameFinished();
+			    				
+			    				//Should swap pieces
+			    				if(!Main.getBoardController().moved && piece1.getTeamType() == piece.getTeamType()) {
+			    					Main.getBoardController().movePieceOnBoard(piece, piece1.getLocation());
+			    					Main.getBoardController().movePieceOnBoard(piece1, pieceLocation);
+			    				}
+			    				else {
+			    					System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
+			    					piece1.destroyPiece();
+			    					Main.getBoardController().checkForGameFinished();
+			    				}
 			    			}
 			    			
 			    			break;
