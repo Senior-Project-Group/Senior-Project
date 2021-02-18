@@ -80,7 +80,7 @@ public class Main {
 					            	}
 					            }
 					            	
-					        }, 2000 
+					        }, 400 
 					);
 					
 					

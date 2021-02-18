@@ -109,11 +109,61 @@ public class KingPiece implements IChessPiece{
 			}
 		}
 		// Add castling here
-		if(!Main.getBoardController().moved) {
-			// Check castle piece
-				locationsToMove.add(new Location(0, getLocation().getZ()));
-				locationsToMove.add(new Location(7, getLocation().getZ()));
-		}
+			if(!hasMovedAlready()) { // This can only be done if the king hasn't moved yet
+				
+				// Right check
+				boolean possibleRightCastle = true;
+				for (int x = 1; x != 3; x++) {
+					Location temp = new Location(getLocation().getX() + x, getLocation().getZ());
+					if(Main.getBoardController().getPieceAtLocation(temp) != null) { // There is a piece there, so we can't castle
+						possibleRightCastle = false;
+						break;
+					}
+					
+				}
+				
+				// Left check
+				boolean possibleLeftCastle = true;
+				for (int x = 1; x != 4; x++) {
+					Location temp = new Location(getLocation().getX() - x, getLocation().getZ());
+					if(Main.getBoardController().getPieceAtLocation(temp) != null) { // There is a piece there, so we can't castle
+						 possibleLeftCastle = false;
+						break;
+					}
+					
+				}
+				
+				if(possibleRightCastle) { // We can right castle, check rook now
+					Location temp = new Location(7, getLocation().getZ());
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(temp);
+					if(piece != null) {
+						if(piece instanceof RookPiece) {
+							RookPiece rook = (RookPiece) piece;
+							if(!rook.hasMovedAlready()) {
+								locationsToMove.add(new Location(6, getLocation().getZ()));
+							}
+						}
+					}
+				}
+				
+				if(possibleLeftCastle) { // We can left castle, check rook now
+					Location temp = new Location(0, getLocation().getZ());
+					IChessPiece piece = Main.getBoardController().getPieceAtLocation(temp);
+					if(piece != null) {
+						if(piece instanceof RookPiece) {
+							RookPiece rook = (RookPiece) piece;
+							if(!rook.hasMovedAlready()) {
+								locationsToMove.add(new Location(2, getLocation().getZ()));
+							}
+						}
+					}
+					
+				}
+				
+				
+				
+			}
+			
 		return locationsToMove;
 	}
 

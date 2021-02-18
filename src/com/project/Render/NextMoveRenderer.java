@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KingPiece;
 import com.project.Main.Main;
 import com.project.Multiplayer.NextMoveParser;
 
@@ -88,26 +89,47 @@ public class NextMoveRenderer {
 			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
 			    			
 			    			Location pieceLocation = piece.getLocation();
+			    			
+			    			// Check if this was a castling move
+			    			if(piece instanceof KingPiece) {
+			    				if(!piece.hasMovedAlready()) { // This is the kings first move
+			    					// Check the location of the move
+			    					if(obj.getLocation().equals(new Location(6, piece.getLocation().getZ()))) { // Check right castle
+			    						// It was a castle move
+			    						IChessPiece rightRook = Main.getBoardController().getPieceAtLocation(new Location(7, piece.getLocation().getZ()));
+			    						if(rightRook != null) {
+			    							Main.getBoardController().movePieceOnBoard(rightRook, new Location(5, piece.getLocation().getZ()));
+			    							System.out.println("Right Castle Done");
+			    						}
+			    					}
+			    					
+			    					if(obj.getLocation().equals(new Location(2, piece.getLocation().getZ()))) { // Check left castle
+			    						// It was a castle move
+			    						IChessPiece leftRook = Main.getBoardController().getPieceAtLocation(new Location(0, piece.getLocation().getZ()));
+			    						if(leftRook != null) {
+			    							Main.getBoardController().movePieceOnBoard(leftRook, new Location(3, piece.getLocation().getZ()));
+			    							System.out.println("Left Castle Done");
+			    						}
+			    					}
+			    					
+			    				}
+			    				
+			    			}
+			    			
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    		
+			    			
 			    			if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
 			    				// Send the move to the SQL database
 			    				new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
 			    			}
 			    			
 			    			if(piece1 != null) {
-			    				
-			    				//Should swap pieces
-			    				if(!Main.getBoardController().moved && piece1.getTeamType() == piece.getTeamType()) {
-			    					Main.getBoardController().movePieceOnBoard(piece, piece1.getLocation());
-			    					Main.getBoardController().movePieceOnBoard(piece1, pieceLocation);
-			    				}
-			    				else {
-			    					System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
-			    					piece1.destroyPiece();
-			    					Main.getBoardController().checkForGameFinished();
-			    				}
+		    					System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
+		    					piece1.destroyPiece();
+		    					Main.getBoardController().checkForGameFinished();
 			    			}
 			    			
 			    			break;

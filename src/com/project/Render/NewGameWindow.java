@@ -40,6 +40,7 @@ public class NewGameWindow {
 				// Restart the game
 				if(!Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
 					Main.createNewGame(Main.getBoardController().getCurrentGameType());
+					frmNewGame.dispose();
 				}else {
 					// It's a multiplayer game, send the restart game request
 					if(!alreadyRequested) {

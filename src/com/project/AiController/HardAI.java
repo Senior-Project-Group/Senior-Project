@@ -16,8 +16,6 @@ public class HardAI {
 	private void run() {
 		ArrayList<PieceInformation> information = commonFunctionsController.getAllPossibleMoves();
 		
-		
-		
 	}
 
 }
