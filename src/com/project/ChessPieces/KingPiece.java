@@ -26,7 +26,6 @@ public class KingPiece implements IChessPiece{
 		this.location = location;
 		texture = new PiecesTexture(this, getLocation().getX(), getLocation().getZ(), team);
 	}
-	
 	@Override
 	public boolean isAlive() {
 		return isAlive;
@@ -109,17 +108,12 @@ public class KingPiece implements IChessPiece{
 				}
 			}
 		}
-		
 		// Add castling here
-		if(!hasMovedAlready()) {
-			// Check left castle piece
-			
-			
-			
-			// Check right castle piece
-			
+		if(!Main.getBoardController().moved) {
+			// Check castle piece
+				locationsToMove.add(new Location(0, getLocation().getZ()));
+				locationsToMove.add(new Location(7, getLocation().getZ()));
 		}
-		
 		return locationsToMove;
 	}
 
