@@ -25,6 +25,10 @@ public class BoardController {
 	
 	private Board board; // The board object
 	
+	private int moveCount; //Integer to count moves
+	
+	public boolean moved;  //Boolean that will be set to true once both teams have moved
+	
 	private NextMoveRenderer nextMoveRenderer; // Renderer that renders the next squares and determines different movesets the pieces can or can't do
 	
 	private boolean gameEnded; // true is game is over, as in someone one or is a tie
@@ -123,7 +127,12 @@ public class BoardController {
 	public void movePieceOnBoard(IChessPiece piece, Location newLocation) {
 		getNextMoveRenderer().clearCurrentRender();
 		piece.getTexture().moveTextureTo(newLocation);
+		moveCount++;
+		if(moveCount > 1)
+			moved = true;
 		piece.setLocation(newLocation);
+		
+		
 		getBoardObject().getFrame().repaint();
 	}
 	
