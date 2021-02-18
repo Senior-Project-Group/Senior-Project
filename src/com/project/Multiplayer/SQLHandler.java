@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
+import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
@@ -156,10 +157,36 @@ public class SQLHandler {
 						    			  if(getCastleType != null) {
 							    			  if(getCastleType.equals("RIGHT_CASTLE")) { // Right castle
 							    				  // Get the king and rook involved
-							    				  
+							    				  if(nextMoveData.getTeamAttemptingMove().equals("BLACK")) {
+							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 7)); // Black king
+							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(7, 7)); // Black right castle
+							    					  
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(6, 7)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(5, 7)); // Move rook
+							    				  }else { // White is doing it
+							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 0)); // White king
+							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(7, 0)); // White right castle
+							    					  
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(6, 0)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(5, 0)); // Move rook
+							    				  }
 							    				  
 							    			  }else { // Left castle
 							    				  // Get the king and rook involved
+							    				  if(nextMoveData.getTeamAttemptingMove().equals("BLACK")) {
+							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 7)); // Black king
+							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(0, 7)); // Black left castle
+							    					  
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(1, 7)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(2, 7)); // Move rook
+							    					  
+							    				  }else { // White is doing it
+							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 0)); // White king
+							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(0, 0)); // White left castle
+							    					  
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(1, 0)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(2, 0)); // Move rook
+							    				  }
 							    				  
 							    			  }
 						    			  }						    			  
