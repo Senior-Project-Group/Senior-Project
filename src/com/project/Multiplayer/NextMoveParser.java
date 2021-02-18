@@ -30,9 +30,13 @@ public class NextMoveParser {
 		
 	}
 	
+	// Use this for the castle
+	public NextMoveParser(TeamType team, String castleDone) {
+		input = team.toString() + "=" + castleDone;
+	}
+	
 	public String getTeamAttemptingMove() {
 		String[] initalSplit = input.split("=");
-		
 		return initalSplit[0];
 	}
 	
@@ -51,6 +55,19 @@ public class NextMoveParser {
 	
 	public String getFormattedString() {
 		return input;
+	}
+	
+	public boolean isMoveCastle() {
+		return false;
+	}
+	
+	public String getCastleMove() {
+		if(isMoveCastle()) {
+			String[] initalSplit = input.split("=");
+			return initalSplit[1];
+		}
+		
+		return null;
 	}
 	
 	// Send the data to the database

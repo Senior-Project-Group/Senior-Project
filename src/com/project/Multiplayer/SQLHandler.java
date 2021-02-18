@@ -148,29 +148,47 @@ public class SQLHandler {
 						    	  // Check if the next move is the other player
 						    	  
 						    	  if(Main.getBoardController().getCurrentPlayerToMove().toString().equals(nextMoveData.getTeamAttemptingMove())) {
-						    		  IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
-						    		  // Check if the piece will destroy a piece before the move
-						    		 IChessPiece movedTo = Main.getBoardController().getPieceAtLocation(nextMoveData.getNextMoveLocation());
-						    		 if(movedTo != null) {
-						    			 movedTo.destroyPiece();
-						    		 }
 						    		  
-						    		  Main.getBoardController().movePieceOnBoard(piece, nextMoveData.getNextMoveLocation());
-						    		  Main.getBoardController().setNextPlayerToMove();
-						    		  Main.getBoardController().checkForGameFinished();
+						    		  // Do castle check first to make sure there is no issues
+						    		  if(nextMoveData.isMoveCastle()) {
+						    			  // We have a castle move
+						    			  String getCastleType = nextMoveData.getCastleMove();
+						    			  if(getCastleType != null) {
+							    			  if(getCastleType.equals("RIGHT_CASTLE")) { // Right castle
+							    				  // Get the king and rook involved
+							    				  
+							    				  
+							    			  }else { // Left castle
+							    				  // Get the king and rook involved
+							    				  
+							    			  }
+						    			  }						    			  
+						    		  }else {
+								    		 IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
+								    		  // Check if the piece will destroy a piece before the move
+								    		 IChessPiece movedTo = Main.getBoardController().getPieceAtLocation(nextMoveData.getNextMoveLocation());
+								    		 if(movedTo != null) {
+								    			 movedTo.destroyPiece();
+								    		 }
+								    		  
+								    		  Main.getBoardController().movePieceOnBoard(piece, nextMoveData.getNextMoveLocation());
+								    		  Main.getBoardController().setNextPlayerToMove();
+								    		  Main.getBoardController().checkForGameFinished();
+								    		  
+								    		  // Reset SQL Next mover
+								    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+								  			Statement stmt2;
+								  			try {
+								  				stmt2 = getSQLConnection().createStatement();
+								  				stmt2.executeUpdate(run);
+								  			} catch (SQLException e) {
+								  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+								  				destroy();
+								  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+								  				return;
+								  			}  
+						    		  }
 						    		  
-						    		  // Reset SQL Next mover
-						    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
-						  			Statement stmt2;
-						  			try {
-						  				stmt2 = getSQLConnection().createStatement();
-						  				stmt2.executeUpdate(run);
-						  			} catch (SQLException e) {
-						  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
-						  				destroy();
-						  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
-						  				return;
-						  			}
 						    	  }
 						    	
 						    	    

@@ -91,6 +91,8 @@ public class NextMoveRenderer {
 			    			Location pieceLocation = piece.getLocation();
 			    			
 			    			// Check if this was a castling move
+			    			boolean rightCastle = false;
+			    			boolean leftCastle = false;
 			    			if(piece instanceof KingPiece) {
 			    				if(!piece.hasMovedAlready()) { // This is the kings first move
 			    					// Check the location of the move
@@ -100,15 +102,16 @@ public class NextMoveRenderer {
 			    						if(rightRook != null) {
 			    							Main.getBoardController().movePieceOnBoard(rightRook, new Location(5, piece.getLocation().getZ()));
 			    							System.out.println("Right Castle Done");
+			    							rightCastle = true;
 			    						}
 			    					}
-			    					
 			    					if(obj.getLocation().equals(new Location(2, piece.getLocation().getZ()))) { // Check left castle
 			    						// It was a castle move
 			    						IChessPiece leftRook = Main.getBoardController().getPieceAtLocation(new Location(0, piece.getLocation().getZ()));
 			    						if(leftRook != null) {
 			    							Main.getBoardController().movePieceOnBoard(leftRook, new Location(3, piece.getLocation().getZ()));
 			    							System.out.println("Left Castle Done");
+			    							leftCastle = true;
 			    						}
 			    					}
 			    					
@@ -123,7 +126,15 @@ public class NextMoveRenderer {
 			    			
 			    			if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
 			    				// Send the move to the SQL database
-			    				new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
+			    				if(leftCastle) {
+			    					// Send left castle to parser
+			    					new NextMoveParser(piece.getTeamType(), "LEFT_CASTLE").sendToDatabase(Main.getSQLHandler());
+			    				}else if(rightCastle) {
+			    					// Send right castle to parser
+			    					new NextMoveParser(piece.getTeamType(), "RIGHT_CASTLE").sendToDatabase(Main.getSQLHandler());
+			    				}else {
+			    					new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
+			    				}
 			    			}
 			    			
 			    			if(piece1 != null) {
