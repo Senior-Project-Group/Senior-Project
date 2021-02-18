@@ -18,8 +18,11 @@ public class Team {
 	
 	private TeamType teamType; // The team type, either WHITE or BLACK
 	
+	private int moveCounter;
+	
 	// Default contructor that creates a new team, either WHITE or BLACK
 	public Team(TeamType type) {
+		moveCounter = 0;
 		teamType = type;
 		pieces = new ArrayList<IChessPiece>();
 		setPieces();
@@ -84,6 +87,14 @@ public class Team {
 	// Get the team type, either WHITE or BLACK
 	public TeamType getTeamType() {
 		return teamType;
+	}
+	
+	public int getAmountOfMovesDone() {
+		return moveCounter;
+	}
+	
+	public void addMove() {
+		moveCounter++;
 	}
 	
 	@Override

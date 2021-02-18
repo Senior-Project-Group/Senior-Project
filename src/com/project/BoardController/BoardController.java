@@ -132,6 +132,11 @@ public class BoardController {
 			moved = true;
 		piece.setLocation(newLocation);
 		
+		if(piece.getTeamType().equals(TeamType.BLACK)) {
+			getTeam1().addMove(); // Black is considered team1 but technically moves second (back on my part)
+		}else {
+			getTeam2().addMove(); 
+		}
 		
 		getBoardObject().getFrame().repaint();
 	}
