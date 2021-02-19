@@ -177,19 +177,20 @@ public class SQLHandler {
 							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 7)); // Black king
 							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(0, 7)); // Black left castle
 							    					  
-							    					  Main.getBoardController().movePieceOnBoard(king, new Location(1, 7)); // Move king
-							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(2, 7)); // Move rook
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(2, 7)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(3, 7)); // Move rook
 							    					  
 							    				  }else { // White is doing it
 							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 0)); // White king
 							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(0, 0)); // White left castle
 							    					  
-							    					  Main.getBoardController().movePieceOnBoard(king, new Location(1, 0)); // Move king
-							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(2, 0)); // Move rook
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(2, 0)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(3, 0)); // Move rook
 							    				  }
 							    				  
 							    			  }
 						    			  }
+						    			  
 						    			  Main.getBoardController().setNextPlayerToMove();
 							    		  Main.getBoardController().checkForGameFinished();
 							    		  
