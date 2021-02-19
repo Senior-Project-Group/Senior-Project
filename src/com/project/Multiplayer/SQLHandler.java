@@ -184,12 +184,13 @@ public class SQLHandler {
 							    					  IChessPiece king = Main.getBoardController().getPieceAtLocation(new Location(4, 0)); // White king
 							    					  IChessPiece rook = Main.getBoardController().getPieceAtLocation(new Location(0, 0)); // White left castle
 							    					  
-							    					  Main.getBoardController().movePieceOnBoard(king, new Location(1, 0)); // Move king
-							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(2, 0)); // Move rook
+							    					  Main.getBoardController().movePieceOnBoard(king, new Location(2, 0)); // Move king
+							    					  Main.getBoardController().movePieceOnBoard(rook, new Location(3, 0)); // Move rook
 							    				  }
 							    				  
 							    			  }
 						    			  }
+						    			  
 						    			  Main.getBoardController().setNextPlayerToMove();
 							    		  Main.getBoardController().checkForGameFinished();
 							    		  
