@@ -189,7 +189,23 @@ public class SQLHandler {
 							    				  }
 							    				  
 							    			  }
-						    			  }						    			  
+						    			  }
+						    			  Main.getBoardController().setNextPlayerToMove();
+							    		  Main.getBoardController().checkForGameFinished();
+							    		  
+							    		  // Reset SQL Next mover
+							    		  String run = "UPDATE david.CHESS_DATABASE SET NEXT_MOVE = 'SETUP' WHERE SESSION_ID = '" + getSessionUUID() + "'";
+							  			Statement stmt2;
+							  			try {
+							  				stmt2 = getSQLConnection().createStatement();
+							  				stmt2.executeUpdate(run);
+							  			} catch (SQLException e) {
+							  				Main.getNotificationHandler().sendNotificationMessage("Multiplayer Handler", "Connection Issue. Abopting Game.");
+							  				destroy();
+							  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
+							  				return;
+							  			} 
+							  			
 						    		  }else {
 								    		 IChessPiece piece = Main.getBoardController().getPieceAtLocation(nextMoveData.getMovedFromLocation());
 								    		  // Check if the piece will destroy a piece before the move

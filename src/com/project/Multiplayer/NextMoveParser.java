@@ -57,14 +57,8 @@ public class NextMoveParser {
 		return input;
 	}
 	
-	public boolean isMoveCastle() {
-		// TODO Fix this thing
-		String[] initalSplit = input.split("=");
-		if(initalSplit[1].contains("CASTLE")) {
-			return true;
-		}
-		
-		return false;
+	public boolean isMoveCastle() {		
+		return input.split("=")[1].contains("CASTLE");
 	}
 	
 	public String getCastleMove() {
