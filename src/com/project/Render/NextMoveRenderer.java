@@ -11,8 +11,13 @@ import javax.swing.border.Border;
 
 import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
+import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.ChessPieces.KnightPiece;
+import com.project.ChessPieces.PawnPiece;
+import com.project.ChessPieces.QueenPiece;
+import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
 import com.project.Multiplayer.NextMoveParser;
 
@@ -21,6 +26,7 @@ import com.project.Multiplayer.NextMoveParser;
 public class NextMoveRenderer {
 	
 	private ArrayList<NextMoveObject> labels; // Stores all the next moves objects into the manager
+	public static String promoType;
 	
 	
 	// Default contructor to create the next move handler
@@ -114,12 +120,32 @@ public class NextMoveRenderer {
 			    							leftCastle = true;
 			    						}
 			    					}
-			    					
 			    				}
 			    				
 			    			}
 			    			
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
+			    			
+			    			//Pawn Promotion:  Has to be run after piece has been set in order to get proper location
+			    			if(piece instanceof PawnPiece) {
+			    				System.out.println(promoType);
+			    				System.out.println(piece.getLocation().getZ());
+			    				//Since the pawn can't go backward no need to check team type
+	    						if(piece.getLocation().getZ() == 7 || piece.getLocation().getZ() == 0) {
+	    							new PromotionSelection();
+	    							piece.destroyPiece();
+	    							if(promoType == "Queen")
+	    								new QueenPiece(piece.getLocation(), piece.getTeamType());
+	    							else if(promoType == "Rook")
+	    								new RookPiece(piece.getLocation(), piece.getTeamType());
+	    							else if(promoType == "Bishop")
+	    								new BishopPiece(piece.getLocation(), piece.getTeamType());
+	    							else if(promoType == "Knight")
+	    								new KnightPiece(piece.getLocation(), piece.getTeamType());
+	    								    							
+	    						}	    					
+			    			}
+			    			
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    		
