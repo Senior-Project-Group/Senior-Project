@@ -97,6 +97,10 @@ public class Team {
 		moveCounter++;
 	}
 	
+	public void addNewPiece(IChessPiece piece) {
+		pieces.add(piece);
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if(o instanceof Team) {

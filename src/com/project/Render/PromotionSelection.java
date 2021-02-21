@@ -1,7 +1,14 @@
 package com.project.Render;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import com.project.ChessPieces.BishopPiece;
+import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KnightPiece;
+import com.project.ChessPieces.QueenPiece;
+import com.project.ChessPieces.RookPiece;
+import com.project.Main.Main;
+import com.project.TeamController.TeamType;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,7 +20,9 @@ import java.awt.event.ActionEvent;
 public class PromotionSelection {
 private JDialog frmPromotion;
 	
-	public PromotionSelection() {
+	private IChessPiece piece;
+	public PromotionSelection(IChessPiece pieceMoved) {
+		this.piece = pieceMoved;
 		initialize();
 		frmPromotion.setVisible(true);
 	}
@@ -30,20 +39,30 @@ private JDialog frmPromotion;
 		lblNewLabel.setBounds(51, 11, 239, 14);
 		frmPromotion.getContentPane().add(lblNewLabel);
 		
-		JButton queenButton = new JButton(new ImageIcon("resources/white_queen.png"));
+		JButton queenButton = new JButton(new ImageIcon(getClass().getResource("resources/white_queen.png")));
 		queenButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NextMoveRenderer.promoType = "Queen";
+				piece.destroyPiece();
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					Main.getBoardController().getTeam1().addNewPiece(new QueenPiece(piece.getLocation(), piece.getTeamType()));
+				}else {
+					Main.getBoardController().getTeam2().addNewPiece(new QueenPiece(piece.getLocation(), piece.getTeamType()));
+				}
 				frmPromotion.dispose();
 			}
 		});
 		queenButton.setBounds(27, 78, 110, 54);
 		frmPromotion.getContentPane().add(queenButton);
 		
-		JButton rookButton = new JButton(new ImageIcon("resources/white_rook.png"));
+		JButton rookButton = new JButton(new ImageIcon(getClass().getResource("resources/white_rook.png")));
 		rookButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NextMoveRenderer.promoType = "Rook";
+				piece.destroyPiece();
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					Main.getBoardController().getTeam1().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
+				}else {
+					Main.getBoardController().getTeam2().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
+				}
 				frmPromotion.dispose();
 			}
 		});
@@ -52,10 +71,15 @@ private JDialog frmPromotion;
 		rookButton.setBounds(147, 78, 110, 54);
 		frmPromotion.getContentPane().add(rookButton);
 		
-		JButton bishopButton = new JButton(new ImageIcon("resources/white_bishop.png"));
+		JButton bishopButton = new JButton(new ImageIcon(getClass().getResource("resources/white_bishop.png")));
 		bishopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NextMoveRenderer.promoType = "Bishop";
+				piece.destroyPiece();
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					Main.getBoardController().getTeam1().addNewPiece(new BishopPiece(piece.getLocation(), piece.getTeamType()));
+				}else {
+					Main.getBoardController().getTeam2().addNewPiece(new BishopPiece(piece.getLocation(), piece.getTeamType()));
+				}
 				frmPromotion.dispose();
 			}
 		});
@@ -64,10 +88,15 @@ private JDialog frmPromotion;
 		bishopButton.setBounds(27, 143, 110, 54);
 		frmPromotion.getContentPane().add(bishopButton);
 		
-		JButton knightButton = new JButton(new ImageIcon("resources/white_knight.png"));
+		JButton knightButton = new JButton(new ImageIcon(getClass().getResource("resources/white_knight.png")));
 		knightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NextMoveRenderer.promoType = "Knight";
+				piece.destroyPiece();
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					Main.getBoardController().getTeam1().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
+				}else {
+					Main.getBoardController().getTeam2().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
+				}
 				frmPromotion.dispose();
 			}
 		});

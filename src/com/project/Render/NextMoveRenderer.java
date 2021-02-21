@@ -128,22 +128,11 @@ public class NextMoveRenderer {
 			    			
 			    			//Pawn Promotion:  Has to be run after piece has been set in order to get proper location
 			    			if(piece instanceof PawnPiece) {
-			    				System.out.println(promoType);
-			    				System.out.println(piece.getLocation().getZ());
 			    				//Since the pawn can't go backward no need to check team type
 	    						if(piece.getLocation().getZ() == 7 || piece.getLocation().getZ() == 0) {
-	    							new PromotionSelection();
-	    							piece.destroyPiece();
-	    							if(promoType == "Queen")
-	    								new QueenPiece(piece.getLocation(), piece.getTeamType());
-	    							else if(promoType == "Rook")
-	    								new RookPiece(piece.getLocation(), piece.getTeamType());
-	    							else if(promoType == "Bishop")
-	    								new BishopPiece(piece.getLocation(), piece.getTeamType());
-	    							else if(promoType == "Knight")
-	    								new KnightPiece(piece.getLocation(), piece.getTeamType());
-	    								    							
-	    						}	    					
+	    							new PromotionSelection(piece);
+			    			}
+	    						
 			    			}
 			    			
 			    			Main.getBoardController().setNextPlayerToMove();
