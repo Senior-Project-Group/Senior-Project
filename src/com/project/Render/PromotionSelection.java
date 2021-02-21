@@ -29,10 +29,11 @@ private JDialog frmPromotion;
 
 	
 	private void initialize() {
+		Main.getNotificationHandler().sendNotificationMessage("Update Piece Selector", "Please select piece to upgrade now");
 		frmPromotion = new JDialog();
 		frmPromotion.setTitle("Select a Piece");
 		frmPromotion.setBounds(100, 100, 303, 269);
-		frmPromotion.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		frmPromotion.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		frmPromotion.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Select a promotion piece for the pawn");
