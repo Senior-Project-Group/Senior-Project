@@ -2,12 +2,15 @@ package com.project.Render;
 
 import javax.swing.JLabel;
 
+import com.project.BoardController.GameType;
+import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
+import com.project.Multiplayer.NextMoveParser;
 import com.project.TeamController.TeamType;
 
 import javax.swing.ImageIcon;
@@ -21,8 +24,11 @@ public class PromotionSelection {
 private JDialog frmPromotion;
 	
 	private IChessPiece piece;
-	public PromotionSelection(IChessPiece pieceMoved) {
+	private Location fromLocation;
+	
+	public PromotionSelection(IChessPiece pieceMoved, Location fromLocation) {
 		this.piece = pieceMoved;
+		this.fromLocation = fromLocation;
 		initialize();
 		frmPromotion.setVisible(true);
 	}
@@ -49,6 +55,9 @@ private JDialog frmPromotion;
 				}else {
 					Main.getBoardController().getTeam2().addNewPiece(new QueenPiece(piece.getLocation(), piece.getTeamType()));
 				}
+				if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+					new NextMoveParser(piece.getTeamType(), fromLocation, piece.getLocation(), "QUEEN").sendToDatabase(Main.getSQLHandler());
+				}
 				frmPromotion.dispose();
 			}
 		});
@@ -63,6 +72,9 @@ private JDialog frmPromotion;
 					Main.getBoardController().getTeam1().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
 				}else {
 					Main.getBoardController().getTeam2().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
+				}
+				if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+					new NextMoveParser(piece.getTeamType(), fromLocation, piece.getLocation(), "ROOK").sendToDatabase(Main.getSQLHandler());
 				}
 				frmPromotion.dispose();
 			}
@@ -81,6 +93,9 @@ private JDialog frmPromotion;
 				}else {
 					Main.getBoardController().getTeam2().addNewPiece(new BishopPiece(piece.getLocation(), piece.getTeamType()));
 				}
+				if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+					new NextMoveParser(piece.getTeamType(), fromLocation, piece.getLocation(), "BISHOP").sendToDatabase(Main.getSQLHandler());
+				}
 				frmPromotion.dispose();
 			}
 		});
@@ -97,6 +112,9 @@ private JDialog frmPromotion;
 					Main.getBoardController().getTeam1().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
 				}else {
 					Main.getBoardController().getTeam2().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
+				}
+				if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
+					new NextMoveParser(piece.getTeamType(), fromLocation, piece.getLocation(), "KNIGHT").sendToDatabase(Main.getSQLHandler());
 				}
 				frmPromotion.dispose();
 			}

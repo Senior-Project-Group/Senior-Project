@@ -9,7 +9,11 @@ import java.sql.Statement;
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
+import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KnightPiece;
+import com.project.ChessPieces.QueenPiece;
+import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
@@ -230,7 +234,45 @@ public class SQLHandler {
 								  				destroy();
 								  				Main.createNewGame(GameType.PLAYER_VS_PLAYER);
 								  				return;
-								  			}  
+								  			}
+								  			
+								  			String promotion = nextMoveData.getPromotionType(piece);
+								  			if(promotion != null) {
+								  				// Promote the piece
+								  				piece.destroyPiece();
+								  				if(piece.getTeamType().equals(TeamType.BLACK)) {
+								  					switch(promotion) {
+								  						case "KNIGHT":
+								  							Main.getBoardController().getTeam1().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
+								  							break;
+								  						case "QUEEN":
+								  							Main.getBoardController().getTeam1().addNewPiece(new QueenPiece(piece.getLocation(), piece.getTeamType()));
+								  							break;
+								  						case "BISHOP":
+								  							Main.getBoardController().getTeam1().addNewPiece(new BishopPiece(piece.getLocation(), piece.getTeamType()));
+								  							break;
+								  						case "ROOK":
+								  							Main.getBoardController().getTeam1().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
+								  							break;
+								  					}
+								  				}else { // White
+								  					switch(promotion) {
+							  						case "KNIGHT":
+							  							Main.getBoardController().getTeam2().addNewPiece(new KnightPiece(piece.getLocation(), piece.getTeamType()));
+							  							break;
+							  						case "QUEEN":
+							  							Main.getBoardController().getTeam2().addNewPiece(new QueenPiece(piece.getLocation(), piece.getTeamType()));
+							  							break;
+							  						case "BISHOP":
+							  							Main.getBoardController().getTeam2().addNewPiece(new BishopPiece(piece.getLocation(), piece.getTeamType()));
+							  							break;
+							  						case "ROOK":
+							  							Main.getBoardController().getTeam2().addNewPiece(new RookPiece(piece.getLocation(), piece.getTeamType()));
+							  							break;
+							  					}
+								  				}
+								  				
+								  			}
 						    		  }
 						    		  
 						    	  }

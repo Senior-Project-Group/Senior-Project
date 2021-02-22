@@ -5,6 +5,8 @@ import java.sql.Statement;
 
 import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
+import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.PawnPiece;
 import com.project.Main.Main;
 import com.project.TeamController.TeamType;
 
@@ -27,12 +29,17 @@ public class NextMoveParser {
 	public NextMoveParser(TeamType team, Location from, Location to) {
 		// Create format
 		input = team.toString() + "=" + from.getX() + "," + from.getZ() + "=" + to.getX() + "," + to.getZ();
-		
 	}
 	
 	// Use this for the castle
 	public NextMoveParser(TeamType team, String castleDone) {
 		input = team.toString() + "=" + castleDone;
+	}
+	
+	// Create an input based on coordinates
+	public NextMoveParser(TeamType team, Location from, Location to, String promotionType) {
+		// Create format
+		input = team.toString() + "=" + from.getX() + "," + from.getZ() + "=" + to.getX() + "," + to.getZ() + "=" + promotionType;
 	}
 	
 	public String getTeamAttemptingMove() {
@@ -68,6 +75,19 @@ public class NextMoveParser {
 		}
 		
 		return null;
+	}
+	
+	public String getPromotionType(IChessPiece pawn) {
+		if(pawn instanceof PawnPiece) {
+			// We have a pawn
+			if(getNextMoveLocation().getZ() == 0 || getNextMoveLocation().getZ() == 7) { // It's the correct location
+				String[] initalSplit = input.split("=");
+				return initalSplit[3].toUpperCase();
+			}
+		}
+		
+		return null;
+		
 	}
 	
 	// Send the data to the database

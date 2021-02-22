@@ -120,20 +120,21 @@ public class NextMoveRenderer {
 			    				
 			    			}
 			    			
+			    			boolean promotionDone = false;
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			
 			    			//Pawn Promotion:  Has to be run after piece has been set in order to get proper location
 			    			if(piece instanceof PawnPiece) {
 			    				//Since the pawn can't go backward no need to check team type
 	    						if(piece.getLocation().getZ() == 7 || piece.getLocation().getZ() == 0) {
-	    							new PromotionSelection(piece);
-			    			}
+	    							promotionDone = true;
+	    							new PromotionSelection(piece, pieceLocation);
+	    						}
 	    						
 			    			}
 			    			
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    		
 			    			
 			    			if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
 			    				// Send the move to the SQL database
@@ -143,6 +144,9 @@ public class NextMoveRenderer {
 			    				}else if(rightCastle) {
 			    					// Send right castle to parser
 			    					new NextMoveParser(piece.getTeamType(), "RIGHT_CASTLE").sendToDatabase(Main.getSQLHandler());
+			    				}else if (promotionDone) {
+			    					// Promotion
+			    					// We don't do anything here
 			    				}else {
 			    					new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
 			    				}
