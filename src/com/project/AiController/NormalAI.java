@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KingPiece;
 
 public class NormalAI {
 
@@ -44,7 +45,7 @@ public class NormalAI {
 		// Run it again and check the best pieces to take
 		for(PieceInformation info : information) {
 			if(info.canKillPiece()) { // It can kill a piece
-				System.out.println("Can Kill");
+				System.out.println("Can Kill King");
 				if(maxCanKill == info.getRankOfMove()) {
 					canKill.add(info);
 				}else if (maxCanKill < info.getRankOfMove()) { // It's actually a higher rank
@@ -56,15 +57,19 @@ public class NormalAI {
 			}
 		}
 		
+		IChessPiece movedPiece = null;
+		boolean isFirstMove = false;
+		
 		if(canKill.isEmpty()) { // We can't take any pieces yet, random move
 			PieceInformation p = information.get(new Random().nextInt(information.size()));
 			  IChessPiece atMoveLocation = controller.getBoardController().getPieceAtLocation(p.getLocation());
 			  if(atMoveLocation != null) {
 				  controller.getBoardController().removePieceFromBoard(atMoveLocation);
 			  }
-			  
+			  isFirstMove = p.getPiece().hasMovedAlready();
 			  controller.getBoardController().movePieceOnBoard(p.getPiece(), p.getLocation());
 			  controller.getBoardController().setNextPlayerToMove();
+			  movedPiece = p.getPiece();
 		}else { // It's not empty, we can take pieces, take highest piece
 			PieceInformation p;
 			if(canKill.size() == 1) {
@@ -77,10 +82,18 @@ public class NormalAI {
 			  if(atMoveLocation != null) {
 				  controller.getBoardController().removePieceFromBoard(atMoveLocation);
 			  }
-			  
+			  isFirstMove = p.getPiece().hasMovedAlready();
 			  controller.getBoardController().movePieceOnBoard(p.getPiece(), p.getLocation());
 			  controller.getBoardController().setNextPlayerToMove();
+			  movedPiece = p.getPiece();
 		}
 		
+		if(movedPiece != null) {
+			commonFunctionsController.promotePawnMove(movedPiece);
+		}
+		
+		if(movedPiece instanceof KingPiece && !isFirstMove) {
+			commonFunctionsController.checkCastleMove(movedPiece);
+		}
 	}
 }

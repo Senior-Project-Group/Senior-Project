@@ -11,13 +11,9 @@ import javax.swing.border.Border;
 
 import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
-import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
-import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.PawnPiece;
-import com.project.ChessPieces.QueenPiece;
-import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
 import com.project.Multiplayer.NextMoveParser;
 
