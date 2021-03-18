@@ -1,4 +1,3 @@
-//Alpha-beta pruning in the hardest difficulty will reduce noncritical moves in the search tree, making the AI more strategic.
 package com.project.AiController;
 
 import java.util.ArrayList;
