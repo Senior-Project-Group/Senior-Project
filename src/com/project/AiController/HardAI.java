@@ -21,6 +21,23 @@ public class HardAI {
 	private void run() {
 		ArrayList<PieceInformation> information = commonFunctionsController.getAllPossibleMoves();
 		
-	}
+		boolean hasKilled = false;
+		// Run it once to check for killing a king.
+		for(PieceInformation info : information) {
+			if(info.canKillPiece()) {
+				Location location = commonFunctionsController.canPieceTakeKing(info.getPiece());
+				if(location != null) {
+					// Can kill the king
+					controller.getBoardController().removePieceFromBoard(controller.getBoardController().getPieceAtLocation(location));
+					controller.getBoardController().movePieceOnBoard(info.getPiece(), location);
+					controller.getBoardController().setNextPlayerToMove();
+					hasKilled = true;
+					break;
+				}
+			}
+		
+		}
+		// The king has been killed already.
+		if(hasKilled) return;
 
 }
