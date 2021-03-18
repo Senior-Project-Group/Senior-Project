@@ -1,6 +1,11 @@
 package com.project.AiController;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import com.project.BoardController.Location;
+import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KingPiece;
 
 public class HardAI {
 	
