@@ -1,3 +1,4 @@
+//	Easy difficulty will make random movements until a piece is available to be captured
 package com.project.AiController;
 
 import java.util.ArrayList;
