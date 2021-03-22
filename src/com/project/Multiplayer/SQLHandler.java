@@ -104,7 +104,9 @@ public class SQLHandler {
 	private void connect(String password) {
 	      String connectionURL = "jdbc:mysql://jump.miovo.me";
 	      try {
+	    	  System.out.println("Attempting to connect to data servers...");
 	    	 connection = DriverManager.getConnection(connectionURL, "david", password);
+	    	 System.out.println("Connected...");
 		} catch (SQLException e) {
 			// TODO Add SQL Updater to attempt reconnect.
 			// ERROR: Unable to connect to database
