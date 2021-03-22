@@ -85,15 +85,6 @@ public class PawnPiece implements IChessPiece{
 					locationsToMove.add(loc);
 				}
 			}
-			// Special move
-			if(!hasMovedAlready()) {
-				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() + 2);
-				if(Main.getBoardController().isLocationOnBoard(loc1)) {
-					if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
-						locationsToMove.add(loc1);
-					}
-				}
-			}
 			
 			// Diagnonals
 			Location diag1 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
@@ -124,15 +115,6 @@ public class PawnPiece implements IChessPiece{
 			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					locationsToMove.add(loc);
-				}
-			}
-			// Special move
-			if(!hasMovedAlready()) {
-				Location loc1 = new Location(getLocation().getX(), getLocation().getZ() - 2);
-				if(Main.getBoardController().getPieceAtLocation(loc1) == null) {
-					if(Main.getBoardController().isLocationOnBoard(loc1)) {
-						locationsToMove.add(loc1);
-					}
 				}
 			}
 			

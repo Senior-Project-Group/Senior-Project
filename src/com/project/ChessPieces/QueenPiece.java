@@ -81,7 +81,7 @@ public class QueenPiece implements IChessPiece{
 		
 		/* Check for bishop piece moves */
 		
-		for(int x = 1; x != 9; x++) {
+		for(int x = 1; x != 2; x++) {
 			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
 			if(Main.getBoardController().isLocationOnBoard(loc)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -96,8 +96,9 @@ public class QueenPiece implements IChessPiece{
 			}
 		}
 		
+		
 		// Right down diagonal
-		for(int x = 1; x != 9; x++) {
+		for(int x = 1; x != 2; x++) {
 			Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
 			if(Main.getBoardController().isLocationOnBoard(loc)) {
 				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -114,7 +115,7 @@ public class QueenPiece implements IChessPiece{
 		}
 		
 		// Left up diagonal
-			for(int x = 1; x != 9; x++) {
+			for(int x = 1; x != 2; x++) {
 				Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -130,7 +131,7 @@ public class QueenPiece implements IChessPiece{
 			}
 			
 			// Left down diagonal
-				for(int x = 1; x != 9; x++) {
+				for(int x = 1; x != 2; x++) {
 					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
 					if(Main.getBoardController().isLocationOnBoard(loc)) {
 						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -150,8 +151,9 @@ public class QueenPiece implements IChessPiece{
 				
 		/* Check for rook piece moves */
 
+		/*
 		// Up
-		for(int x = 1; x != 9; x++) {
+		for(int x = 1; x != 2; x++) {
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
 			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
 			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
@@ -181,6 +183,7 @@ public class QueenPiece implements IChessPiece{
 			}
 		}
 		
+		/*
 		// To the right
 		for(int x = 1; x != 9; x++) {
 			Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
@@ -211,7 +214,7 @@ public class QueenPiece implements IChessPiece{
 			}
 		}
 		
-				
+		*/
 		
 		return locationsToMove;
 	}

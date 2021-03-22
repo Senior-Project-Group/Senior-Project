@@ -34,8 +34,12 @@ public class HardAI {
 				}
 			}
 		}
+		
 		// The king has been killed already.
 		if(hasKilled) return;
+		
+		
+		
 
 	}
 

@@ -13,7 +13,6 @@ import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
-import com.project.ChessPieces.PawnPiece;
 import com.project.Main.Main;
 import com.project.Multiplayer.NextMoveParser;
 
@@ -123,15 +122,6 @@ public class NextMoveRenderer {
 			    			boolean promotionDone = false;
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			
-			    			//Pawn Promotion:  Has to be run after piece has been set in order to get proper location
-			    			if(piece instanceof PawnPiece) {
-			    				//Since the pawn can't go backward no need to check team type
-	    						if(piece.getLocation().getZ() == 7 || piece.getLocation().getZ() == 0) {
-	    							promotionDone = true;
-	    							new PromotionSelection(piece, pieceLocation);
-	    						}
-	    						
-			    			}
 			    			
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();

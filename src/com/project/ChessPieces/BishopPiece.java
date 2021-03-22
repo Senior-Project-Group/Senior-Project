@@ -79,7 +79,7 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-			
+			// Hello world!
 			// Right up diagonal
 			for(int x = 1; x != 9; x++) {
 				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
