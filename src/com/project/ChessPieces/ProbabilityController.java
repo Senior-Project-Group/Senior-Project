@@ -1,13 +1,6 @@
-package com.project.TeamController;
+package com.project.ChessPieces;
 
 import java.util.Random;
-
-import com.project.ChessPieces.BishopPiece;
-import com.project.ChessPieces.IChessPiece;
-import com.project.ChessPieces.KingPiece;
-import com.project.ChessPieces.KnightPiece;
-import com.project.ChessPieces.QueenPiece;
-import com.project.ChessPieces.RookPiece;
 
 public class ProbabilityController {
 

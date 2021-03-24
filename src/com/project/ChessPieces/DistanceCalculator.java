@@ -30,31 +30,23 @@ public class DistanceCalculator {
 		int xChange = from.getX() - to.getX();
 		int zChange = from.getZ() - to.getZ();
 		
-		ArrayList<Location> surroundingPieces = new ArrayList<Location>();
+		ArrayList<Location> surroundingPiecesThatAreNull = new ArrayList<Location>();
 		
-		int[][] offsets = {
-		        {1, 0},
-		        {0, 1},
-		        {-1, 0},
-		        {0, -1},
-		        {1, 1},
-		        {-1, 1},
-		        {-1, -1},
-		        {1, -1},
-		    };
-		
-		for(int x = 0; x != 8; x++) {
-			int xOffset = offsets[x][0];
-			int zOffset = offsets[x][1];
-			Location loc = new Location(from.getX() + xOffset, from.getZ() + zOffset);
-			if(Main.getBoardController().isLocationOnBoard(loc)) {
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					surroundingPieces.add(loc);
+		for(int x = 0; x != 9; x++) {
+			for(int y = 0; y != 9; y++) {
+				Location location = new Location(x, y);
+				if(Main.getBoardController().isLocationOnBoard(location)) {
+					if(getDistance(from, location, 3) == 1) {
+						IChessPiece at = Main.getBoardController().getPieceAtLocation(location);
+						if(at == null) {
+							surroundingPiecesThatAreNull.add(location);
+						}
+					}
+					
 				}
+				
 			}
 		}
-		
 		
 		
 		
