@@ -77,31 +77,9 @@ public class QueenPiece implements IChessPiece{
 	
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
-		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-		
-		for(int x = 0; x != 9; x++) {
-			for(int y = 0; y != 9; y++) {
-				Location location = new Location(x, y);
-				if(Main.getBoardController().isLocationOnBoard(location)) {
-					DistanceCalculator cal = new DistanceCalculator();
-					if(cal.getDistance(getLocation(), location, 3) == 1) {
-						IChessPiece at = Main.getBoardController().getPieceAtLocation(location);
-						if(at != null) {
-							if(!at.getTeamType().equals(getTeamType())) {
-								locationsToMove.add(location);
-							}	
-						}else {
-							locationsToMove.add(location);
-						}
-					}
-					
-					
-				}
-				
-			}
-		}
-		
-		return locationsToMove;
+		DistanceCalculator cal = new DistanceCalculator();
+
+		return cal.findPossiblePaths(this, 3);
 	}
 
 	

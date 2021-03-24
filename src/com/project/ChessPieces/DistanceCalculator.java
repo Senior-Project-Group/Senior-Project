@@ -8,10 +8,59 @@ import com.project.Main.Main;
 public class DistanceCalculator {
 
 	public DistanceCalculator() {}
+		
+	private ArrayList<Location> locations = new ArrayList<Location>();
 	
+	public ArrayList<Location> findPossiblePaths(IChessPiece piece, int checkAmount) {
+		locations.clear();
+		recersivePath(piece, piece.getLocation(), checkAmount, 0);
+		return locations;
+	}
+	
+	// On start the currentPathAmount = 0
+	private void recersivePath(IChessPiece startPiece, Location from, int checkAmount, int currentPathAmount) {
+		if(currentPathAmount > checkAmount) {
+			return;
+		}
+		
+		int[][] offsets = {
+		        {1, 0},
+		        {0, 1},
+		        {-1, 0},
+		        {0, -1},
+		        {1, 1},
+		        {-1, 1},
+		        {-1, -1},
+		        {1, -1},
+		       		        
+		    };
+		
+		for(int x = 0; x != 8; x++) {
+			int xOffset = offsets[x][0];
+			int zOffset = offsets[x][1];
+			Location loc = new Location(from.getX() + xOffset, from.getZ() + zOffset);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(!piece.getTeamType().equals(startPiece.getTeamType())) {
+						// It's an enemy piece
+						addToList(startPiece.getLocation(), loc, checkAmount);
+					}
+				}else {
+					if(!loc.equals(from)) {
+						if(!locations.contains(loc)) {
+							currentPathAmount++;
+							addToList(startPiece.getLocation(), loc, checkAmount);
+							recersivePath(startPiece, loc, checkAmount, currentPathAmount);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	// Return 1 is in range, return -1 if not
-	public int getDistance(Location from, Location to, int checkAmount) {
+	private int getDistance(Location from, Location to, int checkAmount) {
 		if(!Main.getBoardController().isLocationOnBoard(to) || !Main.getBoardController().isLocationOnBoard(from)) {
 			return -1;
 		}
@@ -26,31 +75,14 @@ public class DistanceCalculator {
 		return -1;
 	}
 	
-	public boolean checkIfPathIsPossible(Location from, Location to, int checkAmount) {
-		int xChange = from.getX() - to.getX();
-		int zChange = from.getZ() - to.getZ();
-		
-		ArrayList<Location> surroundingPiecesThatAreNull = new ArrayList<Location>();
-		
-		for(int x = 0; x != 9; x++) {
-			for(int y = 0; y != 9; y++) {
-				Location location = new Location(x, y);
-				if(Main.getBoardController().isLocationOnBoard(location)) {
-					if(getDistance(from, location, 3) == 1) {
-						IChessPiece at = Main.getBoardController().getPieceAtLocation(location);
-						if(at == null) {
-							surroundingPiecesThatAreNull.add(location);
-						}
-					}
-					
-				}
-				
+	
+	private void addToList(Location from, Location to, int checkAmount) {
+		if(!locations.contains(to)) {
+			if(getDistance(from, to, checkAmount) == 1) {
+				locations.add(to);
 			}
 		}
-		
-		
-		
-		return false;
 	}
+	
 	
 }
