@@ -84,6 +84,12 @@ public class PawnPiece implements IChessPiece{
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
 					locationsToMove.add(loc);
 				}
+			}else {
+				// A piece is there
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					locationsToMove.add(loc);
+				}
 			}
 			
 			// Diagnonals
@@ -114,6 +120,12 @@ public class PawnPiece implements IChessPiece{
 			Location loc = new Location(getLocation().getX(), getLocation().getZ() - 1);
 			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					locationsToMove.add(loc);
+				}
+			}else {
+				// A piece is there
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece.getTeamType().equals(TeamType.WHITE)) {
 					locationsToMove.add(loc);
 				}
 			}

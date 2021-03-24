@@ -3,7 +3,6 @@ import java.awt.EventQueue;
 
 import com.project.AiController.AIController;
 import com.project.AiController.AIControllerHandler;
-import com.project.AiController.AIDifficulty;
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
 import com.project.Multiplayer.MultiplayerConnectionGUI;
@@ -28,7 +27,7 @@ public class Main {
 		sqlHandler = null;
 		notificationHandler = new NotificationHandler();
 		// Default AI difficulty is EASY and the default process time is 2 seconds
-		AIController = new AIControllerHandler(2, AIDifficulty.EASY);
+		AIController = new AIControllerHandler(2);
 		System.out.println("Creating And Setting Up Board...");
 		boardController = new BoardController(GameType.PLAYER_VS_PLAYER);
 	}

@@ -74,95 +74,10 @@ public class KingPiece implements IChessPiece{
 		return team;
 	}
 	
-	// TODO Make it so the king can't move itself into checkmate
-	// TODO Make it so the king can be castled
+	
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-		int[][] offsets = {
-		        {1, 0},
-		        {0, 1},
-		        {-1, 0},
-		        {0, -1},
-		        {1, 1},
-		        {-1, 1},
-		        {-1, -1},
-		        {1, -1}
-		    };
-		
-		for(int x = 0; x != 8; x++) {
-			int xOffset = offsets[x][0];
-			int zOffset = offsets[x][1];
-			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
-			if(Main.getBoardController().isLocationOnBoard(loc)) {
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						// Check if the other piece is a king
-						if(!(piece instanceof KingPiece)) {
-							locationsToMove.add(loc);
-						}
-					}
-				}else {
-					locationsToMove.add(loc);
-				}
-			}
-		}
-		// Add castling here
-			if(!hasMovedAlready()) { // This can only be done if the king hasn't moved yet
-				
-				// Right check
-				boolean possibleRightCastle = true;
-				for (int x = 1; x != 3; x++) {
-					Location temp = new Location(getLocation().getX() + x, getLocation().getZ());
-					if(Main.getBoardController().getPieceAtLocation(temp) != null) { // There is a piece there, so we can't castle
-						possibleRightCastle = false;
-						break;
-					}
-					
-				}
-				
-				// Left check
-				boolean possibleLeftCastle = true;
-				for (int x = 1; x != 4; x++) {
-					Location temp = new Location(getLocation().getX() - x, getLocation().getZ());
-					if(Main.getBoardController().getPieceAtLocation(temp) != null) { // There is a piece there, so we can't castle
-						 possibleLeftCastle = false;
-						break;
-					}
-					
-				}
-				
-				if(possibleRightCastle) { // We can right castle, check rook now
-					Location temp = new Location(7, getLocation().getZ());
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(temp);
-					if(piece != null) {
-						if(piece instanceof RookPiece) {
-							RookPiece rook = (RookPiece) piece;
-							if(!rook.hasMovedAlready()) {
-								locationsToMove.add(new Location(6, getLocation().getZ()));
-							}
-						}
-					}
-				}
-				
-				if(possibleLeftCastle) { // We can left castle, check rook now
-					Location temp = new Location(0, getLocation().getZ());
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(temp);
-					if(piece != null) {
-						if(piece instanceof RookPiece) {
-							RookPiece rook = (RookPiece) piece;
-							if(!rook.hasMovedAlready()) {
-								locationsToMove.add(new Location(2, getLocation().getZ()));
-							}
-						}
-					}
-					
-				}
-				
-				
-				
-			}
 			
 		return locationsToMove;
 	}

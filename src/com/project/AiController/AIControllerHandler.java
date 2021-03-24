@@ -12,11 +12,8 @@ public class AIControllerHandler {
 	
 	private int speed; // The speed at which the AI will move or work
 	
-	private AIDifficulty difficulty; // The difficulty the AI is currently at
-	
 	// Default contructor that sets the default information on system start
-	public AIControllerHandler(int speed, AIDifficulty difficuly) {
-		this.difficulty = difficuly;
+	public AIControllerHandler(int speed) {
 		if(speed >= 1) {
 			this.speed = speed * 1000;
 		}else {
@@ -24,16 +21,6 @@ public class AIControllerHandler {
 		}
 		
 		AIControllers = new ArrayList<AIController>();
-	}
-	
-	// Gets the difficulty of the AI: EASY, NORMAL, HARD
-	public AIDifficulty getDifficulty() {
-		return difficulty;
-	}
-	
-	// Sets the difficulty of the AI: EASY, NORMAL, HARD
-	public void setDifficulty(AIDifficulty difficulty) {
-		this.difficulty = difficulty;
 	}
 	
 	// How fast each AI will move/process information

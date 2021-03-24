@@ -79,76 +79,84 @@ public class BishopPiece implements IChessPiece{
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-			// Hello world!
-			// Right up diagonal
-			for(int x = 1; x != 9; x++) {
-				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() + x);
+		if(team.equals(TeamType.WHITE)) {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() + 1);
+			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
 				if(Main.getBoardController().isLocationOnBoard(loc)) {
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-					if(piece != null) {
+					locationsToMove.add(loc);
+				}
+			}else {
+				// A piece is there
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece.getTeamType().equals(TeamType.BLACK)) {
+					locationsToMove.add(loc);
+				}
+			}
+			
+			// Diagnonals
+			Location diag1 = new Location(getLocation().getX() + 1, getLocation().getZ() + 1);
+			if(Main.getBoardController().isLocationOnBoard(diag1)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
+				if(piece != null) {
+					if(Main.getBoardController().isLocationOnBoard(diag1)) {
 						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
+							locationsToMove.add(diag1);
 						}
-						break;
-					}else {
-						locationsToMove.add(loc);
 					}
 				}
 			}
 			
-			// Right down diagonal
-			for(int x = 1; x != 9; x++) {
-				Location loc = new Location(getLocation().getX() + x, getLocation().getZ() - x);
-				if(Main.getBoardController().isLocationOnBoard(loc)) {
-					IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+			Location diag2 = new Location(getLocation().getX() - 1, getLocation().getZ() + 1);
+			if(Main.getBoardController().isLocationOnBoard(diag2)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
+				if(Main.getBoardController().isLocationOnBoard(diag2)) {
 					if(piece != null) {
 						if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-							locationsToMove.add(loc);
+							locationsToMove.add(diag2);
 						}
-						break;
-					}else {
-						locationsToMove.add(loc);
 					}
 				}
-				
+			}
+		}else {
+			Location loc = new Location(getLocation().getX(), getLocation().getZ() - 1);
+			if(Main.getBoardController().getPieceAtLocation(loc) == null) {
+				if(Main.getBoardController().isLocationOnBoard(loc)) {
+					locationsToMove.add(loc);
+				}
+			}else {
+				// A piece is there
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece.getTeamType().equals(TeamType.WHITE)) {
+					locationsToMove.add(loc);
+				}
 			}
 			
-			// Left up diagonal
-				for(int x = 1; x != 9; x++) {
-					Location loc = new Location(getLocation().getX() - x, getLocation().getZ() + x);
-					if(Main.getBoardController().isLocationOnBoard(loc)) {
-						IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-						if(piece != null) {
-							if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-								locationsToMove.add(loc);
-							}
-							break;
-						}else {
-							locationsToMove.add(loc);
+			// Diagnonals
+			Location diag1 = new Location(getLocation().getX() - 1, getLocation().getZ() - 1);
+			if(Main.getBoardController().isLocationOnBoard(diag1)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag1);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						locationsToMove.add(diag1);
+					}
+				}
+			}
+			
+			Location diag2 = new Location(getLocation().getX() + 1, getLocation().getZ() - 1);
+			if(Main.getBoardController().isLocationOnBoard(diag2)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(diag2);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						if(Main.getBoardController().isLocationOnBoard(diag2)) {
+							locationsToMove.add(diag2);
 						}
 					}
 				}
-				
-				// Left down diagonal
-					for(int x = 1; x != 9; x++) {
-						Location loc = new Location(getLocation().getX() - x, getLocation().getZ() - x);
-						if(Main.getBoardController().isLocationOnBoard(loc)) {
-							IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-							if(piece != null) {
-								if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-									locationsToMove.add(loc);
-								}
-								break;
-							}else {
-								locationsToMove.add(loc);
-							}
-									
-						}
-									
-					}
+			}
+		}
+		
 		
 		return locationsToMove;
 	}
-
 	
 }

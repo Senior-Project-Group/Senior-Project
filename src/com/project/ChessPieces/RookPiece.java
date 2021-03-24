@@ -78,66 +78,72 @@ public class RookPiece implements IChessPiece{
 	@Override
 	public ArrayList<Location> getPossibleMoves() {
 		ArrayList<Location> locationsToMove = new ArrayList<Location>();
-		// Up
-		for(int x = 1; x != 9; x++) {
-			Location loc = new Location(getLocation().getX(), getLocation().getZ() + x);
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+		
+		int[][] offsets = {
+		        {1, 0},
+		        {0, 1},
+		        {-1, 0},
+		        {0, -1},
+		        {1, 1},
+		        {-1, 1},
+		        {-1, -1},
+		        {1, -1},
+		       		        
+		    };
+		
+		for(int x = 0; x != 8; x++) {
+			int xOffset = offsets[x][0];
+			int zOffset = offsets[x][1];
+			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						locationsToMove.add(loc);
+					}
+				}else {
 					locationsToMove.add(loc);
 				}
-				break;
-			}else {
-				locationsToMove.add(loc);
 			}
 		}
 		
-		// Down
-		for(int x = 1; x != 9; x++) {
-			Location loc = new Location(getLocation().getX(), getLocation().getZ() - x);
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-					locationsToMove.add(loc);
+		int[][] attackOffset = {
+		        {1, 0},
+		        {0, 1},
+		        {-1, 0},
+		        {0, -1},
+		        {1, 1},
+		        {-1, 1},
+		        {-1, -1},
+		        {1, -1},
+		        
+		        {2, 0},
+		        {0, 2},
+		        {-2, 0},
+		        {0, -2},
+		        {2, 2},
+		        {-2, 2},
+		        {-2, -2},
+		        {2, -2}
+		        
+		    };
+		
+		for(int x = 0; x != 8; x++) {
+			int xOffset = attackOffset[x][0];
+			int zOffset = attackOffset[x][1];
+			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
+			if(Main.getBoardController().isLocationOnBoard(loc)) {
+				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
+				if(piece != null) {
+					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
+						locationsToMove.add(loc);
+					}
 				}
-				break;
-			}else {
-				locationsToMove.add(loc);
 			}
 		}
 		
-		// To the right
-		for(int x = 1; x != 9; x++) {
-			Location loc = new Location(getLocation().getX() + x, getLocation().getZ());
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-					locationsToMove.add(loc);
-				}
-				break;
-			}else {
-				locationsToMove.add(loc);
-			}
-		}
 		
-		// To the left
-		for(int x = 1; x != 9; x++) {
-			Location loc = new Location(getLocation().getX() - x, getLocation().getZ());
-			if(!Main.getBoardController().isLocationOnBoard(loc)) break;
-			IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-			if(piece != null) {
-				if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-					locationsToMove.add(loc);
-				}
-				break;
-			}else {
-				locationsToMove.add(loc);
-			}
-		}
+		
 		
 		
 		return locationsToMove;

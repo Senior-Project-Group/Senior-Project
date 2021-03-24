@@ -7,7 +7,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.project.AiController.AIDifficulty;
 import com.project.BoardController.GameType;
 import com.project.Main.Main;
 import com.project.Multiplayer.MultiplayerConnectionGUI;
@@ -87,36 +86,6 @@ public class Board {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
-		
-		JMenu mnNewMenu_2 = new JMenu("Select AI Difficulty");
-		menuBar.add(mnNewMenu_2);
-		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Easy");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Changed difficulty AI difficulty to easy.");
-				Main.getAIController().setDifficulty(AIDifficulty.EASY);
-			}
-		});
-		mnNewMenu_2.add(mntmNewMenuItem_2);
-		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Normal");
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Changed difficulty AI difficulty to normal.");
-				Main.getAIController().setDifficulty(AIDifficulty.NORMAL);
-			}
-		});
-		mnNewMenu_2.add(mntmNewMenuItem_3);
-		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Hard");
-		mntmNewMenuItem_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Changed difficulty AI difficulty to hard.");
-				Main.getAIController().setDifficulty(AIDifficulty.HARD);
-			}
-		});
-		mnNewMenu_2.add(mntmNewMenuItem_4);
 		
 		JMenu mnNewMenu_3 = new JMenu("AI Process Speed");
 		menuBar.add(mnNewMenu_3);
