@@ -1,5 +1,7 @@
 package com.project.TeamController;
 
+import java.util.Random;
+
 import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
@@ -104,4 +106,12 @@ public class ProbabilityController {
 			}
 		}
 	}
+	
+	public int getRandomNumber() {
+		Random rand = new Random();
+		
+		return rand.nextInt(6) + 1;
+		
+	}
+	
 }

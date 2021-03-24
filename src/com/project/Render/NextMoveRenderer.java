@@ -51,6 +51,8 @@ public class NextMoveRenderer {
 	
 	// This will render all the possible locations of the piece
 	// In the end, I am hoping to make this work well and physically show the different moves the piece can do
+	
+	// TODO ADD FUZZY LOGIC HERE!
 	public void renderForPiece(IChessPiece piece) {
 		clearCurrentRender();
 		CenterPointManager center = new CenterPointManager();

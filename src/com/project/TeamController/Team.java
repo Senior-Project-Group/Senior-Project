@@ -64,7 +64,7 @@ public class Team {
 			
 			// Top row for white (pawns)
 			for(int x = 0; x != 8; x++) {
-				pieces.add(new PawnPiece(new Location(x, 1), TeamType.WHITE));
+				 pieces.add(new PawnPiece(new Location(x, 1), TeamType.WHITE));
 			}
 			
 		}
