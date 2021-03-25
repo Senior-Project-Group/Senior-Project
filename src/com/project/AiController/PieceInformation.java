@@ -1,12 +1,8 @@
 package com.project.AiController;
 
 import com.project.BoardController.Location;
-import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
-import com.project.ChessPieces.KnightPiece;
-import com.project.ChessPieces.PawnPiece;
-import com.project.ChessPieces.QueenPiece;
-import com.project.ChessPieces.RookPiece;
+import com.project.ChessPieces.ProbabilityController;
 
 public class PieceInformation {
 
@@ -14,10 +10,16 @@ public class PieceInformation {
 	private IChessPiece piece; // Piece to move
 	private Location location; // Location to move too
 	private IChessPiece pieceAtMoveLocation;
+	private int[] killProbablity = null; // The probablity to take the piece
 	
 	public PieceInformation(IChessPiece piece, Location location, boolean canKill, IChessPiece pieceAtLocation) {
 		this.piece = piece;
 		this.canKill = canKill;
+		if(canKill) {
+			killProbablity = new ProbabilityController().getProbablity(piece, pieceAtLocation);
+		}else {
+			killProbablity = null;
+		}
 		this.location = location;
 		
 		this.pieceAtMoveLocation = pieceAtLocation;
@@ -31,28 +33,23 @@ public class PieceInformation {
 		return location;
 	}
 	
+	public IChessPiece getPieceAtMoveToLocation() {
+		return pieceAtMoveLocation;
+	}
+	
 	public boolean canKillPiece() {
 		return canKill;
 	}
-	
-	// Return the rank of the move
-	public int getRankOfMove() {
-		
-		// Return 0 if there is no piece at the location
-		if(pieceAtMoveLocation == null) return 0; 
-		
-		if(pieceAtMoveLocation instanceof PawnPiece) {
-			return 1;
-		}else if(pieceAtMoveLocation instanceof KnightPiece) {
-			return 2;
-		}else if(pieceAtMoveLocation instanceof RookPiece) { // Both rook and bishop are same rank
-			return 3;
-		}else if(pieceAtMoveLocation instanceof BishopPiece) {
-			return 3;
-		}else if(pieceAtMoveLocation instanceof QueenPiece) {
-			return 4;
-		}else {
-			return 5; // Last piece is the king
-		}
+
+	public int[] getKillProbality() {
+		return killProbablity;
 	}
+	
+	public int getKillProbablitySize() {
+		if(getKillProbality() == null) {
+			return 0;
+		}
+		return getKillProbality().length;
+	}
+	
 }
