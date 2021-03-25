@@ -81,7 +81,7 @@ public class CommanderLogic {
 	
 	public void reset() {
 		moveCount = 1;
-		hasKingMoved = true;
+		hasKingMoved = false;
 		commandersAlreadyUsedMove.clear();
 	}
 	
@@ -96,7 +96,6 @@ public class CommanderLogic {
 		if(piece instanceof BishopPiece || piece instanceof KingPiece) {
 			return piece;
 		}
-
 		
 		boolean found = false;
 		// The king controls the Queen and Rook Pieces
@@ -117,9 +116,8 @@ public class CommanderLogic {
 			}
 			
 		}
-
 		
-		IChessPiece blackLeftBishop = Main.getBoardController().getPieceAtLocation(new Location(3, 7));
+		IChessPiece blackLeftBishop = Main.getBoardController().getPieceAtLocation(new Location(2, 7));
 		IChessPiece blackRightBishop = Main.getBoardController().getPieceAtLocation(new Location(5, 7));
 		
 		IChessPiece whiteLeftBishop = Main.getBoardController().getPieceAtLocation(new Location(2, 0));
@@ -151,7 +149,7 @@ public class CommanderLogic {
 			}
 		}
 
-		
+
 		// The king has already moved above, so we can't use this. Find a bishop who can move the piece for them
 		if(piece instanceof QueenPiece || piece instanceof RookPiece || piece instanceof PawnPiece) {
 			if(piece instanceof PawnPiece && (piece.getStartLocation().getX() == 3 || piece.getStartLocation().getX() == 4)) { // Kings pawns
@@ -193,6 +191,7 @@ public class CommanderLogic {
 			}
 
 		}
+
 		
 		// This is the normal way, the piece has a bishop as a commander
 		if(piece instanceof PawnPiece || piece instanceof KnightPiece) {
@@ -231,7 +230,7 @@ public class CommanderLogic {
 				}
 			}
 		}
-		
+		System.out.println("5");
 		if(!found) {
 			for(IChessPiece pieces : team.getChessPieces()) {
 				if(pieces instanceof KingPiece) {
