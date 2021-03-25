@@ -117,9 +117,18 @@ public class PiecesTexture {
 		    	}else {
 		    		teamObj = Main.getBoardController().getTeam2();
 		    	}
+		    
+		    	// Get the commander for the piece moving
+		    	IChessPiece commander = teamObj.getCommanderLogic().getCommanderForPiece(manipulatedPiece);
+		    	if(commander != null) {
+		    		System.out.println("Commander is: " + commander.getLocation().getX() + ", " + commander.getLocation().getZ() + " - " + commander.getClass().toString());
+		    	}else {
+		    		System.out.println("Commander is: null");
+		    	}
 		    	
-		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(teamObj.getCommanderLogic().getCommanderForPiece(manipulatedPiece))) {
-		    		Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);	
+		    	// Check if the commander has moved yet
+		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(commander)) {
+		    		Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
 		    	}
 		    	
 		    }  

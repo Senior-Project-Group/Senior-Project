@@ -159,8 +159,6 @@ public class NextMoveRenderer {
 			    			
 			    			// Determine who's going to move next
 			    			
-			    			
-			    			// TODO FLUZZY LOGIC! CHECK IF NEXT TEAM TO MOVE
 			    			Team team = null;
 			    			if(Main.getBoardController().getCurrentPlayerToMove().equals(TeamType.BLACK)) {
 			    				// Team 1
@@ -169,11 +167,14 @@ public class NextMoveRenderer {
 			    				team = Main.getBoardController().getTeam2();
 			    			}
 			    			
+			    			
+			    			// TODO FLUZZY LOGIC! CHECK IF NEXT TEAM TO MOVE
 			    			if(team.getCommanderLogic().hasDoneAllMoves()) {
 			    				Main.getBoardController().setNextPlayerToMove();
 			    				team.getCommanderLogic().reset();
 			    			}else {
-			    				team.getCommanderLogic().move(team.getCommanderLogic().getCommanderForPiece(piece));
+			    				IChessPiece commander = team.getCommanderLogic().getCommanderForPiece(piece);
+			    				team.getCommanderLogic().move(commander);
 			    			}
 			    			
 			    			break;
