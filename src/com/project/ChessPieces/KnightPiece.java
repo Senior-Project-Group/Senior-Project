@@ -17,6 +17,8 @@ public class KnightPiece implements IChessPiece{
 	
 	private boolean hasMovedOnce;
 	
+	private Location startLocation;
+	
 	@SuppressWarnings("unused")
 	private TeamType team;
 	
@@ -26,6 +28,7 @@ public class KnightPiece implements IChessPiece{
 		hasMovedOnce = false;
 		this.location = location;
 		texture = new PiecesTexture(this, getLocation().getX(), getLocation().getZ(), team);
+		startLocation = location;
 	}
 	
 	@Override
@@ -53,6 +56,11 @@ public class KnightPiece implements IChessPiece{
 	@Override
 	public Location getLocation() {
 		return location;
+	}
+	
+	@Override
+	public Location getStartLocation() {
+		return startLocation;
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.ProbabilityController;
 import com.project.Main.Main;
+import com.project.TeamController.Team;
+import com.project.TeamController.TeamType;
 
 
 // Object that is responsible for determining the next locations the currently selected piece can or can't move.
@@ -155,8 +157,24 @@ public class NextMoveRenderer {
 			    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			}
 			    			
-			    			// TODO Next player checker
-			    			Main.getBoardController().setNextPlayerToMove();
+			    			// Determine who's going to move next
+			    			
+			    			
+			    			// TODO FLUZZY LOGIC! CHECK IF NEXT TEAM TO MOVE
+			    			Team team = null;
+			    			if(Main.getBoardController().getCurrentPlayerToMove().equals(TeamType.BLACK)) {
+			    				// Team 1
+			    				team = Main.getBoardController().getTeam1();
+			    			}else {
+			    				team = Main.getBoardController().getTeam2();
+			    			}
+			    			
+			    			if(team.getCommanderLogic().hasDoneAllMoves()) {
+			    				Main.getBoardController().setNextPlayerToMove();
+			    				team.getCommanderLogic().reset();
+			    			}else {
+			    				team.getCommanderLogic().move(team.getCommanderLogic().getCommanderForPiece(piece));
+			    			}
 			    			
 			    			break;
 			    		}

@@ -29,4 +29,6 @@ public interface IChessPiece {
 	
 	public TeamType getTeamType();
 	
+	public Location getStartLocation();
+	
 }

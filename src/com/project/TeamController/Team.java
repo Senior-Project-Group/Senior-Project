@@ -20,12 +20,15 @@ public class Team {
 	
 	private int moveCounter;
 	
+	private CommanderLogic commanderLogic;
+	
 	// Default contructor that creates a new team, either WHITE or BLACK
 	public Team(TeamType type) {
 		moveCounter = 0;
 		teamType = type;
 		pieces = new ArrayList<IChessPiece>();
 		setPieces();
+		commanderLogic = new CommanderLogic(this);
 	}
 	
 	// Sets the piece locations on the board
@@ -99,6 +102,10 @@ public class Team {
 	
 	public void addNewPiece(IChessPiece piece) {
 		pieces.add(piece);
+	}
+	
+	public CommanderLogic getCommanderLogic() {
+		return commanderLogic;
 	}
 	
 	@Override

@@ -19,12 +19,15 @@ public class KingPiece implements IChessPiece{
 	
 	private TeamType team;
 	
+	private Location startLocation;
+	
 	public KingPiece(Location location, TeamType team) {
 		this.team = team;
 		isAlive = true;
 		hasMovedOnce = false;
 		this.location = location;
 		texture = new PiecesTexture(this, getLocation().getX(), getLocation().getZ(), team);
+		startLocation = location;
 	}
 	@Override
 	public boolean isAlive() {
@@ -51,6 +54,11 @@ public class KingPiece implements IChessPiece{
 	@Override
 	public Location getLocation() {
 		return location;
+	}
+	
+	@Override
+	public Location getStartLocation() {
+		return startLocation;
 	}
 
 	@Override

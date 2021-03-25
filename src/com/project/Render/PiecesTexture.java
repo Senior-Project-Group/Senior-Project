@@ -16,6 +16,7 @@ import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
 import com.project.Main.Main;
+import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
 
 // Object that holds all the textures of the piece
@@ -105,7 +106,22 @@ public class PiecesTexture {
 		    	
 		    	
 		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-		    	Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
+		    	
+		    	Team teamObj = null;
+		    	// Before checking if this can run, check if piece can move by commander
+		    	
+		    	// TODO COMMANDER LOGIC
+		    	// Check if piece is allowed to move (is commander still alive)
+		    	if(team.equals(TeamType.BLACK)) {
+		    		teamObj = Main.getBoardController().getTeam1();
+		    	}else {
+		    		teamObj = Main.getBoardController().getTeam2();
+		    	}
+		    	
+		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(teamObj.getCommanderLogic().getCommanderForPiece(manipulatedPiece))) {
+		    		Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);	
+		    	}
+		    	
 		    }  
 		}); 
 		
