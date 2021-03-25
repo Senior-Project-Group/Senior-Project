@@ -113,11 +113,19 @@ public class NextMoveRenderer {
 			    			if(piece1 != null) { // A piece is here
 			    				DiceRollerGUI gui = new DiceRollerGUI();
 			    				ProbabilityController prob = new ProbabilityController();
+			    				gui.getFrame().repaint();
 			    				int rand = prob.getRandomNumber();
 			    				int[] valuesNeeded = prob.getProbablity(piece, piece1);
 			    				
+			    				String temp = "";
+			    				for(int x = 0; x != valuesNeeded.length; x++) {
+			    					temp = temp + " " + valuesNeeded[x];
+			    				}
+			    				System.out.println("Probabilty needed:" + temp);
+			    				
+			    				
 			    				try {
-									Thread.sleep(2000);
+									Thread.sleep(2500);
 								} catch (InterruptedException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
@@ -132,24 +140,18 @@ public class NextMoveRenderer {
 			    				
 			    				if(success) {
 			    					gui.getRollingLabel().setText(rand + " (Success!)");
+			    					
+			    					Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
+				    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+				    				
+				    				piece1.destroyPiece();
+			    					Main.getBoardController().checkForGameFinished();
+			    					
 			    				}else {
 			    					gui.getRollingLabel().setText(rand + " (Missed!)");
 			    				}
 			    				
-			    				try {
-									Thread.sleep(1300);
-								} catch (InterruptedException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-			    				
-			    				gui.getFrame().dispose();
-			    				Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
-			    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    				
-			    				piece1.destroyPiece();
-		    					Main.getBoardController().checkForGameFinished();
-			    				
+			    				gui.getFrame().repaint();
 			    				
 			    			}else {
 			    				// NO PIECE HERE, JUST MOVE THE PIECE
