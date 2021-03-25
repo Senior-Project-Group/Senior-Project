@@ -9,12 +9,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
-import com.project.BoardController.GameType;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
-import com.project.ChessPieces.KingPiece;
 import com.project.Main.Main;
-import com.project.Multiplayer.NextMoveParser;
 
 
 // Object that is responsible for determining the next locations the currently selected piece can or can't move.
@@ -47,6 +44,7 @@ public class NextMoveRenderer {
 			}
 		}
 		labels.clear();
+		Main.getBoardController().getBoardObject().getFrame().repaint();
 	}
 	
 	// This will render all the possible locations of the piece
@@ -91,58 +89,11 @@ public class NextMoveRenderer {
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
 			    			
-			    			Location pieceLocation = piece.getLocation();
-			    			
-			    			// Check if this was a castling move
-			    			boolean rightCastle = false;
-			    			boolean leftCastle = false;
-			    			if(piece instanceof KingPiece) {
-			    				if(!piece.hasMovedAlready()) { // This is the kings first move
-			    					// Check the location of the move
-			    					if(obj.getLocation().equals(new Location(6, piece.getLocation().getZ()))) { // Check right castle
-			    						// It was a castle move
-			    						IChessPiece rightRook = Main.getBoardController().getPieceAtLocation(new Location(7, piece.getLocation().getZ()));
-			    						if(rightRook != null) {
-			    							Main.getBoardController().movePieceOnBoard(rightRook, new Location(5, piece.getLocation().getZ()));
-			    							System.out.println("Right Castle Done");
-			    							rightCastle = true;
-			    						}
-			    					}
-			    					if(obj.getLocation().equals(new Location(2, piece.getLocation().getZ()))) { // Check left castle
-			    						// It was a castle move
-			    						IChessPiece leftRook = Main.getBoardController().getPieceAtLocation(new Location(0, piece.getLocation().getZ()));
-			    						if(leftRook != null) {
-			    							Main.getBoardController().movePieceOnBoard(leftRook, new Location(3, piece.getLocation().getZ()));
-			    							System.out.println("Left Castle Done");
-			    							leftCastle = true;
-			    						}
-			    					}
-			    				}
-			    				
-			    			}
-			    			
-			    			boolean promotionDone = false;
 			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			
 			    			
 			    			Main.getBoardController().setNextPlayerToMove();
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    			
-			    			if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
-			    				// Send the move to the SQL database
-			    				if(leftCastle) {
-			    					// Send left castle to parser
-			    					new NextMoveParser(piece.getTeamType(), "LEFT_CASTLE").sendToDatabase(Main.getSQLHandler());
-			    				}else if(rightCastle) {
-			    					// Send right castle to parser
-			    					new NextMoveParser(piece.getTeamType(), "RIGHT_CASTLE").sendToDatabase(Main.getSQLHandler());
-			    				}else if (promotionDone) {
-			    					// Promotion
-			    					// We don't do anything here
-			    				}else {
-			    					new NextMoveParser(piece.getTeamType(), pieceLocation, obj.getLocation()).sendToDatabase(Main.getSQLHandler());
-			    				}
-			    			}
 			    			
 			    			if(piece1 != null) {
 		    					System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());

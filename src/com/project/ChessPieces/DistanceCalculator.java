@@ -13,16 +13,18 @@ public class DistanceCalculator {
 	
 	public ArrayList<Location> findPossiblePaths(IChessPiece piece, int checkAmount) {
 		locations.clear();
+		System.out.println("----");
 		recersivePath(piece, piece.getLocation(), checkAmount, 0);
 		return locations;
 	}
 	
 	// On start the currentPathAmount = 0
 	private void recersivePath(IChessPiece startPiece, Location from, int checkAmount, int currentPathAmount) {
-		if(currentPathAmount > checkAmount) {
+		if(currentPathAmount >= checkAmount) {
 			return;
 		}
 		
+		System.out.println("Scanning: " + from.getX() + ", " + from.getZ());
 		int[][] offsets = {
 		        {1, 0},
 		        {0, 1},
@@ -45,14 +47,13 @@ public class DistanceCalculator {
 					if(!piece.getTeamType().equals(startPiece.getTeamType())) {
 						// It's an enemy piece
 						addToList(startPiece.getLocation(), loc, checkAmount);
+						recersivePath(startPiece, loc, checkAmount, (currentPathAmount + 1));
 					}
 				}else {
 					if(!loc.equals(from)) {
-						if(!locations.contains(loc)) {
-							currentPathAmount++;
-							addToList(startPiece.getLocation(), loc, checkAmount);
-							recersivePath(startPiece, loc, checkAmount, currentPathAmount);
-						}
+						addToList(startPiece.getLocation(), loc, checkAmount);
+						recersivePath(startPiece, loc, checkAmount, (currentPathAmount + 1));
+						
 					}
 				}
 			}
@@ -80,7 +81,11 @@ public class DistanceCalculator {
 		if(!locations.contains(to)) {
 			if(getDistance(from, to, checkAmount) == 1) {
 				locations.add(to);
+			}else {
+				System.out.println("Blocked: " + to.getX() + ", " + from.getZ());
 			}
+		}else {
+			System.out.println("Contained: " + to.getX() + ", " + from.getZ());
 		}
 	}
 	

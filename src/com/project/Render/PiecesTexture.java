@@ -88,19 +88,7 @@ public class PiecesTexture {
 		    	}
 		    	
 		    	if(!Main.getBoardController().getCurrentPlayerToMove().equals(team)) return;
-		    	
-		    	// It's an SQL connection game
-		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.SQL_MULTIPLAYER)) {
-		    		// SQL Multiplayer checks here
-		    		
-		    		// Check if the player trying to move is allowed to move
-		    			if(!Main.getSQLHandler().getTeamType().equals(team)) {
-		    				System.out.println("Error: Not your turn to move");
-		    				return;
-		    			}
-		    	}
-		    	
-		    	
+		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 		    	// Both players are AI, so don't let anyone touch anything
 		    	if(Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI)) {
 		    		System.out.println("Error: AI Is supposed to move, player input denied.");
@@ -115,12 +103,6 @@ public class PiecesTexture {
 		    		}
 		    	}
 		    	
-		    	/*
-		    	System.out.println("Possible Moves: ");
-		    	for(Location loc : manipulatedPiece.getPossibleMoves()) {
-		    		System.out.println("(" + loc.getX() + ", " + loc.getZ() + ")");
-		    	}
-		    	*/
 		    	
 		    	Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 		    	Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
