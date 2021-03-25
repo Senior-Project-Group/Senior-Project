@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.ProbabilityController;
 import com.project.Main.Main;
 
 
@@ -50,7 +51,6 @@ public class NextMoveRenderer {
 	// This will render all the possible locations of the piece
 	// In the end, I am hoping to make this work well and physically show the different moves the piece can do
 	
-	// TODO ADD FUZZY LOGIC HERE!
 	public void renderForPiece(IChessPiece piece) {
 		clearCurrentRender();
 		CenterPointManager center = new CenterPointManager();
@@ -66,7 +66,24 @@ public class NextMoveRenderer {
 				pieceLabel = pieceAt.getTexture().getPieceLabel();
 				
 				Border border = BorderFactory.createLineBorder(Color.GREEN, 3);
+				
+				// ADD THE ROLL INFORMATION
+				
+				
+				ProbabilityController probability = new ProbabilityController();
+				int[] values = probability.getProbablity(pieceAt, piece);
+				
+				String text = "";
+				for(int x = 0; x != values.length; x++) {
+					if(x != 0) {
+						text = text + ", " + values[x];
+					}else {
+						text = text + values[x];
+					}
+				}
+				
 				pieceLabel.setBorder(border);
+				
 			}else {
 				pieceLabel = new JLabel("");
 				pieceLabel.setBounds(point.getX(), point.getZ(), center.getDimensionOfPiece(), center.getDimensionOfPiece());
@@ -74,7 +91,7 @@ public class NextMoveRenderer {
 				Border border = BorderFactory.createLineBorder(Color.BLUE, 3);
 				pieceLabel.setBorder(border);
 			}
-			
+			Main.getBoardController().getBoardObject().getFrame().repaint();
 			
 			MouseAdapter mouseListener = new MouseAdapter() {
 			    public void mouseClicked(MouseEvent e) {
@@ -89,17 +106,57 @@ public class NextMoveRenderer {
 			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			IChessPiece piece1 = Main.getBoardController().getPieceAtLocation(obj.getLocation());
 			    			
-			    			Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    			
-			    			
-			    			Main.getBoardController().setNextPlayerToMove();
-			    			Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    			
-			    			if(piece1 != null) {
-		    					System.out.println("Destroying piece: " + piece1.getTexture().getTextureLocation());
-		    					piece1.destroyPiece();
+			    			// TODO ADD FUZZY LOGIC HERE!
+			    			if(piece1 != null) { // A piece is here
+			    				DiceRollerGUI gui = new DiceRollerGUI();
+			    				ProbabilityController prob = new ProbabilityController();
+			    				int rand = prob.getRandomNumber();
+			    				int[] valuesNeeded = prob.getProbablity(piece, piece1);
+			    				
+			    				try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+			    				
+			    				boolean success = false;
+			    				for(int x = 0; x != valuesNeeded.length; x++) {
+			    					if(rand == valuesNeeded[x]) {
+			    						success = true;
+			    					}
+			    				}
+			    				
+			    				if(success) {
+			    					gui.getRollingLabel().setText(rand + " (Success!)");
+			    				}else {
+			    					gui.getRollingLabel().setText(rand + " (Missed!)");
+			    				}
+			    				
+			    				try {
+									Thread.sleep(1300);
+								} catch (InterruptedException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+			    				
+			    				gui.getFrame().dispose();
+			    				Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
+			    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    				
+			    				piece1.destroyPiece();
 		    					Main.getBoardController().checkForGameFinished();
+			    				
+			    				
+			    			}else {
+			    				// NO PIECE HERE, JUST MOVE THE PIECE
+			    				Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
+			    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    			}
+			    			
+			    			// TODO Next player checker
+			    			Main.getBoardController().setNextPlayerToMove();
 			    			
 			    			break;
 			    		}

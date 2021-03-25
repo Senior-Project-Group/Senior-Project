@@ -35,4 +35,15 @@ public class CenterPointManager {
 		return defaultDimension;
 	}
 	
+	
+	public Location getRollLabelLocation(int x, int z) {
+		Location loc = centerPointAlgorithm(x, z);
+		int locX = loc.getX();
+		int locZ = loc.getZ();
+		
+		return new Location(locX + 50, locZ + 50);
+		
+		
+	}
+	
 }

@@ -155,6 +155,20 @@ public class Board {
 			}
 		});
 		reloadBoard.add(reloadBoardRequester);
+		
+		JMenu skipTurnMenu = new JMenu("Skip Turn");
+		menuBar.add(skipTurnMenu);
+		
+		JMenuItem skipTurnButton = new JMenuItem("Skip Turn");
+		skipTurnButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Skip the persons turn
+				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+				Main.getBoardController().setNextPlayerToMove();
+				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Successfully Skipped Turn!");
+			}
+		});
+		skipTurnMenu.add(skipTurnButton);
 	}
 	
 	public JFrame getFrame() {
