@@ -230,7 +230,7 @@ public class CommanderLogic {
 				}
 			}
 		}
-		System.out.println("5");
+		
 		if(!found) {
 			for(IChessPiece pieces : team.getChessPieces()) {
 				if(pieces instanceof KingPiece) {
