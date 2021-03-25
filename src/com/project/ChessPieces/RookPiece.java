@@ -115,41 +115,16 @@ public class RookPiece implements IChessPiece{
 			}
 		}
 		
-		int[][] attackOffset = {
-		        {1, 0},
-		        {0, 1},
-		        {-1, 0},
-		        {0, -1},
-		        {1, 1},
-		        {-1, 1},
-		        {-1, -1},
-		        {1, -1},
-		        
-		        {2, 0},
-		        {0, 2},
-		        {-2, 0},
-		        {0, -2},
-		        {2, 2},
-		        {-2, 2},
-		        {-2, -2},
-		        {2, -2}
-		        
-		    };
-		
-		for(int x = 0; x != 8; x++) {
-			int xOffset = attackOffset[x][0];
-			int zOffset = attackOffset[x][1];
-			Location loc = new Location(getLocation().getX() + xOffset, getLocation().getZ() + zOffset);
-			if(Main.getBoardController().isLocationOnBoard(loc)) {
-				IChessPiece piece = Main.getBoardController().getPieceAtLocation(loc);
-				if(piece != null) {
-					if(Main.getBoardController().getTeamPieceBelongsTo(piece) != Main.getBoardController().getTeamPieceBelongsTo(Main.getBoardController().getPieceAtLocation(getLocation()))) {
-						locationsToMove.add(loc);
-					}
+		ArrayList<Location> attackLocations = new DistanceCalculator().findPossiblePaths(this, 2);
+		for(Location attack : attackLocations) {
+			IChessPiece atLocation = Main.getBoardController().getPieceAtLocation(attack);
+			if(atLocation != null) {
+				if(!atLocation.getTeamType().equals(this.getTeamType())) {
+					locationsToMove.add(attack);
 				}
+				
 			}
 		}
-		
 		
 		
 		
