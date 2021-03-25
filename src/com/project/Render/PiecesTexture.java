@@ -127,7 +127,7 @@ public class PiecesTexture {
 		    	}
 		    	
 		    	// Check if the commander has moved yet
-		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(commander)) {
+		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(commander) && commander != null) {
 		    		Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
 		    	}
 		    	

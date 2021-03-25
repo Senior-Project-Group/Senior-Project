@@ -54,8 +54,6 @@ public class CommanderLogic {
 	}
 	
 	public boolean hasDoneAllMoves() {
-		System.out.println("Max Moves: " + getMaxMoves());
-		System.out.println("Current Moves: " + getMoveCount());
 		if(getMoveCount() >= getMaxMoves()) {
 			return true;
 		}
@@ -98,6 +96,7 @@ public class CommanderLogic {
 		if(piece instanceof BishopPiece || piece instanceof KingPiece) {
 			return piece;
 		}
+
 		
 		boolean found = false;
 		// The king controls the Queen and Rook Pieces
@@ -118,6 +117,7 @@ public class CommanderLogic {
 			}
 			
 		}
+
 		
 		IChessPiece blackLeftBishop = Main.getBoardController().getPieceAtLocation(new Location(3, 7));
 		IChessPiece blackRightBishop = Main.getBoardController().getPieceAtLocation(new Location(5, 7));
@@ -150,6 +150,7 @@ public class CommanderLogic {
 				whiteRightBishop = null;
 			}
 		}
+
 		
 		// The king has already moved above, so we can't use this. Find a bishop who can move the piece for them
 		if(piece instanceof QueenPiece || piece instanceof RookPiece || piece instanceof PawnPiece) {
@@ -193,9 +194,6 @@ public class CommanderLogic {
 
 		}
 		
-		
-		
-		
 		// This is the normal way, the piece has a bishop as a commander
 		if(piece instanceof PawnPiece || piece instanceof KnightPiece) {
 			for(IChessPiece pieces : team.getChessPieces()) {
@@ -237,7 +235,9 @@ public class CommanderLogic {
 		if(!found) {
 			for(IChessPiece pieces : team.getChessPieces()) {
 				if(pieces instanceof KingPiece) {
-					return pieces;
+					if(!hasKingMoved) {
+						return pieces;
+					}
 				}
 			}
 		}
