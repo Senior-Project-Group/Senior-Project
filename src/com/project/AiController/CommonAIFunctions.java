@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.Main.Main;
+import com.project.TeamController.Team;
 public class CommonAIFunctions {
 
 	private AIController controller;
@@ -38,6 +40,8 @@ public class CommonAIFunctions {
 		return null;
 	}
 	
+	// Return the location a piece can move to inorder to take out a bishop
+	// Returns null if the piece can't take out a bishop
 	public Location canPieceTakeBishop(IChessPiece piece) {
 		// King piece can't take out another king
 		if(piece instanceof KingPiece) return null;
@@ -62,7 +66,8 @@ public class CommonAIFunctions {
 		return null;
 	}
 	
-	
+	// Return all possible moves for all the teams pieces
+	// Will never return null. Impossible
 	public ArrayList<PieceInformation> getAllPossibleMoves() {
 		ArrayList<PieceInformation> pieceInformation = new ArrayList<PieceInformation>();
 		for(IChessPiece piece : controller.getTeam().getChessPieces()) {
@@ -81,6 +86,54 @@ public class CommonAIFunctions {
 			
 		}
 		return pieceInformation;
+	}
+	
+	// Function that will return an arraylist of all pieces who can move to a specific location
+	public ArrayList<IChessPiece> findPiecesToMoveToLocation(Location location) {
+		ArrayList<IChessPiece> pieces = new ArrayList<IChessPiece>();
+		
+		for(IChessPiece onBoard : controller.getTeam().getChessPieces()) {
+			if(location.equals(onBoard.getLocation())) {
+				pieces.add(onBoard);
+			}
+			
+		}
+		
+		return null;	
+	}
+	
+	// Returns all threatened pieces of the team
+	// A threatened piece means that it's possible for it to be taken out/killed
+	public ArrayList<ThreatenedPiece> getThreatenedPieces() {
+		ArrayList<ThreatenedPiece> threatenedPieces = new ArrayList<ThreatenedPiece>();
+		
+		// Get all enemy pieces
+		for(IChessPiece enemyPieces : controller.getEnemyTeam().getChessPieces()) {
+			ArrayList<Location> moves = enemyPieces.getPossibleMoves();
+			for(Location loc : moves) {
+				if(Main.getBoardController().getPieceAtLocation(loc) != null) { // It take take out a piece
+					boolean found = false;
+					ThreatenedPiece piece = new ThreatenedPiece(Main.getBoardController().getPieceAtLocation(loc));
+					for(ThreatenedPiece threat : threatenedPieces) {
+						if(piece.equals(threat)) {
+							found = true;
+							threat.addThreat(enemyPieces);
+							break;
+						}
+					}
+					if(!found) {
+						threatenedPieces.add(piece);
+					}
+					
+				}
+			}
+		}
+		
+		if(threatenedPieces.size() == 0) {
+			return null;
+		}
+		
+		return threatenedPieces;
 		
 	}
 	

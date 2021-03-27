@@ -144,10 +144,10 @@ public class Board {
 		});
 		mnNewMenu_3.add(mntmNewMenuItem_10);
 		
-		JMenu skipTurnMenu = new JMenu("Skip Turn");
+		JMenu skipTurnMenu = new JMenu("End Turn");
 		menuBar.add(skipTurnMenu);
 		
-		JMenuItem skipTurnButton = new JMenuItem("Skip Turn");
+		JMenuItem skipTurnButton = new JMenuItem("End Turn");
 		skipTurnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Skip the persons turn

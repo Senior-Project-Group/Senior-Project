@@ -8,7 +8,7 @@ import com.project.TeamController.Team;
 
 // Object that handles the AI for the specified team
 public class AIController {
-
+	
 	private Team team; // Gets the team the AI is controlling
 	
 	private JFrame frame; // Gets the frame the AI is interacting with
