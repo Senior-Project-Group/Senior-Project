@@ -3,10 +3,13 @@ package com.project.AiController;
 import java.util.ArrayList;
 
 import com.project.BoardController.Location;
+import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.ChessPieces.KnightPiece;
+import com.project.ChessPieces.QueenPiece;
 import com.project.Main.Main;
-import com.project.TeamController.Team;
+
 public class CommonAIFunctions {
 
 	private AIController controller;
@@ -17,8 +20,6 @@ public class CommonAIFunctions {
 	// Return location the piece can move too in order to take the king
 	// Returns null if the piece cannot take the king
 	public Location canPieceTakeKing(IChessPiece piece) {
-		// King piece can't take out another king
-		if(piece instanceof KingPiece) return null;
 		
 		// Get the kings location of the other team
 		IChessPiece enemyKing = null;
@@ -43,19 +44,37 @@ public class CommonAIFunctions {
 	// Return the location a piece can move to inorder to take out a bishop
 	// Returns null if the piece can't take out a bishop
 	public Location canPieceTakeBishop(IChessPiece piece) {
-		// King piece can't take out another king
-		if(piece instanceof KingPiece) return null;
 		
 		// Get the kings location of the other team
 		IChessPiece enemyKing = null;
 		for(IChessPiece king : controller.getEnemyTeam().getChessPieces()) {
-			if(king instanceof KingPiece) {
+			if(king instanceof BishopPiece) {
 				enemyKing = king;
 				break;
 			}
 		}
-		// Error check
-		if(enemyKing == null) return null;
+
+		for(Location possibleMoves : piece.getPossibleMoves()) {
+			if(enemyKing.getLocation().equals(possibleMoves)) {
+				return possibleMoves;
+			}
+		}
+		
+		return null;
+	}
+	
+	// Return the location a piece can move to inorder to take out a knight
+	// Returns null if the piece can't take out a knight
+	public Location canPieceTakeKnight(IChessPiece piece) {
+
+		// Get the kings location of the other team
+		IChessPiece enemyKing = null;
+		for(IChessPiece king : controller.getEnemyTeam().getChessPieces()) {
+			if(king instanceof KnightPiece) {
+				enemyKing = king;
+				break;
+			}
+		}
 		
 		for(Location possibleMoves : piece.getPossibleMoves()) {
 			if(enemyKing.getLocation().equals(possibleMoves)) {
@@ -65,6 +84,30 @@ public class CommonAIFunctions {
 		
 		return null;
 	}
+	
+	// Return the location a piece can move to inorder to take out a knight
+	// Returns null if the piece can't take out a knight
+	public Location canPieceTakeQueen(IChessPiece piece) {
+
+		// Get the kings location of the other team
+		IChessPiece enemyKing = null;
+		for(IChessPiece king : controller.getEnemyTeam().getChessPieces()) {
+			if(king instanceof QueenPiece) {
+				enemyKing = king;
+				break;
+			}
+		}
+		
+		for(Location possibleMoves : piece.getPossibleMoves()) {
+			if(enemyKing.getLocation().equals(possibleMoves)) {
+				return possibleMoves;
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	
 	// Return all possible moves for all the teams pieces
 	// Will never return null. Impossible
@@ -137,5 +180,21 @@ public class CommonAIFunctions {
 		
 	}
 	
+	// Get the pieces who can take out a specific piece
+	public ArrayList<IChessPiece> getPieceWhoCanKill(IChessPiece piece) {
+		ArrayList<IChessPiece> piecesToReturn = new ArrayList<IChessPiece>();
+		for(IChessPiece pieces : controller.getTeam().getChessPieces()) {
+			if(!pieces.getTeamType().equals(piece.getTeamType())) {
+				ArrayList<Location> toMove = pieces.getPossibleMoves();
+				if(toMove.contains(piece.getLocation())) {
+					piecesToReturn.add(pieces);
+				}
+			}
+			
+		}
+		
+		return piecesToReturn;
+		
+	}
 	
 }
