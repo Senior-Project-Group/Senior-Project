@@ -133,7 +133,7 @@ public class BoardController {
 		piece.setLocation(newLocation);
 		
 		if(piece.getTeamType().equals(TeamType.BLACK)) {
-			getTeam1().addMove(); // Black is considered team1 but technically moves second (back on my part)
+			getTeam1().addMove(); // Black is considered team1 but technically moves second (bad on my part)
 		}else {
 			getTeam2().addMove(); 
 		}

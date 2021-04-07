@@ -1,12 +1,16 @@
 package com.project.AiController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.ProbabilityController;
+import com.project.Main.Main;
 
 public class EasyAI {
 
@@ -41,7 +45,9 @@ public class EasyAI {
 		
 		if(kingAttackAI(randomNumber, information)) return;
 		
-		if(inDangerAICheck(randomNumber, information, threats)) return;
+		if(controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 2) {
+			if(inDangerAICheck(randomNumber, information, threats)) return;
+		}
 		
 		if(bishopAttackAI(randomNumber, information)) return;
 		
@@ -53,11 +59,18 @@ public class EasyAI {
 		if(randomMoveAI(randomNumber, information)) return;
 		
 		// If we get to here. I have no idea what to do.
+		
+		Main.getBoardController().setNextPlayerToMove();
+		//Main.getNotificationHandler().sendNotificationMessage("Chess Game", "AI Skipped Turn");
+		Main.getBoardController().getTeam1().getCommanderLogic().reset();
+		Main.getBoardController().getTeam2().getCommanderLogic().reset();
+		
 		System.out.println("How did we get here?");
 	}
 	
 	private boolean inDangerAICheck(int randomNumber, ArrayList<PieceInformation> information, ArrayList<ThreatenedPiece> threats) {
 		ThreatenedPiece highestThreatened = null;
+		
 		for(ThreatenedPiece piece : threats) {
 			// King is threatened
 			if(piece.getThreatenedPiece() instanceof KingPiece) {
@@ -67,7 +80,24 @@ public class EasyAI {
 			
 			// Bishop threatened
 			if(piece.getThreatenedPiece() instanceof BishopPiece) {
-				highestThreatened = piece;
+				if(highestThreatened == null) {
+					highestThreatened = piece;
+				}else {
+					if(highestThreatened.getThreatenedPiece() instanceof KnightPiece) {
+						highestThreatened = piece;
+					}
+					
+				}
+			}
+			
+			if(piece.getThreatenedPiece() instanceof KnightPiece) {
+				if(highestThreatened == null) {
+					highestThreatened = piece;
+				}else {
+					if(!(highestThreatened.getThreatenedPiece() instanceof BishopPiece)) {
+						highestThreatened = piece;
+					}
+				}
 			}
 			
 		}
@@ -75,7 +105,7 @@ public class EasyAI {
 		// We don't have any kings/bishops that can be killed on our team
 		if(highestThreatened == null) return false;
 		
-		// Oh no. We do have kings/bishops that can be killed on our team
+		// Oh no. We do have kings/bishops/knight that can be killed on our team
 		ArrayList<IChessPiece> dangers = highestThreatened.getPiecesThreatening();
 		
 		IChessPiece bestChance = null;
@@ -89,6 +119,152 @@ public class EasyAI {
 		
 		
 		return false;
+	}
+	
+	
+	// This can only attack: Pawn or Rook. If it can't attack either, do a random move
+	private boolean randomMoveAI(int randomNumber, ArrayList<PieceInformation> information) {
+		PieceInformation bestMove = null;
+		
+		// Key: A piece on friendly team
+		// Values: ArrayList of all pieces this 
+		
+		
+		HashMap<IChessPiece, ArrayList<PieceInformation>> piecesThatCanAttackHash = new HashMap<IChessPiece, ArrayList<PieceInformation>>();
+		
+		HashMap<IChessPiece, ArrayList<PieceInformation>> piecesThatCannotAttackHash = new HashMap<IChessPiece, ArrayList<PieceInformation>>();
+		
+		for(PieceInformation piece : information) {
+			if(piece.canKillPiece()) {
+				if(piecesThatCanAttackHash.containsKey(piece.getPiece())) {
+					ArrayList<PieceInformation> temp = piecesThatCanAttackHash.get(piece.getPiece());
+					if(!temp.contains(piece)) {
+						temp.add(piece);
+						piecesThatCanAttackHash.put(piece.getPiece(), temp);
+						}
+				}else {
+					ArrayList<PieceInformation> temp = new ArrayList<PieceInformation>();
+					temp.add(piece);
+					piecesThatCanAttackHash.put(piece.getPiece(), temp);
+					
+				}
+				
+			}else {
+				if(piecesThatCannotAttackHash.containsKey(piece.getPiece())) {
+					ArrayList<PieceInformation> temp = piecesThatCannotAttackHash.get(piece.getPiece());
+					if(!temp.contains(piece)) {
+						temp.add(piece);
+						piecesThatCannotAttackHash.put(piece.getPiece(), temp);
+					}
+				}else {
+					ArrayList<PieceInformation> temp = new ArrayList<PieceInformation>();
+					temp.add(piece);
+					piecesThatCannotAttackHash.put(piece.getPiece(), temp);
+				}
+			}
+			
+		}
+		
+		
+		for(IChessPiece piece : piecesThatCanAttackHash.keySet()) {
+			ArrayList<PieceInformation> attackMoves = piecesThatCanAttackHash.get(piece);
+			
+			// Very special case. Only the king can move
+			if(piecesThatCannotAttackHash.isEmpty() && piecesThatCanAttackHash.size() == 1 && piece instanceof KingPiece) {
+				for(PieceInformation info : attackMoves) {
+					if(bestMove == null) {
+						bestMove = info;
+					}else {
+						if(info.getKillProbablitySize() > bestMove.getKillProbablitySize()) {
+							bestMove = info;
+						}
+					}
+				}
+				
+				if(canDoMove(randomNumber, bestMove.getKillProbality())) {					
+					
+					IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+					controller.getTeam().getCommanderLogic().move(commander);
+					
+					controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
+					System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+					return true;
+				}else {
+					System.out.println("Unable to move piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+					return true;
+				}
+			}
+			
+		}
+		
+		// Remove the king piece from moving
+		for(IChessPiece piece : piecesThatCanAttackHash.keySet()) {
+			if(piece instanceof KingPiece) {
+				piecesThatCanAttackHash.remove(piece);
+				break;
+			}
+			
+		}
+		
+		
+		if(piecesThatCanAttackHash.size() >= 1) {
+			
+			int random = new Random().nextInt(piecesThatCanAttackHash.size());
+			IChessPiece[] pieces = (IChessPiece[]) piecesThatCanAttackHash.values().toArray();
+			IChessPiece piece = pieces[random];
+			
+			ArrayList<PieceInformation> movements = piecesThatCanAttackHash.get(piece);
+			
+			int random1 = new Random().nextInt(movements.size());
+			
+			bestMove = movements.get(random1);
+			
+			IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+			controller.getTeam().getCommanderLogic().move(commander);
+			
+			if(canDoMove(randomNumber, bestMove.getKillProbality())) {
+				
+				controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
+				System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+				return true;
+			}else {
+				System.out.println("Unable to move piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+				return true;
+			}
+			
+			
+		}
+		
+		
+		// This is a random move here
+		
+		if(piecesThatCanAttackHash.isEmpty() && piecesThatCannotAttackHash.isEmpty()) {
+			return false;
+		}
+		
+		int random = new Random().nextInt(piecesThatCannotAttackHash.size());
+		IChessPiece[] pieces = (IChessPiece[]) piecesThatCannotAttackHash.values().toArray();
+		IChessPiece piece = pieces[random];
+		
+		ArrayList<PieceInformation> movements = piecesThatCannotAttackHash.get(piece);
+		
+		int random1 = new Random().nextInt(movements.size());
+		
+		bestMove = movements.get(random1);
+		
+		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+		controller.getTeam().getCommanderLogic().move(commander);
+		
+		if(canDoMove(randomNumber, bestMove.getKillProbality())) {
+			
+			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
+			System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+			return true;
+		}else {
+			System.out.println("Unable to move piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+			return true;
+		}
+		
 	}
 	
 	
@@ -115,7 +291,12 @@ public class EasyAI {
 				}
 				
 				if(bestMove != null && moveLocation != null) {
+					
+					IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+					controller.getTeam().getCommanderLogic().move(commander);
+					
 					if(canDoMove(randomNumber, bestMove.getKillProbality())) {
+						
 						controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
 						System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 					}else {
@@ -152,6 +333,9 @@ public class EasyAI {
 				}
 				
 				if(bestMove != null && moveLocation != null) {
+					IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+					controller.getTeam().getCommanderLogic().move(commander);
+					
 					if(canDoMove(randomNumber, bestMove.getKillProbality())) {
 						controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
 						System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
@@ -189,7 +373,12 @@ public class EasyAI {
 					}
 					
 					if(bestMove != null && moveLocation != null) {
+						
+						IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+						controller.getTeam().getCommanderLogic().move(commander);
+						
 						if(canDoMove(randomNumber, bestMove.getKillProbality())) {
+							
 							controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
 							System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 						}else {
@@ -225,7 +414,12 @@ public class EasyAI {
 					}
 					
 					if(bestMove != null && moveLocation != null) {
+						
+						IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
+						controller.getTeam().getCommanderLogic().move(commander);
+						
 						if(canDoMove(randomNumber, bestMove.getKillProbality())) {
+							
 							controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
 							System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 						}else {
@@ -238,27 +432,12 @@ public class EasyAI {
 			return false;
 		}
 	
-	private boolean randomMoveAI(int randomNumber, ArrayList<PieceInformation> information) {
-		
-		PieceInformation bestMove = null;
-		
-		for(PieceInformation piece : information) {
-			
-			
-		}
-		
-		if(bestMove == null) {
-			
-		}
-		
-		return false;
-	}
-	
 	
 	private boolean canDoMove(int randomNumber, int[] probablity) {
 		if(probablity.length < 3) { // TODO Maybe add this because it's unlikely
-			
+			// return false;
 		}
+		
 		for(int x : probablity) {
 			if(x == randomNumber) {
 			return true;	

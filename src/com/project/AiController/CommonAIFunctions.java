@@ -157,15 +157,19 @@ public class CommonAIFunctions {
 				if(Main.getBoardController().getPieceAtLocation(loc) != null) { // It take take out a piece
 					boolean found = false;
 					ThreatenedPiece piece = new ThreatenedPiece(Main.getBoardController().getPieceAtLocation(loc));
-					for(ThreatenedPiece threat : threatenedPieces) {
-						if(piece.equals(threat)) {
-							found = true;
-							threat.addThreat(enemyPieces);
-							break;
+					
+					if(piece.getThreatenedPiece() instanceof KingPiece || piece.getThreatenedPiece() instanceof BishopPiece 
+							|| piece.getThreatenedPiece() instanceof KnightPiece) {
+						for(ThreatenedPiece threat : threatenedPieces) {
+							if(piece.equals(threat)) {
+								found = true;
+								threat.addThreat(enemyPieces);
+								break;
+							}
 						}
-					}
-					if(!found) {
-						threatenedPieces.add(piece);
+						if(!found) {
+							threatenedPieces.add(piece);
+						}
 					}
 					
 				}
