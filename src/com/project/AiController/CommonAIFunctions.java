@@ -1,6 +1,7 @@
 package com.project.AiController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
@@ -53,6 +54,9 @@ public class CommonAIFunctions {
 				break;
 			}
 		}
+		
+		// Error check
+		if(enemyKing == null) return null;
 
 		for(Location possibleMoves : piece.getPossibleMoves()) {
 			if(enemyKing.getLocation().equals(possibleMoves)) {
@@ -76,6 +80,9 @@ public class CommonAIFunctions {
 			}
 		}
 		
+		// Error check
+		if(enemyKing == null) return null;
+		
 		for(Location possibleMoves : piece.getPossibleMoves()) {
 			if(enemyKing.getLocation().equals(possibleMoves)) {
 				return possibleMoves;
@@ -97,6 +104,9 @@ public class CommonAIFunctions {
 				break;
 			}
 		}
+		
+		// Error check
+		if(enemyKing == null) return null;
 		
 		for(Location possibleMoves : piece.getPossibleMoves()) {
 			if(enemyKing.getLocation().equals(possibleMoves)) {
@@ -142,8 +152,24 @@ public class CommonAIFunctions {
 			
 		}
 		
-		return null;	
+		return null;
 	}
+	
+	
+	// Function that will return an arraylist of all pieces who can move to a specific location
+	public ArrayList<IChessPiece> findPiecesToMoveToLocationEnemy(Location location) {
+		ArrayList<IChessPiece> pieces = new ArrayList<IChessPiece>();
+		
+		for(IChessPiece onBoard : controller.getEnemyTeam().getChessPieces()) {
+			if(location.equals(onBoard.getLocation())) {
+				pieces.add(onBoard);
+			}
+			
+		}
+		
+		return null;
+	}
+	
 	
 	// Returns all threatened pieces of the team
 	// A threatened piece means that it's possible for it to be taken out/killed
@@ -199,6 +225,49 @@ public class CommonAIFunctions {
 		
 		return piecesToReturn;
 		
+	}
+	
+	public ArrayList<HashMap<IChessPiece, ArrayList<PieceInformation>>> generateMoveHashes(ArrayList<PieceInformation> information) {
+		
+		HashMap<IChessPiece, ArrayList<PieceInformation>> piecesThatCanAttackHash = new HashMap<IChessPiece, ArrayList<PieceInformation>>();
+		
+		HashMap<IChessPiece, ArrayList<PieceInformation>> piecesThatCannotAttackHash = new HashMap<IChessPiece, ArrayList<PieceInformation>>();
+		
+		for(PieceInformation piece : information) {
+			if(piece.canKillPiece()) {
+				if(piecesThatCanAttackHash.containsKey(piece.getPiece())) {
+					ArrayList<PieceInformation> temp = piecesThatCanAttackHash.get(piece.getPiece());
+					if(!temp.contains(piece)) {
+						temp.add(piece);
+						piecesThatCanAttackHash.put(piece.getPiece(), temp);
+					}
+				}else {
+					ArrayList<PieceInformation> temp = new ArrayList<PieceInformation>();
+					temp.add(piece);
+					piecesThatCanAttackHash.put(piece.getPiece(), temp);
+					
+				}
+				
+			}else {
+				if(piecesThatCannotAttackHash.containsKey(piece.getPiece())) {
+					ArrayList<PieceInformation> temp = piecesThatCannotAttackHash.get(piece.getPiece());
+					if(!temp.contains(piece)) {
+						temp.add(piece);
+						piecesThatCannotAttackHash.put(piece.getPiece(), temp);
+					}
+				}else {
+					ArrayList<PieceInformation> temp = new ArrayList<PieceInformation>();
+					temp.add(piece);
+					piecesThatCannotAttackHash.put(piece.getPiece(), temp);
+				}
+			}
+			
+		}
+		ArrayList<HashMap<IChessPiece, ArrayList<PieceInformation>>> map = new ArrayList<HashMap<IChessPiece, ArrayList<PieceInformation>>>();
+		map.add(piecesThatCanAttackHash);
+		map.add(piecesThatCannotAttackHash);
+		
+		return map;
 	}
 	
 }

@@ -163,6 +163,9 @@ public class BoardController {
 	
 	// Set the next player to move
 	public void setNextPlayerToMove() {
+		Main.getBoardController().getTeam1().getCommanderLogic().reset();
+		Main.getBoardController().getTeam2().getCommanderLogic().reset();
+		
 		if(currentPlayer.equals(TeamType.WHITE)) {
 			currentPlayer = TeamType.BLACK;
 		}else {
@@ -174,7 +177,6 @@ public class BoardController {
 			// Run the AI move
 			AIController controller = Main.getAIController().getAIControllerForTeam(currentPlayer);
 			if(controller != null) {
-				System.out.println("Running move AI Move");
 				Main.getAIController().getAIControllerForTeam(currentPlayer).runMove();
 			}
 		}

@@ -49,8 +49,8 @@ public class AIController {
 		            	if(cancel) return; // If the AI was canceled, don't run AI code
 		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
 		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over
-		            	
 		            	// Run the AI
+		            	System.out.println("Running move AI Move");
 		            	preformAIMove();
 		            }
 		            	
@@ -58,20 +58,18 @@ public class AIController {
 		);
 	}
 	
-	
-	// TODO write code here to manage AI movements
-	
 	// Preforms AI movement based on all requirements, this is called from runAIHandler() ONLY
 	private void preformAIMove() {
 		// Check if next move
-		if(team.getCommanderLogic().hasDoneAllMoves()) {
+		
+		if(team.getCommanderLogic().getMoveCount() > team.getCommanderLogic().getMaxMoves()) {
 			Main.getBoardController().setNextPlayerToMove();
 			return;
 		}
 		
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
 			new EasyAI(this);
-			preformAIMove();
+			runMove();
 		}		
 		
 	}
