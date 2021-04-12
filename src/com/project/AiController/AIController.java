@@ -68,7 +68,7 @@ public class AIController {
 		}
 		
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
-			new EasyAI(this);
+			new AI(this);
 			runMove();
 		}		
 		
