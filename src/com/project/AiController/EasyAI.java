@@ -3,6 +3,7 @@ package com.project.AiController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
@@ -70,7 +71,9 @@ public class EasyAI {
 	
 	private boolean inDangerAICheck(int randomNumber, ArrayList<PieceInformation> information, ArrayList<ThreatenedPiece> threats) {
 		ThreatenedPiece highestThreatened = null;
-		
+		if(threats == null) {
+			return false;
+		}
 		for(ThreatenedPiece piece : threats) {
 			// King is threatened
 			if(piece.getThreatenedPiece() instanceof KingPiece) {
@@ -210,8 +213,8 @@ public class EasyAI {
 		if(piecesThatCanAttackHash.size() >= 1) {
 			
 			int random = new Random().nextInt(piecesThatCanAttackHash.size());
-			IChessPiece[] pieces = (IChessPiece[]) piecesThatCanAttackHash.values().toArray();
-			IChessPiece piece = pieces[random];
+			Object[] pieces = piecesThatCanAttackHash.keySet().toArray();
+			Object piece = pieces[random];
 			
 			ArrayList<PieceInformation> movements = piecesThatCanAttackHash.get(piece);
 			
@@ -243,18 +246,20 @@ public class EasyAI {
 		}
 		
 		int random = new Random().nextInt(piecesThatCannotAttackHash.size());
-		IChessPiece[] pieces = (IChessPiece[]) piecesThatCannotAttackHash.values().toArray();
-		IChessPiece piece = pieces[random];
-		
-		ArrayList<PieceInformation> movements = piecesThatCannotAttackHash.get(piece);
+		Object[] p = piecesThatCannotAttackHash.keySet().toArray();
+		//IChessPiece[] pieces = (IChessPiece[]) piecesThatCannotAttackHash.values().toArray();
+		//IChessPiece piece = pieces[random];
+		Object p1 = p[random];
+		ArrayList<PieceInformation> movements = piecesThatCannotAttackHash.get(p1);
 		
 		int random1 = new Random().nextInt(movements.size());
 		
 		bestMove = movements.get(random1);
+		System.out.println(bestMove);
 		
 		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());
 		controller.getTeam().getCommanderLogic().move(commander);
-		
+		System.out.println("Blah:  " + bestMove.getPiece());
 		if(canDoMove(randomNumber, bestMove.getKillProbality())) {
 			
 			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
@@ -434,8 +439,11 @@ public class EasyAI {
 	
 	
 	private boolean canDoMove(int randomNumber, int[] probablity) {
+		if(probablity == null) {
+			return true;
+		}
 		if(probablity.length < 3) { // TODO Maybe add this because it's unlikely
-			// return false;
+			return false;
 		}
 		
 		for(int x : probablity) {
@@ -445,4 +453,5 @@ public class EasyAI {
 		}
 		return false;
 	}
+	
 }
