@@ -385,6 +385,7 @@ public class AI {
 					}
 				}
 				
+				
 				if(bestMove != null && moveLocation != null) {
 					movePiece(bestMove, moveLocation, randomNumber);
 					return true;

@@ -163,6 +163,7 @@ public class BoardController {
 	
 	// Set the next player to move
 	public void setNextPlayerToMove() {
+		getBoardObject().getFrame().repaint();
 		Main.getBoardController().getTeam1().getCommanderLogic().reset();
 		Main.getBoardController().getTeam2().getCommanderLogic().reset();
 		
@@ -184,6 +185,7 @@ public class BoardController {
 	
 	// Check if the game is finished
 	public void checkForGameFinished() {
+		getBoardObject().getFrame().repaint();
 		// Locate the king piece for each team
 		
 		boolean team1HasKing = false;
