@@ -45,7 +45,7 @@ public class DistanceCalculator {
 					if(!piece.getTeamType().equals(startPiece.getTeamType())) {
 						// It's an enemy piece
 						addToList(startPiece.getLocation(), loc, checkAmount);
-						recersivePath(startPiece, loc, checkAmount, (currentPathAmount + 1));
+						//recersivePath(startPiece, loc, checkAmount, (currentPathAmount + 1));
 					}
 				}else {
 					if(!loc.equals(from)) {
