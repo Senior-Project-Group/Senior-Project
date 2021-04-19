@@ -45,7 +45,7 @@ public class AI {
 		
 		if(kingAttackAI(randomNumber, information)) return;
 		
-		if(controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 2) {
+		if(controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 1) {
 			if(inDangerAICheck(randomNumber, information, threats)) return;
 		}
 		
