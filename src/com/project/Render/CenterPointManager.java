@@ -21,7 +21,7 @@ public class CenterPointManager {
 	public Location centerPointAlgorithm(int x, int z) {
 		// Start center point at (0,0) is (50, 600);
 	
-		return new Location(this.x + (index * x), this.z - (index * z));
+		return new Location(this.x + (index * x), this.z - (index * z + 5));
 	}
 	
 	// Input is Location object
