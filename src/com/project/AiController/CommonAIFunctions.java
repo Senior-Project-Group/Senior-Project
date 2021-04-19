@@ -162,7 +162,8 @@ public class CommonAIFunctions {
 		ArrayList<IChessPiece> pieces = new ArrayList<IChessPiece>();
 		
 		for(IChessPiece onBoard : controller.getEnemyTeam().getChessPieces()) {
-			if(location.equals(onBoard.getLocation())) {
+			ArrayList<Location> locations = onBoard.getPossibleMoves();
+			if(locations.contains(location) && !pieces.contains(onBoard)) {
 				pieces.add(onBoard);
 			}
 			

@@ -177,7 +177,7 @@ public class BoardController {
 			// Run the AI move
 			AIController controller = Main.getAIController().getAIControllerForTeam(currentPlayer);
 			if(controller != null) {
-				Main.getAIController().getAIControllerForTeam(currentPlayer).runMove();
+				controller.runMove();
 			}
 		}
 	}

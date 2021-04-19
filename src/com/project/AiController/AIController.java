@@ -42,14 +42,15 @@ public class AIController {
 	
 	public void runMove() {
 		Main.getBoardController().checkForGameFinished();
-		if(team.getCommanderLogic().getMoveCount() > team.getCommanderLogic().getMaxMoves()) {
-			Main.getBoardController().setNextPlayerToMove();
-			return;
-		}
 		new java.util.Timer().schedule( 
 		        new java.util.TimerTask() {
 		            @Override
 		            public void run() {
+		            	if(team.getCommanderLogic().getMoveCount() > team.getCommanderLogic().getMaxMoves()) {
+		        			Main.getBoardController().setNextPlayerToMove();
+		        			return;
+		        		}
+		            	
 		            	if(cancel) return; // If the AI was canceled, don't run AI code
 		            	if(!getAIFrame().isActive() || !getAIFrame().isDisplayable()) return; // If the frame is over, cancel it
 		            	if(Main.getBoardController().hasGameEnded()) return; // Cancel if the game is over

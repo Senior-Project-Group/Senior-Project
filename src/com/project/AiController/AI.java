@@ -73,6 +73,7 @@ public class AI {
 		if(threats == null) {
 			return false;
 		}
+		
 		for(ThreatenedPiece piece : threats) {
 			// King is threatened
 			if(piece.getThreatenedPiece() instanceof KingPiece) {
@@ -110,6 +111,8 @@ public class AI {
 		// Oh no. We do have kings/bishops/knight that can be killed on our team
 		ArrayList<IChessPiece> dangers = highestThreatened.getPiecesThreatening();
 		
+		if(dangers == null) return false;
+		
 			IChessPiece biggestThreat = null;
 			
 			for(IChessPiece danger : dangers) {
@@ -129,7 +132,9 @@ public class AI {
 				
 			}
 			
-			ArrayList<IChessPiece> canTakeOut = commonFunctionsController.findPiecesToMoveToLocation(highestThreatened.getThreatenedPiece().getLocation());
+			if(biggestThreat == null) return false;
+			
+			ArrayList<IChessPiece> canTakeOut = commonFunctionsController.findPiecesToMoveToLocation(biggestThreat.getLocation());
 			
 			if(canTakeOut != null && !canTakeOut.isEmpty()) {
 				// There are pieces that can attack the piece
