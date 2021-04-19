@@ -42,6 +42,10 @@ public class AIController {
 	
 	public void runMove() {
 		Main.getBoardController().checkForGameFinished();
+		if(team.getCommanderLogic().getMoveCount() > team.getCommanderLogic().getMaxMoves()) {
+			Main.getBoardController().setNextPlayerToMove();
+			return;
+		}
 		new java.util.Timer().schedule( 
 		        new java.util.TimerTask() {
 		            @Override
@@ -60,17 +64,10 @@ public class AIController {
 	
 	// Preforms AI movement based on all requirements, this is called from runAIHandler() ONLY
 	private void preformAIMove() {
-		// Check if next move
-		
-		if(team.getCommanderLogic().getMoveCount() > team.getCommanderLogic().getMaxMoves()) {
-			Main.getBoardController().setNextPlayerToMove();
-			return;
-		}
-		
 		if(Main.getBoardController().getCurrentPlayerToMove().equals(team.getTeamType())) {
 			new AI(this);
 			runMove();
-		}		
+		}
 		
 	}
 	

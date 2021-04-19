@@ -460,8 +460,6 @@ public class AI {
 		IChessPiece pieceAtMoveLocation = controller.getBoardController().getPieceAtLocation(bestMove.getLocation());
 		
 		if(pieceAtMoveLocation == null) {
-			controller.getTeam().getCommanderLogic().move(commander);
-			
 			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
 			System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 			return;
@@ -480,12 +478,10 @@ public class AI {
 		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove);
 		controller.getTeam().getCommanderLogic().move(commander);
 		
-		IChessPiece pieceAtMoveLocation = controller.getBoardController().getPieceAtLocation(bestMove.getLocation());
+		IChessPiece pieceAtMoveLocation = controller.getBoardController().getPieceAtLocation(moveLocation);
 		
 		if(pieceAtMoveLocation == null) {
-			controller.getTeam().getCommanderLogic().move(commander);
-			
-			controller.getBoardController().movePieceOnBoard(bestMove, bestMove.getLocation());
+			controller.getBoardController().movePieceOnBoard(bestMove, moveLocation);
 			System.out.println("Moved piece: " + bestMove.getTexture().getTextureLocation() + ", random number: " + randomNumber);
 			return;
 		}

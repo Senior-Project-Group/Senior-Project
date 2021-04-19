@@ -17,7 +17,7 @@ public class AIControllerHandler {
 		if(speed >= 1) {
 			this.speed = speed * 1000;
 		}else {
-			this.speed = 10; 
+			this.speed = 50;
 		}
 		
 		AIControllers = new ArrayList<AIController>();
