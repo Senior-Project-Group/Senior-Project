@@ -80,7 +80,7 @@ public class PiecesTexture {
 		pieceLabel.setIcon(new ImageIcon(getClass().getResource("resources/" + link)));
 		pieceLabel.setBounds(location.getX(), location.getZ(), point.getDimensionOfPiece(), point.getDimensionOfPiece());
 		
-		pieceLabel.addMouseListener(new MouseAdapter() {  
+		pieceLabel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) {
 		    	// Check if make sure it's the right team attempting to move
 		    	if(Main.getBoardController().hasGameEnded()) {

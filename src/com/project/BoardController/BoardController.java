@@ -7,6 +7,7 @@ import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
 import com.project.Main.Main;
 import com.project.Render.Board;
+import com.project.Render.KnightSpeicalMove;
 import com.project.Render.NewGameWindow;
 import com.project.Render.NextMoveRenderer;
 import com.project.TeamController.Team;
@@ -33,11 +34,14 @@ public class BoardController {
 	
 	private boolean gameEnded; // true is game is over, as in someone one or is a tie
 	
+	private KnightSpeicalMove knightSpecialMoveGUI;
+	
 	/**
 	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, AI_VS_AI or SQL_MULTIPLAYER
 	 * @param GameType gameType
 	 */
 	public BoardController(GameType gameType) {
+		knightSpecialMoveGUI = null;
 		this.gameEnded = false;
 		this.currentGameType = gameType;
 		nextMoveRenderer = new NextMoveRenderer(); // Enable the nextMoveRenderer
@@ -258,6 +262,18 @@ public class BoardController {
 	
 	public boolean hasGameEnded() {
 		return gameEnded;
+	}
+	
+	public KnightSpeicalMove getKnightSpecialMoveGUI() {
+		return knightSpecialMoveGUI;
+	}
+	
+	public void setKnightSpecialMoveGUI(KnightSpeicalMove move) {
+		this.knightSpecialMoveGUI = move;
+	}
+	
+	public void resetKnightSpecialMoveGUI() {
+		this.knightSpecialMoveGUI = null;
 	}
 	
 	

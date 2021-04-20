@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.ProbabilityController;
 import com.project.Main.Main;
 import com.project.TeamController.Team;
@@ -54,6 +55,9 @@ public class NextMoveRenderer {
 	// In the end, I am hoping to make this work well and physically show the different moves the piece can do
 	
 	public void renderForPiece(IChessPiece piece) {
+		
+		if(Main.getBoardController().getKnightSpecialMoveGUI() != null) return;
+		
 		clearCurrentRender();
 		CenterPointManager center = new CenterPointManager();
 		
@@ -167,6 +171,14 @@ public class NextMoveRenderer {
 			    				// NO PIECE HERE, JUST MOVE THE PIECE
 			    				Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
 			    				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
+			    				
+			    				if(piece instanceof KnightPiece) {
+			    					KnightPiece knight = (KnightPiece) piece;
+			    					if(!knight.getAttackLocations().isEmpty()) {
+			    						new KnightSpeicalMove(piece);
+			    					}
+			    					
+			    				}
 			    			}
 			    			
 			    			// Determine who's going to move next
