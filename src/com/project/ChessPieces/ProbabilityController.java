@@ -2,6 +2,8 @@ package com.project.ChessPieces;
 
 import java.util.Random;
 
+import com.project.Main.Main;
+
 public class ProbabilityController {
 
 	public ProbabilityController() {}
@@ -102,8 +104,11 @@ public class ProbabilityController {
 	
 	public int getRandomNumber() {
 		Random rand = new Random();
+		int r = rand.nextInt(6) + 1;
+
+		Main.getBoardController().getLogs().addLog("Rolled random number: " + r);
 		
-		return rand.nextInt(6) + 1;
+		return r;
 		
 	}
 	

@@ -174,6 +174,7 @@ public class KnightSpeicalMove {
 			    						success = true;
 			    					}
 			    				}
+			    				
 			    				Main.getBoardController().getLogs().addLog(piece.getTeamType() + " " + piece.getTexture().getPieceTextureName() + " at location (" + piece.getLocation().getX() + ", " + piece.getLocation().getZ() + ") performed special move");
 			    				if(success) {
 			    					Main.getBoardController().getLogs().addLog("Knight special move success!");

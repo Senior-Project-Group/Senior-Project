@@ -184,6 +184,9 @@ public class BoardController {
 			currentPlayer = TeamType.WHITE;
 		}
 		
+		Main.getBoardController().getLogs().addLog("Current player moving now: " + currentPlayer.toString());
+		
+		
 		// This game needs an AI in it
 		if(Main.getBoardController().getCurrentGameType().equals(GameType.PLAYER_VS_AI) || Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI)) {
 			// Run the AI move

@@ -149,6 +149,7 @@ public class Board {
 		skipTurnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Skip the persons turn
+				Main.getBoardController().getLogs().addLog(Main.getBoardController().getCurrentPlayerToMove().toString() + " their skipped turn.");
 				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 				Main.getBoardController().setNextPlayerToMove();
 				Main.getNotificationHandler().sendNotificationMessage("Chess Game", "Successfully Skipped Turn!");

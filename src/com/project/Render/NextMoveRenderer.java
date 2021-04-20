@@ -162,6 +162,7 @@ public class NextMoveRenderer {
 			    					Main.getBoardController().checkForGameFinished();
 			    					
 			    				}else {
+			    					Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " " + piece.getTexture().getPieceTextureName() + " missed the opponent at location (" + obj.getLocation().getX() + ", " + obj.getLocation().getZ() + ")");
 			    					gui.getRollingLabel().setText(rand + " (Missed!)");
 			    				}
 			    				
