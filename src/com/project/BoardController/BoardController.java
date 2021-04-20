@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import com.project.AiController.AIController;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.Logs.Logs;
 import com.project.Main.Main;
 import com.project.Render.Board;
 import com.project.Render.KnightSpeicalMove;
@@ -36,6 +37,8 @@ public class BoardController {
 	
 	private KnightSpeicalMove knightSpecialMoveGUI;
 	
+	private Logs logs;
+	
 	/**
 	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, AI_VS_AI or SQL_MULTIPLAYER
 	 * @param GameType gameType
@@ -53,6 +56,8 @@ public class BoardController {
 			public void run() {
 				team1 = new Team(TeamType.BLACK); // Create the black team
 				team2 = new Team(TeamType.WHITE); // Create the white team
+				
+				setupLogs();
 			}
 		});
 	}
@@ -274,6 +279,14 @@ public class BoardController {
 	
 	public void resetKnightSpecialMoveGUI() {
 		this.knightSpecialMoveGUI = null;
+	}
+	
+	public Logs getLogs() {
+		return logs;
+	}
+	
+	private void setupLogs() {
+		this.logs = new Logs();
 	}
 	
 	

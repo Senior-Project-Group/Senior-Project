@@ -13,6 +13,7 @@ import com.project.Multiplayer.MultiplayerConnectionGUI;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 
 // Board object, has all the information about the frame 
@@ -32,7 +33,7 @@ public class Board {
 	
 	// Creates the board, don't edit this
 	// Auto render piece sizes to bounds: x, y, 60, 60
-	private void initialize() {		
+	private void initialize() {
 		JLabel lblNewLabel = new JLabel("");
 		
 		lblNewLabel.setIcon(new ImageIcon(getClass().getResource("resources/standard-walnut-chess-board-21184254145_1024x1024.jpg")));
@@ -44,7 +45,7 @@ public class Board {
 		
 		frmChess.setResizable(false);
 		frmChess.setTitle("Chess");
-		frmChess.setBounds(100, 100, 706, 755);
+		frmChess.setBounds(100, 100, 1047, 755);
 		frmChess.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmChess.getContentPane().setLayout(null);
 		
