@@ -54,10 +54,9 @@ public class BoardController {
 		// Needed to prevent error of board not being created yet
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				setupLogs();
 				team1 = new Team(TeamType.BLACK); // Create the black team
 				team2 = new Team(TeamType.WHITE); // Create the white team
-				
-				setupLogs();
 			}
 		});
 	}
@@ -124,6 +123,7 @@ public class BoardController {
 	public void removePieceFromBoard(IChessPiece piece) {
 		Team team = getTeamPieceBelongsTo(piece);
 		if(team != null) {
+			Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " " + piece.getTexture().getPieceTextureName() + " at location: (" + piece.getLocation().getX() + ", " + piece.getLocation().getZ() + ") was destroyed!");
 			piece.getTexture().removeTextureFromBoard();
 			team.removePiece(piece);
 		}else {
@@ -134,6 +134,7 @@ public class BoardController {
 	// Moves the piece on the board to the specified location
 	// Clears the next move renderer once complete
 	public void movePieceOnBoard(IChessPiece piece, Location newLocation) {
+		Location original = piece.getLocation();
 		getNextMoveRenderer().clearCurrentRender();
 		piece.getTexture().moveTextureTo(newLocation);
 		moveCount++;
@@ -147,6 +148,7 @@ public class BoardController {
 			getTeam2().addMove(); 
 		}
 		
+		Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " Moved " + piece.getTexture().getPieceTextureName() + ": (" + original.getX() + ", " + original.getZ() + ") -> (" + newLocation.getX() + ", " + newLocation.getZ() + ")");
 		getBoardObject().getFrame().repaint();
 	}
 	
@@ -256,11 +258,14 @@ public class BoardController {
 		
 		if(status.equals(EndGameStatus.TIE)) {
 			Main.getNotificationHandler().sendNotificationMessage("Game Over","It was a tie! No one won the game!");
+			Main.getBoardController().getLogs().addLog("Game Over! It was a tie! No one won the game!");
 		}else {
 			if(status.equals(EndGameStatus.TEAM1_WON)) {
 				Main.getNotificationHandler().sendNotificationMessage("Game Over", "Black Team won the game!");
+				Main.getBoardController().getLogs().addLog("Game Over! Black Team won the game!");
 			}else {
 				Main.getNotificationHandler().sendNotificationMessage("Game Over", "White Team won the game!");
+				Main.getBoardController().getLogs().addLog("Game Over! White Team won the game!");
 			}
 		}
 	}

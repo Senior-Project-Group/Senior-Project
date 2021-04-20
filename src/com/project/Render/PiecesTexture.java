@@ -142,6 +142,10 @@ public class PiecesTexture {
 		return textureLocation;
 	}
 	
+	public String getPieceTextureName() {
+		return textureLocation.replace("com.project.ChessPieces.", "").replace(".png", "").replace("black_", "").replace("white_", "");
+	}
+	
 	// Returns the piece texture label itself (the icon you see on the board)
 	public JLabel getPieceLabel() {
 		return pieceLabel;

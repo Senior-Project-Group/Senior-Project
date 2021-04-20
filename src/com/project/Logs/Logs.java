@@ -16,16 +16,16 @@ public class Logs {
 	public Logs() {
 		lines = new ArrayList<String>();
 		area = new JTextArea();
-		area.setBounds(710, 10, 300, 670);
+		area.setBounds(710, 10, 600, 720);
 		area.setEditable(false);
 		
 		
 		JScrollPane sp = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.setBounds(710, 10, 300, 670);
+		sp.setBounds(710, 10, 370, 670);
 		
 		Main.getBoardController().getBoardObject().getFrame().add(sp);
 		
-		addLog("---------------------------------Logger---------------------------------");
+		addLog("-----------------------------------------Logger-----------------------------------------");
 		
 	}
 	

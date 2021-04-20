@@ -42,7 +42,7 @@ public class Board {
 		
 		frmChess.setResizable(false);
 		frmChess.setTitle("Chess");
-		frmChess.setBounds(100, 100, 1053, 755);
+		frmChess.setBounds(100, 100, 1100, 755);
 		frmChess.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmChess.getContentPane().setLayout(null);
 		

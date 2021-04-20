@@ -9,8 +9,6 @@ import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.ProbabilityController;
 import com.project.Main.Main;
-import com.project.TeamController.Team;
-import com.project.TeamController.TeamType;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -68,10 +66,13 @@ public class KnightSpeicalMove {
 		JButton noButton = new JButton("No");
 		noButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(labels != null) {
+					clearCurrentRender();
+				}
+				Main.getBoardController().getLogs().addLog(piece.getTeamType() + " " + piece.getTexture().getPieceTextureName() + " at location (" + piece.getLocation().getX() + ", " + piece.getLocation().getZ() + ") declined special move");
 				frmKnightSpecialMove.dispose();
 				Main.getBoardController().resetKnightSpecialMoveGUI();
 				Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-				clearCurrentRender();
 			}
 		});
 		noButton.setBounds(204, 122, 138, 45);
@@ -132,7 +133,6 @@ public class KnightSpeicalMove {
 			    public void mouseClicked(MouseEvent e) {
 			    	if(Main.getBoardController().hasGameEnded()) {
 			    		Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
-			    		clearCurrentRender();
 			    		return;
 			    	}
 			    	
@@ -174,8 +174,9 @@ public class KnightSpeicalMove {
 			    						success = true;
 			    					}
 			    				}
-			    				
+			    				Main.getBoardController().getLogs().addLog(piece.getTeamType() + " " + piece.getTexture().getPieceTextureName() + " at location (" + piece.getLocation().getX() + ", " + piece.getLocation().getZ() + ") performed special move");
 			    				if(success) {
+			    					Main.getBoardController().getLogs().addLog("Knight special move success!");
 			    					gui.getRollingLabel().setText(rand + " (Success!)");
 			    					
 			    					Main.getBoardController().movePieceOnBoard(piece, obj.getLocation());
@@ -185,7 +186,11 @@ public class KnightSpeicalMove {
 				    				piece1.destroyPiece();
 			    					Main.getBoardController().checkForGameFinished();
 			    					
+			    					frmKnightSpecialMove.dispose();
+			    					Main.getBoardController().resetKnightSpecialMoveGUI();
+			    					
 			    				}else {
+			    					Main.getBoardController().getLogs().addLog("Knight special move failed!");
 			    					gui.getRollingLabel().setText(rand + " (Missed!)");
 			    					Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    					clearCurrentRender();

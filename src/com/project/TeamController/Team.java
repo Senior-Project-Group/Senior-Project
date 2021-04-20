@@ -10,6 +10,7 @@ import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
+import com.project.Main.Main;
 
 // Object that manages the pieces for the specified team
 public class Team {
@@ -51,7 +52,7 @@ public class Team {
 			for(int x = 0; x != 8; x++) {
 				pieces.add(new PawnPiece(new Location(x, 6), TeamType.BLACK));
 			}
-
+			Main.getBoardController().getLogs().addLog("Black team setup and ready to go!");
 		}else {
 			// Set the location pieces for white
 			
@@ -69,7 +70,7 @@ public class Team {
 			for(int x = 0; x != 8; x++) {
 				 pieces.add(new PawnPiece(new Location(x, 1), TeamType.WHITE));
 			}
-			
+			Main.getBoardController().getLogs().addLog("White team setup and ready to go!");	
 		}
 		
 	}
