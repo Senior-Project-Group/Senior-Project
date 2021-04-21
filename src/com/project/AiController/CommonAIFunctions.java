@@ -118,7 +118,6 @@ public class CommonAIFunctions {
 	}
 	
 	
-	
 	// Return all possible moves for all the teams pieces
 	// Will never return null. Impossible
 	public ArrayList<PieceInformation> getAllPossibleMoves() {
@@ -271,5 +270,6 @@ public class CommonAIFunctions {
 		
 		return map;
 	}
+
 	
 }

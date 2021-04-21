@@ -127,17 +127,6 @@ public class NextMoveRenderer {
 			    				}
 			    				System.out.println("Probabilty needed:" + temp);
 			    				
-			    				Team team = null;
-				    			if(Main.getBoardController().getCurrentPlayerToMove().equals(TeamType.BLACK)) {
-				    				// Team 1
-				    				team = Main.getBoardController().getTeam1();
-				    			}else {
-				    				team = Main.getBoardController().getTeam2();
-				    			}
-			    				
-			    				IChessPiece commander = team.getCommanderLogic().getCommanderForPiece(piece);
-			    				team.getCommanderLogic().move(commander);
-			    				
 			    				try {
 									Thread.sleep(2500);
 								} catch (InterruptedException e1) {
