@@ -275,10 +275,6 @@ public class AI {
 		System.out.println("}");
 		
 		
-		if(probablity.length < 3) { // TODO Maybe add this because it's unlikely
-			//return false;
-		}
-		
 		for(int x : probablity) {
 			if(x == randomNumber) {
 			return true;	

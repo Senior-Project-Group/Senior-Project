@@ -273,8 +273,47 @@ public class CommonAIFunctions {
 
 	
 	public Location moveToSafeLocation(IChessPiece piece) {
-		
 		// TODO Safe spot check
+		int[][] offsets = {
+		        {1, 0},
+		        {0, 1},
+		        {-1, 0},
+		        {0, -1},
+		        {1, 1},
+		        {-1, 1},
+		        {-1, -1},
+		        {1, -1},
+		       		        
+		    };
+		
+		ArrayList<Location> moveTo = piece.getPossibleMoves();
+		
+		if(moveTo == null || moveTo.isEmpty()) return null;
+		
+		for(Location locations : moveTo) {
+			boolean isSafe = true;
+			if(Main.getBoardController().getPieceAtLocation(locations) == null) {
+				for(int x = 0; x != 8; x++) {
+					int xOffset = offsets[x][0];
+					int zOffset = offsets[x][1];
+					Location loc = new Location(locations.getX() + xOffset, locations.getZ() + zOffset);
+					if(Main.getBoardController().isLocationOnBoard(loc)) {
+						IChessPiece atLocation = Main.getBoardController().getPieceAtLocation(loc);
+						if(atLocation != null) {
+							if(!atLocation.getTeamType().equals(piece.getTeamType())) {
+								isSafe = false;
+								break;
+							}
+						}
+					}
+				}
+				if(isSafe) {
+					return locations;
+				}
+			}
+			
+		}
+		
 		
 		return null;
 	}
