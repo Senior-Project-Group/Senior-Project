@@ -27,6 +27,7 @@ public class AI {
 	
 	// (Only if 2 or more moves left) Look to move to the highest value with the highest probability for success and do hierarchy for who will take the piece (archer, pawn, queen, bishop, king)
 	// KNIGHT Look to move to the highest value with the highest probability for success and do hierarchy for who will take the piece
+	
 	// In danger check if == 1 move left (move the piece out of the way, if it can't move to safety, attack the enemy piece)
 	// Random move
 	
@@ -38,7 +39,9 @@ public class AI {
 		// Finished
 		if (attackWithNoMovesAI(information, randomNumber)) return;
 		
-		if (attackLookForHighestValueAI(information, randomNumber)) return;
+		if (controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 2) {
+			if (attackLookForHighestValueAI(information, randomNumber)) return;
+		}
 		
 		if (attackLookForHighestValueKnightOnlyAI(information, randomNumber)) return;
 		
