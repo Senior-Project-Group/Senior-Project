@@ -2,6 +2,7 @@ package com.project.AiController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import com.project.BoardController.Location;
 import com.project.ChessPieces.BishopPiece;
@@ -34,16 +35,19 @@ public class AI {
 		
 		ArrayList<PieceInformation> information = commonFunctionsController.getAllPossibleMoves();
 		
+		// Finished
 		if (attackWithNoMovesAI(information, randomNumber)) return;
 		
 		if (attackLookForHighestValueAI(information, randomNumber)) return;
 		
 		if (attackLookForHighestValueKnightOnlyAI(information, randomNumber)) return;
 		
+		// Finished in AI class, work on last method in commonAiFunctions
 		if (controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 1) {
 			if(inDangerCheckAI(information, randomNumber)) return;
 		}
 		
+		// Finished
 		if (randomMoveAI(information, randomNumber)) return;
 		
 		Main.getBoardController().setNextPlayerToMove();
@@ -154,10 +158,66 @@ public class AI {
 		return true;
 				
 	}
-	
+
 	
 	private boolean randomMoveAI(ArrayList<PieceInformation> information, int randomNumber) {
-		return false;
+		int[][] offsets = {
+		        {1, 0},
+		        {0, 1},
+		        {-1, 0},
+		        {0, -1},
+		        {1, 1},
+		        {-1, 1},
+		        {-1, -1},
+		        {1, -1},
+		       		        
+		    };
+		
+		
+		HashMap<IChessPiece, ArrayList<PieceInformation>> canMoveWithoutAttack = commonFunctionsController.generateMoveHashes(information).get(1);
+		
+		if(canMoveWithoutAttack == null || canMoveWithoutAttack.isEmpty()) return false;
+		
+		ArrayList<PieceInformation> safeMovements = new ArrayList<PieceInformation>();
+		
+		for(IChessPiece piece : canMoveWithoutAttack.keySet()) {
+			ArrayList<PieceInformation> data = canMoveWithoutAttack.get(piece);
+			for(PieceInformation info : data) {
+				boolean completelySafe = true;
+				// Check all surrounding pieces to the movement site and see if there are pieces there
+				for(int x = 0; x != 8; x++) {
+					int xOffset = offsets[x][0];
+					int zOffset = offsets[x][1];
+					Location loc = new Location(info.getLocation().getX() + xOffset, info.getLocation().getZ() + zOffset);
+					if(Main.getBoardController().isLocationOnBoard(loc)) {
+						IChessPiece atLocation = Main.getBoardController().getPieceAtLocation(loc);
+						if(atLocation != null) {
+							if(!atLocation.getTeamType().equals(piece.getTeamType())) {
+								completelySafe = false;
+							}
+						}
+					}
+				}
+				
+				// If completely safe
+				if(completelySafe) {
+					safeMovements.add(info);
+				}
+				
+				
+			}
+		}
+		
+		if(safeMovements == null || safeMovements.isEmpty()) return false;
+		
+		
+		// Pick a random value from the array list
+		 int rnd = new Random().nextInt(safeMovements.size());
+		 PieceInformation moveMe = safeMovements.get(rnd);
+		 
+		 movePieceNotAttacking(moveMe.getLocation(), moveMe.getPiece());
+		
+		return true;
 	}
 	
 	
