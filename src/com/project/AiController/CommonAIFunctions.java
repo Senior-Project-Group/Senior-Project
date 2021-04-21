@@ -272,4 +272,11 @@ public class CommonAIFunctions {
 	}
 
 	
+	public Location moveToSafeLocation(IChessPiece piece) {
+		
+		// TODO Safe spot check
+		
+		return null;
+	}
+	
 }

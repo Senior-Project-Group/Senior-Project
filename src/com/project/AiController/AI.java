@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.project.BoardController.Location;
+import com.project.ChessPieces.BishopPiece;
 import com.project.ChessPieces.IChessPiece;
+import com.project.ChessPieces.KingPiece;
+import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.ProbabilityController;
 import com.project.Main.Main;
 
@@ -37,7 +40,9 @@ public class AI {
 		
 		if (attackLookForHighestValueKnightOnlyAI(information, randomNumber)) return;
 		
-		if(inDangerCheckAI(information, randomNumber)) return;
+		if (controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 1) {
+			if(inDangerCheckAI(information, randomNumber)) return;
+		}
 		
 		if (randomMoveAI(information, randomNumber)) return;
 		
@@ -87,7 +92,67 @@ public class AI {
 	}
 	
 	private boolean inDangerCheckAI(ArrayList<PieceInformation> information, int randomNumber) {
-		return false;
+		ArrayList<ThreatenedPiece> threats = commonFunctionsController.getThreatenedPieces();
+		ThreatenedPiece highestThreatened = null;
+		
+		Location moveTo = null;
+		
+		if(threats == null) {
+			return false;
+		}
+		
+		for(ThreatenedPiece piece : threats) {
+			// King is threatened
+			if(piece.getThreatenedPiece() instanceof KingPiece) {
+				Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
+				if(safeSpot != null) {
+					moveTo = safeSpot;
+					highestThreatened = piece;
+					break;
+				}
+			}
+			
+			// Bishop threatened
+			if(piece.getThreatenedPiece() instanceof BishopPiece) {
+				Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
+				if(safeSpot != null) {
+				if(highestThreatened == null) {
+					highestThreatened = piece;
+					moveTo = safeSpot;
+				}else {
+					if(highestThreatened.getThreatenedPiece() instanceof KnightPiece) {
+						highestThreatened = piece;
+						moveTo = safeSpot;
+					}
+				}
+					
+				}
+			}
+			Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
+			if(safeSpot != null) {
+			if(piece.getThreatenedPiece() instanceof KnightPiece) {
+				if(highestThreatened == null) {
+					highestThreatened = piece;
+					moveTo = safeSpot;
+				}else {
+					if(!(highestThreatened.getThreatenedPiece() instanceof BishopPiece)) {
+						highestThreatened = piece;
+						moveTo = safeSpot;
+					}
+				}
+			}
+			}
+			
+		}
+		
+		// We don't have any kings/bishops that can be killed on our team
+		if(highestThreatened == null || moveTo == null) return false;
+		
+		
+		movePieceNotAttacking(moveTo, highestThreatened.getThreatenedPiece());
+		
+		return true;
+				
 	}
 	
 	
@@ -115,6 +180,20 @@ public class AI {
 		}else {
 			System.out.println("Unable to move piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber + ", (" + moveLocation.getX() + ", " + moveLocation.getZ() + ")");
 		}
+	}
+	
+	private void movePieceNotAttacking(Location moveLocation, IChessPiece movedPiece) {	
+		if(Main.getBoardController().getPieceAtLocation(moveLocation) != null) {
+			System.out.println("Error! In Movement AI");
+			return;
+		}
+		
+		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(movedPiece);
+		controller.getTeam().getCommanderLogic().move(commander);
+		
+		controller.getBoardController().movePieceOnBoard(movedPiece, moveLocation);
+		System.out.println("Moved piece: " + movedPiece.getTexture().getPieceTextureName());
+		
 	}
 
 	
