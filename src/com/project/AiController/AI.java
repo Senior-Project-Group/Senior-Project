@@ -243,7 +243,6 @@ public class AI {
 		return true;
 	}
 	
-	
 	private boolean inDangerCheckAI(ArrayList<PieceInformation> information, int randomNumber) {
 		ArrayList<ThreatenedPiece> threats = commonFunctionsController.getThreatenedPieces();
 		ThreatenedPiece highestThreatened = null;
@@ -311,7 +310,6 @@ public class AI {
 				
 	}
 
-	
 	private boolean randomMoveAI(ArrayList<PieceInformation> information, int randomNumber) {
 		
 		HashMap<IChessPiece, ArrayList<PieceInformation>> canMoveWithoutAttack = commonFunctionsController.generateMoveHashes(information).get(1);
@@ -363,8 +361,8 @@ public class AI {
 		return true;
 	}
 	
-	
 	private void knightSpecialMove(SimulatedMove simulatedMove, int randomNumber) {
+		randomNumber = randomNumber - 1;
 		try {
 			Thread.sleep(300);
 		} catch (InterruptedException e) {
@@ -432,7 +430,6 @@ public class AI {
 		System.out.println("Moved piece: " + movedPiece.getTexture().getPieceTextureName());
 		
 	}
-
 	
 	private boolean canDoMove(int randomNumber, int[] probablity) {		
 		if(probablity == null) {
@@ -447,10 +444,9 @@ public class AI {
 		
 		System.out.println("}");
 		
-		
 		for(int x : probablity) {
 			if(x == randomNumber) {
-			return true;	
+				return true;	
 			}
 		}
 		return false;
