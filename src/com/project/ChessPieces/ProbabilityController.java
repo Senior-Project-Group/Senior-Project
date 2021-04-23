@@ -102,11 +102,13 @@ public class ProbabilityController {
 		}
 	}
 	
-	public int getRandomNumber() {
+	public int getRandomNumber(boolean display) {
 		Random rand = new Random();
 		int r = rand.nextInt(6) + 1;
 
-		Main.getBoardController().getLogs().addLog("Rolled random number: " + r);
+		if(display) {
+			Main.getBoardController().getLogs().addLog("Rolled random number: " + r);
+		}
 		
 		return r;
 		

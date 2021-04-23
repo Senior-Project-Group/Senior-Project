@@ -45,7 +45,7 @@ public class AI {
 	// Random move
 	
 	private void run() {
-		int randomNumber = new ProbabilityController().getRandomNumber();
+		int randomNumber = new ProbabilityController().getRandomNumber(false);
 		
 		ArrayList<PieceInformation> information = commonFunctionsController.getAllPossibleMoves();
 		
@@ -84,11 +84,13 @@ public class AI {
 		int highestProb = 0;
 		
 		for(IChessPiece piece : canAttackWithNoMovement.keySet()) {
-			ArrayList<PieceInformation> movements = canAttackWithNoMovement.get(piece);
-			for(PieceInformation info : movements) {
-				if(info.getKillProbablitySize() > highestProb) {
-					highestProb = info.getKillProbablitySize();
-					highestMove = info;
+			if(checkIfPieceHasCommander(piece)) {
+				ArrayList<PieceInformation> movements = canAttackWithNoMovement.get(piece);
+				for(PieceInformation info : movements) {
+					if(info.getKillProbablitySize() > highestProb) {
+						highestProb = info.getKillProbablitySize();
+						highestMove = info;
+					}
 				}
 			}
 			
@@ -105,31 +107,33 @@ public class AI {
 		ArrayList<SimulatedMove> simulatedMoves = new ArrayList<SimulatedMove>();
 		
 		for(IChessPiece teamPiece : controller.getTeam().getChessPieces()) {
-			if(!(teamPiece instanceof KnightPiece)) {
-				for(Location moveTo : teamPiece.getPossibleMoves()) {
-					// There must be no piece at this location
-					if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
-						for(int x = 0; x != 8; x++) {
-							int xOffset = offsets[x][0];
-							int zOffset = offsets[x][1];
-							Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
-							if(Main.getBoardController().isLocationOnBoard(loc)) {
-								IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
-								if(pieceAtLocation != null) {
-									if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
-										// We have a valid simulated move
-										simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+			if(checkIfPieceHasCommander(teamPiece)) {
+				if(!(teamPiece instanceof KnightPiece)) {
+					for(Location moveTo : teamPiece.getPossibleMoves()) {
+						// There must be no piece at this location
+						if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
+							for(int x = 0; x != 8; x++) {
+								int xOffset = offsets[x][0];
+								int zOffset = offsets[x][1];
+								Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
+								if(Main.getBoardController().isLocationOnBoard(loc)) {
+									IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
+									if(pieceAtLocation != null) {
+										if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
+											// We have a valid simulated move
+											simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+										}
 									}
+									
 								}
-								
 							}
+							
+							
 						}
 						
-						
 					}
-					
+									
 				}
-								
 			}
 			
 		}
@@ -163,39 +167,42 @@ public class AI {
 		
 		movePieceNotAttacking(highestMove.getMoveToLocation(), highestMove.getPiece());
 		
-		return false;
+		return true;
 	}
 	
 	private boolean attackLookForHighestValueKnightOnlyAI(ArrayList<PieceInformation> information, int randomNumber) {
 		ArrayList<SimulatedMove> simulatedMoves = new ArrayList<SimulatedMove>();
 		
 		for(IChessPiece teamPiece : controller.getTeam().getChessPieces()) {
-			if(teamPiece instanceof KnightPiece) {
-				for(Location moveTo : teamPiece.getPossibleMoves()) {
-					// There must be no piece at this location
-					if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
-						for(int x = 0; x != 8; x++) {
-							int xOffset = offsets[x][0];
-							int zOffset = offsets[x][1];
-							Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
-							if(Main.getBoardController().isLocationOnBoard(loc)) {
-								IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
-								if(pieceAtLocation != null) {
-									if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
-										// We have a valid simulated move
-										simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+			if(checkIfPieceHasCommander(teamPiece)) {
+				if(teamPiece instanceof KnightPiece) {
+					for(Location moveTo : teamPiece.getPossibleMoves()) {
+						// There must be no piece at this location
+						if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
+							for(int x = 0; x != 8; x++) {
+								int xOffset = offsets[x][0];
+								int zOffset = offsets[x][1];
+								Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
+								if(Main.getBoardController().isLocationOnBoard(loc)) {
+									IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
+									if(pieceAtLocation != null) {
+										if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
+											// We have a valid simulated move
+											simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+										}
 									}
+									
 								}
-								
 							}
+							
+							
 						}
 						
-						
 					}
-					
+									
 				}
-								
 			}
+			
 			
 		}
 		
@@ -233,9 +240,11 @@ public class AI {
 		// Knight special move
 		knightSpecialMove(highestMove, randomNumber);
 		
-		return false;
+		return true;
 	}
 	
+	
+	// TODO ADD COMMANDER LOGIC CHECK
 	private boolean inDangerCheckAI(ArrayList<PieceInformation> information, int randomNumber) {
 		ArrayList<ThreatenedPiece> threats = commonFunctionsController.getThreatenedPieces();
 		ThreatenedPiece highestThreatened = null;
@@ -310,31 +319,34 @@ public class AI {
 		ArrayList<PieceInformation> safeMovements = new ArrayList<PieceInformation>();
 		
 		for(IChessPiece piece : canMoveWithoutAttack.keySet()) {
-			ArrayList<PieceInformation> data = canMoveWithoutAttack.get(piece);
-			for(PieceInformation info : data) {
-				boolean completelySafe = true;
-				// Check all surrounding pieces to the movement site and see if there are pieces there
-				for(int x = 0; x != 8; x++) {
-					int xOffset = offsets[x][0];
-					int zOffset = offsets[x][1];
-					Location loc = new Location(info.getLocation().getX() + xOffset, info.getLocation().getZ() + zOffset);
-					if(Main.getBoardController().isLocationOnBoard(loc)) {
-						IChessPiece atLocation = Main.getBoardController().getPieceAtLocation(loc);
-						if(atLocation != null) {
-							if(!atLocation.getTeamType().equals(piece.getTeamType())) {
-								completelySafe = false;
+			if(checkIfPieceHasCommander(piece)) {
+				ArrayList<PieceInformation> data = canMoveWithoutAttack.get(piece);
+				for(PieceInformation info : data) {
+					boolean completelySafe = true;
+					// Check all surrounding pieces to the movement site and see if there are pieces there
+					for(int x = 0; x != 8; x++) {
+						int xOffset = offsets[x][0];
+						int zOffset = offsets[x][1];
+						Location loc = new Location(info.getLocation().getX() + xOffset, info.getLocation().getZ() + zOffset);
+						if(Main.getBoardController().isLocationOnBoard(loc)) {
+							IChessPiece atLocation = Main.getBoardController().getPieceAtLocation(loc);
+							if(atLocation != null) {
+								if(!atLocation.getTeamType().equals(piece.getTeamType())) {
+									completelySafe = false;
+								}
 							}
 						}
 					}
+					
+					// If completely safe
+					if(completelySafe) {
+						safeMovements.add(info);
+					}
+					
+					
 				}
-				
-				// If completely safe
-				if(completelySafe) {
-					safeMovements.add(info);
-				}
-				
-				
 			}
+
 		}
 		
 		if(safeMovements == null || safeMovements.isEmpty()) return false;
@@ -351,11 +363,23 @@ public class AI {
 	
 	
 	private void knightSpecialMove(SimulatedMove simulatedMove, int randomNumber) {
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Main.getBoardController().getLogs().addLog(simulatedMove.getPiece().getTeamType() + " " + simulatedMove.getPiece().getTexture().getPieceTextureName() + " at location (" + simulatedMove.getPiece().getLocation().getX() + 
+				", " + simulatedMove.getPiece().getLocation().getZ() + ") performed special move");
+		
+		Main.getBoardController().getLogs().addLog("Rolled random number: " + randomNumber);
 		if(canDoMove(randomNumber, simulatedMove.getProbablity())) {
 			controller.getBoardController().removePieceFromBoard(simulatedMove.getEnemyPiece());
 			controller.getBoardController().movePieceOnBoard(simulatedMove.getPiece(), simulatedMove.getEnemyPiece().getLocation());
 			System.out.println("Knight Special: Moved piece: " + simulatedMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+			Main.getBoardController().getLogs().addLog("Knight special move success!");
 		}else {
+			Main.getBoardController().getLogs().addLog("Knight special move failed!");
 			System.out.println("Knight Special: Unable to move piece: " + simulatedMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber + 
 					", (" + simulatedMove.getEnemyPiece().getLocation().getX() + ", " + simulatedMove.getEnemyPiece().getLocation().getZ() + ")");
 		}
@@ -373,6 +397,7 @@ public class AI {
 			return;
 		}
 		
+		Main.getBoardController().getLogs().addLog("Rolled random number: " + randomNumber);
 		if(canDoMove(randomNumber, bestMove.getKillProbality())) {
 			controller.getBoardController().removePieceFromBoard(pieceAtMoveLocation);
 			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
@@ -382,7 +407,17 @@ public class AI {
 		}
 	}
 	
-	private void movePieceNotAttacking(Location moveLocation, IChessPiece movedPiece) {	
+	private boolean checkIfPieceHasCommander(IChessPiece piece) {
+		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(piece);
+		
+		if(commander == null) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private void movePieceNotAttacking(Location moveLocation, IChessPiece movedPiece) {
 		if(Main.getBoardController().getPieceAtLocation(moveLocation) != null) {
 			System.out.println("Error! In Movement AI");
 			return;
@@ -396,7 +431,6 @@ public class AI {
 		
 	}
 
-	
 	
 	private boolean canDoMove(int randomNumber, int[] probablity) {		
 		if(probablity == null) {

@@ -148,7 +148,7 @@ public class KnightSpeicalMove {
 			    				DiceRollerGUI gui = new DiceRollerGUI();
 			    				ProbabilityController prob = new ProbabilityController();
 			    				gui.getFrame().repaint();
-			    				int rand = prob.getRandomNumber();
+			    				int rand = prob.getRandomNumber(true);
 			    				if(rand != 1) {
 			    					rand = rand - 1;
 			    				}
