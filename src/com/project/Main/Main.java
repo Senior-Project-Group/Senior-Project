@@ -5,8 +5,6 @@ import com.project.AiController.AIController;
 import com.project.AiController.AIControllerHandler;
 import com.project.BoardController.BoardController;
 import com.project.BoardController.GameType;
-import com.project.Multiplayer.MultiplayerConnectionGUI;
-import com.project.Multiplayer.SQLHandler;
 import com.project.Notifications.NotificationHandler;
 
 public class Main {
@@ -17,14 +15,8 @@ public class Main {
 	
 	private static NotificationHandler notificationHandler;
 	
-	private static SQLHandler sqlHandler;
-	
-	public static MultiplayerConnectionGUI multiplayerGUI;
-	
 	// Starts the program
 	public static void main(String args[]) {
-		multiplayerGUI = null;
-		sqlHandler = null;
 		notificationHandler = new NotificationHandler();
 		// Default AI difficulty is EASY and the default process time is 2 seconds
 		AIController = new AIControllerHandler(2);
@@ -39,10 +31,6 @@ public class Main {
 		getBoardController().getNextMoveRenderer().clearCurrentRender();
 		getBoardController().getBoardObject().getFrame().dispose();
 		getAIController().clear();
-		
-		if(sqlHandler != null) {
-			sqlHandler.destroy();
-		}
 		
 		// Create a new board
 		boardController = new BoardController(newGameType);
@@ -105,16 +93,6 @@ public class Main {
 	// Returns the notification handler object
 	public static NotificationHandler getNotificationHandler() {
 		return notificationHandler;
-	}
-	
-	// Gets the games SQL Handler, only active when multiplayer is used
-	public static SQLHandler getSQLHandler() {
-		return sqlHandler;
-	}
-	
-	// Set the new handler when a new game starts
-	public static void setSQLHandler(SQLHandler sql) {
-		sqlHandler = sql;
 	}
 	
 	// Set the game controller, only use for multiplayer

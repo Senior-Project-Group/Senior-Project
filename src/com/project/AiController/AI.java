@@ -17,6 +17,19 @@ public class AI {
 	private AIController controller;
 	private CommonAIFunctions commonFunctionsController;
 	
+	private int[][] offsets = {
+	        {1, 0},
+	        {0, 1},
+	        {-1, 0},
+	        {0, -1},
+	        {1, 1},
+	        {-1, 1},
+	        {-1, -1},
+	        {1, -1},
+	       		        
+	    };
+	
+	
 	public AI(AIController controller) {
 		this.controller = controller;
 		this.commonFunctionsController = new CommonAIFunctions(controller);
@@ -89,11 +102,136 @@ public class AI {
 	}
 	
 	private boolean attackLookForHighestValueAI(ArrayList<PieceInformation> information, int randomNumber) {
+		ArrayList<SimulatedMove> simulatedMoves = new ArrayList<SimulatedMove>();
+		
+		for(IChessPiece teamPiece : controller.getTeam().getChessPieces()) {
+			if(!(teamPiece instanceof KnightPiece)) {
+				for(Location moveTo : teamPiece.getPossibleMoves()) {
+					// There must be no piece at this location
+					if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
+						for(int x = 0; x != 8; x++) {
+							int xOffset = offsets[x][0];
+							int zOffset = offsets[x][1];
+							Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
+							if(Main.getBoardController().isLocationOnBoard(loc)) {
+								IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
+								if(pieceAtLocation != null) {
+									if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
+										// We have a valid simulated move
+										simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+									}
+								}
+								
+							}
+						}
+						
+						
+					}
+					
+				}
+								
+			}
+			
+		}
+		
+		if(simulatedMoves.isEmpty()) return false;
+		
+		SimulatedMove highestMove = null;
+		
+		// TODO Maybe add more logic here
+		
+		for(SimulatedMove move : simulatedMoves) {
+			if(highestMove == null) {
+				if(Main.getBoardController().getPieceAtLocation(move.getMoveToLocation()) == null) {
+					highestMove = move;
+				}
+			}
+			
+			if(move.getProbablitySize() > highestMove.getProbablitySize()) {
+				if(Main.getBoardController().getPieceAtLocation(move.getMoveToLocation()) == null) {
+					highestMove = move;
+				}
+			}
+			
+			
+		}
+		
+		
+		if(highestMove == null) return false;
+		
+		// Perform the move
+		
+		movePieceNotAttacking(highestMove.getMoveToLocation(), highestMove.getPiece());
 		
 		return false;
 	}
 	
 	private boolean attackLookForHighestValueKnightOnlyAI(ArrayList<PieceInformation> information, int randomNumber) {
+		ArrayList<SimulatedMove> simulatedMoves = new ArrayList<SimulatedMove>();
+		
+		for(IChessPiece teamPiece : controller.getTeam().getChessPieces()) {
+			if(teamPiece instanceof KnightPiece) {
+				for(Location moveTo : teamPiece.getPossibleMoves()) {
+					// There must be no piece at this location
+					if(Main.getBoardController().getPieceAtLocation(moveTo) == null) {
+						for(int x = 0; x != 8; x++) {
+							int xOffset = offsets[x][0];
+							int zOffset = offsets[x][1];
+							Location loc = new Location(moveTo.getX() + xOffset, moveTo.getZ() + zOffset);
+							if(Main.getBoardController().isLocationOnBoard(loc)) {
+								IChessPiece pieceAtLocation = Main.getBoardController().getPieceAtLocation(loc);
+								if(pieceAtLocation != null) {
+									if(!pieceAtLocation.getTeamType().equals(teamPiece.getTeamType())) {
+										// We have a valid simulated move
+										simulatedMoves.add(new SimulatedMove(teamPiece, moveTo, pieceAtLocation));
+									}
+								}
+								
+							}
+						}
+						
+						
+					}
+					
+				}
+								
+			}
+			
+		}
+		
+		if(simulatedMoves.isEmpty()) return false;
+		
+		SimulatedMove highestMove = null;
+		
+		
+		// TODO Maybe add more logic here
+		
+		for(SimulatedMove move : simulatedMoves) {
+			if(highestMove == null) {
+				if(Main.getBoardController().getPieceAtLocation(move.getMoveToLocation()) == null) {
+					highestMove = move;
+				}
+			}
+			
+			if(move.getProbablitySize() > highestMove.getProbablitySize()) {
+				if(Main.getBoardController().getPieceAtLocation(move.getMoveToLocation()) == null) {
+					highestMove = move;
+				}
+			}
+			
+			
+		}
+		
+		
+		if(highestMove == null) return false;
+		
+		// Perform the move
+		
+		// Move the piece to the location
+		movePieceNotAttacking(highestMove.getMoveToLocation(), highestMove.getPiece());
+		
+		// Knight special move
+		knightSpecialMove(highestMove, randomNumber);
 		
 		return false;
 	}
@@ -164,18 +302,6 @@ public class AI {
 
 	
 	private boolean randomMoveAI(ArrayList<PieceInformation> information, int randomNumber) {
-		int[][] offsets = {
-		        {1, 0},
-		        {0, 1},
-		        {-1, 0},
-		        {0, -1},
-		        {1, 1},
-		        {-1, 1},
-		        {-1, -1},
-		        {1, -1},
-		       		        
-		    };
-		
 		
 		HashMap<IChessPiece, ArrayList<PieceInformation>> canMoveWithoutAttack = commonFunctionsController.generateMoveHashes(information).get(1);
 		
@@ -223,6 +349,17 @@ public class AI {
 		return true;
 	}
 	
+	
+	private void knightSpecialMove(SimulatedMove simulatedMove, int randomNumber) {
+		if(canDoMove(randomNumber, simulatedMove.getProbablity())) {
+			controller.getBoardController().removePieceFromBoard(simulatedMove.getEnemyPiece());
+			controller.getBoardController().movePieceOnBoard(simulatedMove.getPiece(), simulatedMove.getEnemyPiece().getLocation());
+			System.out.println("Knight Special: Moved piece: " + simulatedMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
+		}else {
+			System.out.println("Knight Special: Unable to move piece: " + simulatedMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber + 
+					", (" + simulatedMove.getEnemyPiece().getLocation().getX() + ", " + simulatedMove.getEnemyPiece().getLocation().getZ() + ")");
+		}
+	}
 	
 	private void movePiece(PieceInformation bestMove, Location moveLocation, int randomNumber) {
 		IChessPiece commander = controller.getTeam().getCommanderLogic().getCommanderForPiece(bestMove.getPiece());

@@ -19,11 +19,8 @@ public class NewGameWindow {
 		initialize();
 		frmNewGame.setVisible(true);
 	}
-
-	private boolean alreadyRequested;
 	
 	private void initialize() {
-		alreadyRequested = false;
 		frmNewGame = new JFrame();
 		frmNewGame.setTitle("New Game?");
 		frmNewGame.setBounds(100, 100, 303, 269);
@@ -42,12 +39,7 @@ public class NewGameWindow {
 					Main.createNewGame(Main.getBoardController().getCurrentGameType());
 					frmNewGame.dispose();
 				}else {
-					// It's a multiplayer game, send the restart game request
-					if(!alreadyRequested) {
-						Main.getSQLHandler().sendRestartRequest();
-					}
 					Main.getNotificationHandler().sendNotificationMessage("Mutliplayer Handler", "Sent restart game request...");
-					alreadyRequested = true;
 					frmNewGame.dispose();
 				}
 				
