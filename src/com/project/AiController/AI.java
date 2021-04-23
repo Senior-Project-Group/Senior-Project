@@ -244,7 +244,6 @@ public class AI {
 	}
 	
 	
-	// TODO ADD COMMANDER LOGIC CHECK
 	private boolean inDangerCheckAI(ArrayList<PieceInformation> information, int randomNumber) {
 		ArrayList<ThreatenedPiece> threats = commonFunctionsController.getThreatenedPieces();
 		ThreatenedPiece highestThreatened = null;
@@ -256,46 +255,49 @@ public class AI {
 		}
 		
 		for(ThreatenedPiece piece : threats) {
-			// King is threatened
-			if(piece.getThreatenedPiece() instanceof KingPiece) {
+			if(checkIfPieceHasCommander(piece.getThreatenedPiece())) {
+				// King is threatened
+				if(piece.getThreatenedPiece() instanceof KingPiece) {
+					Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
+					if(safeSpot != null) {
+						moveTo = safeSpot;
+						highestThreatened = piece;
+						break;
+					}
+				}
+				
+				// Bishop threatened
+				if(piece.getThreatenedPiece() instanceof BishopPiece) {
+					Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
+					if(safeSpot != null) {
+					if(highestThreatened == null) {
+						highestThreatened = piece;
+						moveTo = safeSpot;
+					}else {
+						if(highestThreatened.getThreatenedPiece() instanceof KnightPiece) {
+							highestThreatened = piece;
+							moveTo = safeSpot;
+						}
+					}
+						
+					}
+				}
 				Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
 				if(safeSpot != null) {
-					moveTo = safeSpot;
-					highestThreatened = piece;
-					break;
+				if(piece.getThreatenedPiece() instanceof KnightPiece) {
+					if(highestThreatened == null) {
+						highestThreatened = piece;
+						moveTo = safeSpot;
+					}else {
+						if(!(highestThreatened.getThreatenedPiece() instanceof BishopPiece)) {
+							highestThreatened = piece;
+							moveTo = safeSpot;
+						}
+					}
+				}
 				}
 			}
 			
-			// Bishop threatened
-			if(piece.getThreatenedPiece() instanceof BishopPiece) {
-				Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
-				if(safeSpot != null) {
-				if(highestThreatened == null) {
-					highestThreatened = piece;
-					moveTo = safeSpot;
-				}else {
-					if(highestThreatened.getThreatenedPiece() instanceof KnightPiece) {
-						highestThreatened = piece;
-						moveTo = safeSpot;
-					}
-				}
-					
-				}
-			}
-			Location safeSpot = commonFunctionsController.moveToSafeLocation(piece.getThreatenedPiece());
-			if(safeSpot != null) {
-			if(piece.getThreatenedPiece() instanceof KnightPiece) {
-				if(highestThreatened == null) {
-					highestThreatened = piece;
-					moveTo = safeSpot;
-				}else {
-					if(!(highestThreatened.getThreatenedPiece() instanceof BishopPiece)) {
-						highestThreatened = piece;
-						moveTo = safeSpot;
-					}
-				}
-			}
-			}
 			
 		}
 		
