@@ -44,6 +44,16 @@ public class AI {
 	// In danger check if == 1 move left (move the piece out of the way, if it can't move to safety, attack the enemy piece)
 	// Random move
 	
+	
+	
+	// Refinements needed:
+	// Make it so the king doesn't attempt to take out pieces until necessary
+	// Make it so bishops and kings don't try and do things themselves if not necessary.  Maybe if there is above a certain amount of pieces left on the team
+	//   (16 pieces on the board), maybe bishop/king only attack if there is less than 10 pieces on the board still
+	// Add better probablity sets
+	// I don't think AI is following all the rules all the time - Slow the AI down and check this out
+	
+	
 	private void run() {
 		int randomNumber = new ProbabilityController().getRandomNumber(false);
 		

@@ -94,6 +94,9 @@ public class CommanderLogic {
 	// TODO Will also check if the king has moved already, and give the piece to a corresponding bishop
 	public IChessPiece getCommanderForPiece(IChessPiece piece) {
 		if(piece instanceof BishopPiece || piece instanceof KingPiece) {
+			if(hasKingMoved && piece instanceof KingPiece) {
+				return null;
+			}
 			return piece;
 		}
 		
