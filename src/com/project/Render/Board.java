@@ -161,6 +161,20 @@ public class Board {
 			}
 		});
 		reloadBoard.add(reloadBoardRequester);
+		
+		JMenu mnNewMenu_1 = new JMenu("Force AI Move");
+		menuBar.add(mnNewMenu_1);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Force AI Move If Stuck");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Main.getBoardController().getCurrentGameType().equals(GameType.AI_VS_AI) || Main.getBoardController().getCurrentGameType().equals(GameType.PLAYER_VS_AI)) {
+					Main.getAIController().getAIControllerForTeam(Main.getBoardController().getCurrentPlayerToMove()).runMove();
+					
+				}
+			}
+		});
+		mnNewMenu_1.add(mntmNewMenuItem);
 	}
 	
 	public JFrame getFrame() {

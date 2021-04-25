@@ -151,7 +151,8 @@ public class NextMoveRenderer {
 			    					Main.getBoardController().checkForGameFinished();
 			    					
 			    				}else {
-			    					Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " " + piece.getTexture().getPieceTextureName() + " missed the opponent at location (" + obj.getLocation().getX() + ", " + obj.getLocation().getZ() + ")");
+			    					Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " " + piece.getTexture().getPieceTextureName() + " failed to attack opponent at location (" + obj.getLocation().getX() + ", " + obj.getLocation().getZ() + "), " + 
+			    							", " + getKillProbablityToString(valuesNeeded) + ", rolled: " + rand);
 			    					gui.getRollingLabel().setText(rand + " (Missed!)");
 			    				}
 			    				
@@ -206,6 +207,19 @@ public class NextMoveRenderer {
 			    Main.getBoardController().getBoardObject().getFrame().repaint();
 		}
 		
+	}
+	
+	private String getKillProbablityToString(int[] prob) {
+		
+		String t = "{";
+		
+		for(int x = 0; x != prob.length; x++) {
+			t = t + prob[x] + ", ";
+		}
+		
+		t = t + "}";
+		
+		return t;
 	}
 	
 }

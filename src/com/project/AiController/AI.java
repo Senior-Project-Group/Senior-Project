@@ -59,10 +59,13 @@ public class AI {
 		
 		ArrayList<PieceInformation> information = commonFunctionsController.getAllPossibleMoves();
 		
-		// Finished
+		
+		if(attackKingCheck(information, randomNumber)) return;
+		
 		if (attackWithNoMovesAI(information, randomNumber)) return;
 		
-		if (controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 2) {
+		if ((controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 2) || 
+				(controller.getTeam().getChessPieces().size() < 10 && (controller.getTeam().getCommanderLogic().getMaxMoves() - controller.getTeam().getAmountOfMovesDone() <= 1))) {
 			if (attackLookForHighestValueAI(information, randomNumber)) return;
 		}
 		
@@ -73,6 +76,8 @@ public class AI {
 			if(inDangerCheckAI(information, randomNumber)) return;
 		}
 		
+		if(inDangerCheckAI(information, randomNumber)) return;
+		
 		// Finished
 		if (randomMoveAI(information, randomNumber)) return;
 		
@@ -82,6 +87,40 @@ public class AI {
 		Main.getBoardController().getTeam2().getCommanderLogic().reset();
 		
 		System.out.println("How did we get here?");
+	}
+	
+	private boolean attackKingCheck(ArrayList<PieceInformation> information, int randomNumber) {
+		HashMap<IChessPiece, ArrayList<PieceInformation>> canAttackWithNoMovement = commonFunctionsController.generateMoveHashes(information).get(0);
+		
+		if(canAttackWithNoMovement == null || canAttackWithNoMovement.isEmpty()) return false;
+		
+		PieceInformation highestMove = null;
+		
+		int highestProb = 0;
+		
+		for(IChessPiece piece : canAttackWithNoMovement.keySet()) {
+			if(checkIfPieceHasCommander(piece)) {
+				ArrayList<PieceInformation> movements = canAttackWithNoMovement.get(piece);
+				for(PieceInformation info : movements) {
+					if(info.getPieceAtMoveToLocation() instanceof KingPiece) {
+						if(info.getKillProbablitySize() > highestProb) {
+							highestProb = info.getKillProbablitySize();
+							highestMove = info;
+						}
+					}
+				}
+			}
+			
+		}
+		
+		if(highestMove == null) return false;
+		
+		if((new ProbabilityController().getProbablity(highestMove.getPiece(), highestMove.getPieceAtMoveToLocation())).length > 2) {
+			movePiece(highestMove, highestMove.getLocation(), randomNumber);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private boolean attackWithNoMovesAI(ArrayList<PieceInformation> information, int randomNumber) {
@@ -313,7 +352,6 @@ public class AI {
 		// We don't have any kings/bishops that can be killed on our team
 		if(highestThreatened == null || moveTo == null) return false;
 		
-		
 		movePieceNotAttacking(moveTo, highestThreatened.getThreatenedPiece());
 		
 		return true;
@@ -321,7 +359,6 @@ public class AI {
 	}
 
 	private boolean randomMoveAI(ArrayList<PieceInformation> information, int randomNumber) {
-		
 		HashMap<IChessPiece, ArrayList<PieceInformation>> canMoveWithoutAttack = commonFunctionsController.generateMoveHashes(information).get(1);
 		
 		if(canMoveWithoutAttack == null || canMoveWithoutAttack.isEmpty()) return false;
@@ -361,6 +398,17 @@ public class AI {
 		
 		if(safeMovements == null || safeMovements.isEmpty()) return false;
 		
+		ArrayList<PieceInformation> checks = (ArrayList<PieceInformation>) safeMovements.clone();
+		
+		if(safeMovements.size() > 1) {
+			for(PieceInformation nextMove : safeMovements) {
+				if(nextMove.getPiece() instanceof KingPiece) {
+					checks.remove(nextMove);
+				}
+			}
+		}
+		
+		safeMovements = checks;
 		
 		// Pick a random value from the array list
 		 int rnd = new Random().nextInt(safeMovements.size());
@@ -390,6 +438,7 @@ public class AI {
 			Main.getBoardController().getLogs().addLog("Knight special move success!");
 		}else {
 			Main.getBoardController().getLogs().addLog("Knight special move failed!");
+			Main.getBoardController().getLogs().addLog("Failed to move: Knight " + getKillProbablityToString(simulatedMove.getProbablity()) + ", Rolled: " + randomNumber);
 			System.out.println("Knight Special: Unable to move piece: " + simulatedMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber + 
 					", (" + simulatedMove.getEnemyPiece().getLocation().getX() + ", " + simulatedMove.getEnemyPiece().getLocation().getZ() + ")");
 		}
@@ -403,7 +452,6 @@ public class AI {
 		
 		if(pieceAtMoveLocation == null) {
 			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), bestMove.getLocation());
-			System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 			return;
 		}
 		
@@ -411,9 +459,8 @@ public class AI {
 		if(canDoMove(randomNumber, bestMove.getKillProbality())) {
 			controller.getBoardController().removePieceFromBoard(pieceAtMoveLocation);
 			controller.getBoardController().movePieceOnBoard(bestMove.getPiece(), moveLocation);
-			System.out.println("Moved piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber);
 		}else {
-			System.out.println("Unable to move piece: " + bestMove.getPiece().getTexture().getTextureLocation() + ", random number: " + randomNumber + ", (" + moveLocation.getX() + ", " + moveLocation.getZ() + ")");
+			Main.getBoardController().getLogs().addLog("Failed to move: " + bestMove.getPiece().getTexture().getPieceTextureName() + " " + getKillProbablityToString(bestMove.getKillProbality()) + ", rolled number: " + randomNumber);
 		}
 	}
 	
@@ -462,4 +509,17 @@ public class AI {
 		return false;
 	}
 	
+	
+	private String getKillProbablityToString(int[] prob) {
+		
+		String t = "{";
+		
+		for(int x = 0; x != prob.length; x++) {
+			t = t + prob[x] + ", ";
+		}
+		
+		t = t + "}";
+		
+		return t;
+	}
 }

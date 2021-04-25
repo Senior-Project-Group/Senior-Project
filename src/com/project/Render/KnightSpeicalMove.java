@@ -193,6 +193,8 @@ public class KnightSpeicalMove {
 			    				}else {
 			    					Main.getBoardController().getLogs().addLog("Knight special move failed!");
 			    					gui.getRollingLabel().setText(rand + " (Missed!)");
+			    					Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " " + piece.getTexture().getPieceTextureName() + " failed to attack opponent at location (" + obj.getLocation().getX() + ", " + obj.getLocation().getZ() + "), " + 
+			    							", " + getKillProbablityToString(valuesNeeded) + ", rolled: " + rand);
 			    					Main.getBoardController().getNextMoveRenderer().clearCurrentRender();
 			    					clearCurrentRender();
 			    					
@@ -235,6 +237,20 @@ public class KnightSpeicalMove {
 		}
 		labels.clear();
 		Main.getBoardController().getBoardObject().getFrame().repaint();
+	}
+	
+	
+	private String getKillProbablityToString(int[] prob) {
+		
+		String t = "{";
+		
+		for(int x = 0; x != prob.length; x++) {
+			t = t + prob[x] + ", ";
+		}
+		
+		t = t + "}";
+		
+		return t;
 	}
 	
 }

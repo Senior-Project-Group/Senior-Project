@@ -199,6 +199,9 @@ public class BoardController {
 	
 	// Check if the game is finished
 	public void checkForGameFinished() {
+		
+		if(gameEnded) return;
+		
 		getBoardObject().getFrame().repaint();
 		// Locate the king piece for each team
 		
