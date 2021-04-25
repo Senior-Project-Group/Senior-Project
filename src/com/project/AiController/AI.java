@@ -358,6 +358,7 @@ public class AI {
 				
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean randomMoveAI(ArrayList<PieceInformation> information, int randomNumber) {
 		HashMap<IChessPiece, ArrayList<PieceInformation>> canMoveWithoutAttack = commonFunctionsController.generateMoveHashes(information).get(1);
 		
