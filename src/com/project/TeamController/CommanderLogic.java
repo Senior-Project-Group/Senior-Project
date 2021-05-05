@@ -234,7 +234,9 @@ public class CommanderLogic {
 			}
 		}
 		
+		/*
 		if(!found) {
+			System.out.println("2");
 			for(IChessPiece pieces : team.getChessPieces()) {
 				if(pieces instanceof KingPiece) {
 					if(!hasKingMoved) {
@@ -243,6 +245,8 @@ public class CommanderLogic {
 				}
 			}
 		}
+		
+		*/
 		
 		
 		return null;
