@@ -21,6 +21,8 @@ public class BishopPiece implements IChessPiece{
 	
 	private Location startLocation;
 	
+	private ArrayList<IChessPiece> delegated;
+	
 	public BishopPiece(Location location, TeamType team) {
 		this.team = team;
 		isAlive = true;
@@ -28,6 +30,7 @@ public class BishopPiece implements IChessPiece{
 		this.location = location;
 		texture = new PiecesTexture(this, getLocation().getX(), getLocation().getZ(), team);
 		startLocation = location;
+		this.delegated = new ArrayList<IChessPiece>();
 	}
 	
 	@Override
@@ -82,6 +85,23 @@ public class BishopPiece implements IChessPiece{
 	
 	public TeamType getTeamType() {
 		return team;
+	}
+	
+	public ArrayList<IChessPiece> getDelegatedPieces(){
+		return delegated;
+	}
+	
+	public void removeDelegatedPiece(IChessPiece piece) {
+		if(delegated.contains(piece)) {
+			delegated.remove(piece);
+		}
+		
+	}
+	
+	public void addDelegatedPiece(IChessPiece piece) {
+		if(!delegated.contains(piece)) {
+			delegated.add(piece);
+		}
 	}
 
 	@Override

@@ -22,6 +22,8 @@ public class CommanderLogic {
 	
 	private boolean hasKingMoved;
 	
+	private ArrayList<IChessPiece> hasMoveThisTurn = new ArrayList<IChessPiece>();
+	
 	public CommanderLogic(Team team) {
 		hasKingMoved = false;
 		this.team = team;
@@ -83,7 +85,21 @@ public class CommanderLogic {
 		moveCount = 1;
 		hasKingMoved = false;
 		commandersAlreadyUsedMove.clear();
+		hasMoveThisTurn.clear();
 	}
+	
+	public void addMovedThisTurn(IChessPiece piece) {
+		hasMoveThisTurn.add(piece);
+	}
+	
+	public boolean hasAlreadyMoved(IChessPiece piece) {
+		if(hasMoveThisTurn.contains(piece)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	// Return null if it's it's own commander
 	// This method will find the commander for the piece at hand
@@ -92,7 +108,8 @@ public class CommanderLogic {
 	// But will assign the king to the piece if it's bishop is dead
 	
 	// TODO Will also check if the king has moved already, and give the piece to a corresponding bishop
-	public IChessPiece getCommanderForPiece(IChessPiece piece) {
+
+	public IChessPiece getCommanderForPiece(IChessPiece piece) {			
 		if(piece instanceof BishopPiece || piece instanceof KingPiece) {
 			if(hasKingMoved && piece instanceof KingPiece) {
 				return null;
@@ -100,8 +117,25 @@ public class CommanderLogic {
 			return piece;
 		}
 		
-		boolean found = false;
-		// The king controls the Queen and Rook Pieces
+		// Check for extra delegation
+		
+		for(IChessPiece pieces : team.getChessPieces()) {
+			if(pieces instanceof BishopPiece) {
+				ArrayList<IChessPiece> delegated = ((BishopPiece)pieces).getDelegatedPieces();
+				if(delegated.contains(piece)) {
+					// We have a delegation here
+					if(!hasCommanderPerformedMove(pieces)) {
+						return pieces;
+					}else {
+						return null;
+					}
+					
+				}
+				
+			}
+		}
+		
+		
 		if(piece instanceof QueenPiece || piece instanceof RookPiece || piece instanceof PawnPiece) {
 			for(IChessPiece pieces : team.getChessPieces()) {
 				if(pieces instanceof KingPiece) {
@@ -152,50 +186,6 @@ public class CommanderLogic {
 			}
 		}
 
-
-		// The king has already moved above, so we can't use this. Find a bishop who can move the piece for them
-		if(piece instanceof QueenPiece || piece instanceof RookPiece || piece instanceof PawnPiece) {
-			if(piece instanceof PawnPiece && (piece.getStartLocation().getX() == 3 || piece.getStartLocation().getX() == 4)) { // Kings pawns
-				if(team.getTeamType().equals(TeamType.BLACK)) {
-					if(blackLeftBishop != null) {
-						return blackLeftBishop;
-					}
-					if(blackRightBishop != null) {
-						return blackRightBishop;
-					}
-				}else {
-					if(whiteLeftBishop != null) {
-						return whiteLeftBishop;
-					}
-					
-					if(whiteRightBishop != null) {
-						return whiteRightBishop;
-					}
-				}
-			}else {
-				if(piece instanceof QueenPiece || piece instanceof RookPiece) {
-					if(team.getTeamType().equals(TeamType.BLACK)) {
-						if(blackLeftBishop != null) {
-							return blackLeftBishop;
-						}
-						if(blackRightBishop != null) {
-							return blackRightBishop;
-						}
-					}else {
-						if(whiteLeftBishop != null) {
-							return whiteLeftBishop;
-						}
-						
-						if(whiteRightBishop != null) {
-							return whiteRightBishop;
-						}
-					}
-				}
-			}
-
-		}
-
-		
 		// This is the normal way, the piece has a bishop as a commander
 		if(piece instanceof PawnPiece || piece instanceof KnightPiece) {
 			for(IChessPiece pieces : team.getChessPieces()) {
@@ -234,23 +224,12 @@ public class CommanderLogic {
 			}
 		}
 		
-		/*
-		if(!found) {
-			System.out.println("2");
-			for(IChessPiece pieces : team.getChessPieces()) {
-				if(pieces instanceof KingPiece) {
-					if(!hasKingMoved) {
-						return pieces;
-					}
-				}
-			}
-		}
-		
-		*/
-		
-		
+
 		return null;
 		
 	}
+
+	
+	
 	
 }

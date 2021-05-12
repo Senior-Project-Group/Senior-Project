@@ -5,12 +5,14 @@ import java.awt.EventQueue;
 import com.project.AiController.AIController;
 import com.project.ChessPieces.IChessPiece;
 import com.project.ChessPieces.KingPiece;
+import com.project.Delegation.DelegationControl;
 import com.project.Logs.Logs;
 import com.project.Main.Main;
 import com.project.Render.Board;
 import com.project.Render.KnightSpeicalMove;
 import com.project.Render.NewGameWindow;
 import com.project.Render.NextMoveRenderer;
+import com.project.TeamController.CommanderLogic;
 import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
 
@@ -37,13 +39,16 @@ public class BoardController {
 	
 	private KnightSpeicalMove knightSpecialMoveGUI;
 	
-	private Logs logs;
+	private Logs logs; // Log controller
+	
+	public DelegationControl delegationController; // Delegation controller
 	
 	/**
 	 * Default constructor that starts the game with the specified game type: PLAYER_VS_PLAYER, PLAYER_VS_AI, AI_VS_AI or SQL_MULTIPLAYER
 	 * @param GameType gameType
 	 */
 	public BoardController(GameType gameType) {
+		delegationController = null;
 		knightSpecialMoveGUI = null;
 		this.gameEnded = false;
 		this.currentGameType = gameType;
@@ -142,11 +147,17 @@ public class BoardController {
 			moved = true;
 		piece.setLocation(newLocation);
 		
+		Team t = null;
 		if(piece.getTeamType().equals(TeamType.BLACK)) {
 			getTeam1().addMove(); // Black is considered team1 but technically moves second (bad on my part)
+			t = getTeam1();
 		}else {
-			getTeam2().addMove(); 
+			getTeam2().addMove();
+			t = getTeam2();
 		}
+		
+		t.getCommanderLogic().addMovedThisTurn(piece);
+		
 		
 		Main.getBoardController().getLogs().addLog(piece.getTeamType().toString() + " Moved " + piece.getTexture().getPieceTextureName() + ": (" + original.getX() + ", " + original.getZ() + ") -> (" + newLocation.getX() + ", " + newLocation.getZ() + ")");
 		getBoardObject().getFrame().repaint();
@@ -294,6 +305,10 @@ public class BoardController {
 	
 	public Logs getLogs() {
 		return logs;
+	}
+	
+	public DelegationControl getDelegationController() {
+		return delegationController;
 	}
 	
 	private void setupLogs() {

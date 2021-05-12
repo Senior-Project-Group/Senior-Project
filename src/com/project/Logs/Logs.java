@@ -20,7 +20,7 @@ public class Logs {
 		area.setEditable(false);
 		
 		
-		JScrollPane sp = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane sp = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBounds(710, 10, 370, 670);
 		
 		Main.getBoardController().getBoardObject().getFrame().add(sp);

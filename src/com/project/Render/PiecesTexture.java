@@ -2,6 +2,7 @@ package com.project.Render;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,6 +16,7 @@ import com.project.ChessPieces.KnightPiece;
 import com.project.ChessPieces.PawnPiece;
 import com.project.ChessPieces.QueenPiece;
 import com.project.ChessPieces.RookPiece;
+import com.project.Delegation.DelegationControl;
 import com.project.Main.Main;
 import com.project.TeamController.Team;
 import com.project.TeamController.TeamType;
@@ -126,15 +128,86 @@ public class PiecesTexture {
 		    		System.out.println("Commander is: null");
 		    	}
 		    	
+		    	
+		    	if(e.isShiftDown()) {
+		    		if(manipulatedPiece instanceof BishopPiece) {
+		    			System.out.println("Opening Delegation Command Center");
+		    			new DelegationControl(manipulatedPiece);
+		    			return;
+		    		}else {
+		    			// It's another piece
+		    			// Check to make sure it's a king piece
+		    			
+		    			if(Main.getBoardController().getDelegationController() != null) {
+		    				if(initiallyBelongsToKing(manipulatedPiece)) { // Is a piece that can be delegated
+		    					if(currentlyBelongsToKing(piece)) { // Check to make sure the piece is allowed to be delegated
+		    						// Delegate the piece
+		    						Main.getBoardController().getDelegationController().delegationPerformed(manipulatedPiece);
+		    					}else {
+		    						Main.getBoardController().getDelegationController().delegationPerformed(manipulatedPiece);
+		    					}
+		    					
+		    				}else {
+		    					Main.getBoardController().getDelegationController().setInformation("This piece is not allowed to be delegated.");
+		    					System.out.println("This piece is not allowed to be delegated.");
+		    				}
+		    			}
+		    			return;
+		    		}
+		    	}
+		    	
+		    	if(Main.getBoardController().getDelegationController() != null) {
+		    		return;
+		    	}
+		    	
 		    	// Check if the commander has moved yet
 		    	if(!teamObj.getCommanderLogic().hasCommanderPerformedMove(commander) && commander != null) {
-		    		Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
+		    		if(!teamObj.getCommanderLogic().hasAlreadyMoved(piece)) {
+		    			Main.getBoardController().getNextMoveRenderer().renderForPiece(manipulatedPiece);
+		    		}
 		    	}
 		    	
 		    }  
 		}); 
 		
 		Main.getBoardController().getBoardObject().getFrame().add(pieceLabel);
+	}
+	
+	private boolean initiallyBelongsToKing(IChessPiece piece) {
+		if(piece instanceof QueenPiece || piece instanceof RookPiece || piece instanceof PawnPiece) {
+			if(piece instanceof PawnPiece && (piece.getStartLocation().getX() == 3 || piece.getStartLocation().getX() == 4)) {
+				return true;
+			}
+			
+			if(piece instanceof QueenPiece || piece instanceof RookPiece) {
+				return true;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	private boolean currentlyBelongsToKing(IChessPiece piece) {
+		Team teamObj = null;
+    	if(team.equals(TeamType.BLACK)) {
+    		teamObj = Main.getBoardController().getTeam1();
+    	}else {
+    		teamObj = Main.getBoardController().getTeam2();
+    	}
+		
+		for(IChessPiece pieces : teamObj.getChessPieces()) {
+			if(pieces instanceof BishopPiece) {
+				BishopPiece bishop = (BishopPiece)pieces;
+				ArrayList<IChessPiece> delegated = bishop.getDelegatedPieces();
+				if(delegated.contains(piece)) { // Currently in control by a bishop
+					return false;
+				}
+				
+			}
+		}
+		
+		return true;
 	}
 	
 	// Returns the texture name
